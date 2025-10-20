@@ -75,7 +75,7 @@
     <groovyVersion>3.0.17</groovyVersion>
     <unirestVersion>3.14.2</unirestVersion>
     <jsonPathVersion>2.9.0</jsonPathVersion>
-    <slf4jVersion>2.0.9</slf4jVersion>
+    <slf4jVersion>2.0.17</slf4jVersion>
     <logbackVersion>1.5.19</logbackVersion>
     <docletVersion>1.1</docletVersion>
     <lombokPluginVersion>1.18.20.0</lombokPluginVersion>
@@ -697,7 +697,7 @@
                 <link>https://maven.apache.org/ref/${mavenVersion}/maven-core/apidocs</link>
                 <link>https://maven.apache.org/ref/${mavenVersion}/maven-artifact/apidocs</link>
 
-                <link>https://www.slf4j.org/apidocs</link>
+                <link>https://www.javadoc.io/doc/org.slf4j/slf4j-api/${slf4jVersion}</link>
                 <link>https://www.javadoc.io/doc/com.jayway.jsonpath/json-path/${jsonPathVersion}</link>
                 <link>https://www.javadoc.io/doc/org.codehaus.groovy/groovy-all/${groovyVersion}</link>
                 <link>https://fasterxml.github.io/jackson-core/javadoc/${jacksonJavadocVersion}</link>
