@@ -689,17 +689,18 @@
 <!--                <link>https://www.javadoc.io/doc/org.commonjava.maven.ext/pom-manipulation-ext/${project.version}</link>-->
 <!--                <link>https://www.javadoc.io/doc/org.commonjava.maven.ext/pom-manipulation-integration-test/${project.version}</link>-->
 
-                <link>https://javadoc.io/doc/org.commonjava.maven.atlas/atlas-identities/${atlasVersion}</link>
-                <link>https://javadoc.io/doc/org.commonjava.maven.galley/galley-api/${galleyVersion}</link>
-                <link>https://javadoc.io/doc/org.commonjava.maven.galley/galley-maven/${galleyVersion}</link>
+                <!-- Causes build failures until https://github.com/maxcellent/javadoc.io/issues/222 is fixed -->
+<!--                <link>https://javadoc.io/doc/org.commonjava.maven.atlas/atlas-identities/${atlasVersion}</link>-->
+<!--                <link>https://javadoc.io/doc/org.commonjava.maven.galley/galley-api/${galleyVersion}</link>-->
+<!--                <link>https://javadoc.io/doc/org.commonjava.maven.galley/galley-maven/${galleyVersion}</link>-->
 
                 <link>https://maven.apache.org/ref/${mavenVersion}/maven-model/apidocs</link>
                 <link>https://maven.apache.org/ref/${mavenVersion}/maven-core/apidocs</link>
                 <link>https://maven.apache.org/ref/${mavenVersion}/maven-artifact/apidocs</link>
 
-                <link>https://www.javadoc.io/doc/org.slf4j/slf4j-api/${slf4jVersion}</link>
-                <link>https://www.javadoc.io/doc/com.jayway.jsonpath/json-path/${jsonPathVersion}</link>
-                <link>https://www.javadoc.io/doc/org.codehaus.groovy/groovy-all/${groovyVersion}</link>
+<!--                <link>https://www.javadoc.io/doc/org.slf4j/slf4j-api/${slf4jVersion}</link>-->
+<!--                <link>https://www.javadoc.io/doc/com.jayway.jsonpath/json-path/${jsonPathVersion}</link>-->
+<!--                <link>https://www.javadoc.io/doc/org.codehaus.groovy/groovy-all/${groovyVersion}</link>-->
                 <link>https://fasterxml.github.io/jackson-core/javadoc/${jacksonJavadocVersion}</link>
               </links>
               <additionalJOptions>
