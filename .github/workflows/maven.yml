@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        maven: [3.3.9, 3.5.4, 3.6.3, 3.8.7, 3.9.0, 3.9.8]
+        maven: [3.3.9, 3.5.4, 3.6.3, 3.8.7, 3.9.0, 3.9.8, 3.9.11]
     # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idif
     if: github.repository == 'project-ncl/pom-manipulation-ext' && github.event_name == 'pull_request'
     runs-on: ubuntu-latest
