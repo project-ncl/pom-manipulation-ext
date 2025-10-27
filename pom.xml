@@ -70,7 +70,7 @@
     <mavenVersion>3.8.9</mavenVersion>
     <atlasVersion>0.17.2</atlasVersion>
     <daVersion>2.6.9</daVersion>
-    <galleyVersion>0.16.6</galleyVersion>
+    <galleyVersion>1.21</galleyVersion>
 
     <groovyVersion>3.0.25</groovyVersion>
     <unirestVersion>3.14.2</unirestVersion>
