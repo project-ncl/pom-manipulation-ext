@@ -17,7 +17,7 @@ package org.commonjava.maven.ext.core.util;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.model.Dependency;
-import org.commonjava.maven.atlas.ident.ref.ArtifactRef;
+import org.commonjava.atlas.maven.ident.ref.ArtifactRef;
 import org.commonjava.maven.ext.common.model.Project;
 import org.commonjava.maven.ext.common.model.SimpleScopedArtifactRef;
 import org.commonjava.maven.ext.core.ManipulationSession;

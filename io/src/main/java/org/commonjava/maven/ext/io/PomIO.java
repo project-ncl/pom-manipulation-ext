@@ -46,7 +46,7 @@ import org.apache.maven.shared.release.transform.ModelETLRequest;
 import org.apache.maven.shared.release.transform.jdom2.JDomModelETL;
 import org.apache.maven.shared.release.transform.jdom2.JDomModelETLFactory;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.commonjava.maven.atlas.ident.ref.ProjectVersionRef;
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.common.jdom.JDOMModelConverter;
 import org.commonjava.maven.ext.common.model.Project;

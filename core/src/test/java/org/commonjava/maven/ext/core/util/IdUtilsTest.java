@@ -16,8 +16,8 @@
 
 package org.commonjava.maven.ext.core.util;
 
-import org.commonjava.maven.atlas.ident.ref.ProjectRef;
-import org.commonjava.maven.atlas.ident.ref.ProjectVersionRef;
+import org.commonjava.atlas.maven.ident.ref.ProjectRef;
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.maven.ext.common.ManipulationUncheckedException;
 import org.commonjava.maven.ext.io.rest.handler.StaticResourceHandler;
 import org.commonjava.maven.ext.io.rest.rule.MockServer;

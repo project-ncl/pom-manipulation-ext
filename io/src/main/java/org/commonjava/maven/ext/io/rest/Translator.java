@@ -15,7 +15,8 @@
  */
 package org.commonjava.maven.ext.io.rest;
 
-import org.commonjava.maven.atlas.ident.ref.ProjectVersionRef;
+
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 
 import java.util.List;
 import java.util.Map;

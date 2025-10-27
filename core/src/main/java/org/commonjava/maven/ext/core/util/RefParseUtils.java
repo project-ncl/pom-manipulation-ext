@@ -16,7 +16,7 @@
 package org.commonjava.maven.ext.core.util;
 
 import org.apache.commons.io.FileUtils;
-import org.commonjava.maven.atlas.ident.ref.InvalidRefException;
+import org.commonjava.atlas.maven.ident.ref.InvalidRefException;
 import org.commonjava.maven.ext.common.ManipulationUncheckedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

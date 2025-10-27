@@ -16,7 +16,7 @@
 package org.commonjava.maven.ext.io.rest;
 
 import kong.unirest.Unirest;
-import org.commonjava.maven.atlas.ident.ref.ProjectVersionRef;
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.maven.ext.io.rest.handler.SpyFailJettyHandler;
 import org.commonjava.maven.ext.io.rest.rule.MockServer;
 import org.junit.Before;

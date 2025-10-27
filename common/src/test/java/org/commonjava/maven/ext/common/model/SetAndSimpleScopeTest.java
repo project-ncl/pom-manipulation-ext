@@ -15,7 +15,7 @@
  */
 package org.commonjava.maven.ext.common.model;
 
-import org.commonjava.maven.atlas.ident.ref.ArtifactRef;
+import org.commonjava.atlas.maven.ident.ref.ArtifactRef;
 import org.junit.Test;
 
 import java.util.HashSet;

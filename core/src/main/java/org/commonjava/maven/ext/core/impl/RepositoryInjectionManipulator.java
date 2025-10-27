@@ -17,7 +17,7 @@ package org.commonjava.maven.ext.core.impl;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Repository;
-import org.commonjava.maven.atlas.ident.ref.ProjectRef;
+import org.commonjava.atlas.maven.ident.ref.ProjectRef;
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.common.model.Project;
 import org.commonjava.maven.ext.core.ManipulationSession;

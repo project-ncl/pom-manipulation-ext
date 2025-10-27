@@ -18,9 +18,9 @@
 // its useful during development as IntelliJ can then correctly locate the dependencies for
 // the project and provide completion assist.
 // @Grab('org.commonjava.maven.ext:pom-manipulation-core:${project.version}')
-// @Grab('org.commonjava.maven.atlas:atlas-identities:0.17.1')
+// @Grab('org.commonjava.atlas.maven:atlas-identities:0.17.1')
 
-import org.commonjava.maven.atlas.ident.ref.SimpleProjectRef
+import org.commonjava.atlas.maven.ident.ref.SimpleProjectRef
 import org.commonjava.maven.ext.core.groovy.BaseScript
 import org.commonjava.maven.ext.core.groovy.InvocationStage
 import org.commonjava.maven.ext.core.groovy.PMEBaseScript

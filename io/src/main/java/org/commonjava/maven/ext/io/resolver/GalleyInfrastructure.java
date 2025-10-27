@@ -35,6 +35,7 @@ import org.commonjava.maven.galley.internal.xfer.UploadHandler;
 import org.commonjava.maven.galley.io.HashedLocationPathGenerator;
 import org.commonjava.maven.galley.io.NoOpTransferDecorator;
 import org.commonjava.maven.galley.io.SpecialPathManagerImpl;
+import org.commonjava.maven.galley.io.TransferDecoratorManager;
 import org.commonjava.maven.galley.maven.ArtifactManager;
 import org.commonjava.maven.galley.maven.ArtifactMetadataManager;
 import org.commonjava.maven.galley.maven.internal.ArtifactManagerImpl;
@@ -55,6 +56,7 @@ import org.commonjava.maven.galley.model.Location;
 import org.commonjava.maven.galley.nfc.MemoryNotFoundCache;
 import org.commonjava.maven.galley.spi.cache.CacheProvider;
 import org.commonjava.maven.galley.spi.event.FileEventManager;
+import org.commonjava.maven.galley.spi.io.PathGenerator;
 import org.commonjava.maven.galley.spi.nfc.NotFoundCache;
 import org.commonjava.maven.galley.spi.transport.LocationExpander;
 import org.commonjava.maven.galley.spi.transport.Transport;
@@ -75,7 +77,7 @@ import java.util.concurrent.Executors;
 
 /**
  * Manager component responsible for setting up and managing the Galley API instances used to resolve POMs and metadata.
- * 
+ *
  * @author jdcasey
  */
 @Named("galley")
@@ -215,9 +217,10 @@ public class GalleyInfrastructure
         }
 
         final FileEventManager fileEvents = new NoOpFileEventManager();
-
+        final PathGenerator pathGenerator = new HashedLocationPathGenerator();
+        final TransferDecoratorManager transferDecoratorManager = new TransferDecoratorManager(new NoOpTransferDecorator());
         final CacheProvider cache =
-            new FileCacheProvider( cacheDir, new HashedLocationPathGenerator(), fileEvents, new NoOpTransferDecorator() );
+            new FileCacheProvider( cacheDir, pathGenerator, fileEvents, transferDecoratorManager);
 
         final NotFoundCache nfc = new MemoryNotFoundCache();
         executor = Executors.newCachedThreadPool();

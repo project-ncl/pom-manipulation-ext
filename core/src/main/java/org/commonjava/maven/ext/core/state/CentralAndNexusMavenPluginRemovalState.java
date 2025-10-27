@@ -15,8 +15,8 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import org.commonjava.maven.atlas.ident.ref.ProjectRef;
-import org.commonjava.maven.atlas.ident.ref.SimpleVersionlessArtifactRef;
+import org.commonjava.atlas.maven.ident.ref.ProjectRef;
+import org.commonjava.atlas.maven.ident.ref.SimpleVersionlessArtifactRef;
 import org.commonjava.maven.ext.annotation.ConfigValue;
 
 import java.util.Arrays;

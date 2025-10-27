@@ -16,8 +16,8 @@
 package org.commonjava.maven.ext.io.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.commonjava.maven.atlas.ident.ref.ProjectVersionRef;
-import org.commonjava.maven.atlas.ident.ref.SimpleProjectVersionRef;
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
+import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
 import org.commonjava.maven.ext.io.rest.handler.AddSuffixJettyHandler;
 import org.commonjava.maven.ext.io.rest.handler.GAVSchema;
 import org.commonjava.maven.ext.io.rest.rule.MockServer;

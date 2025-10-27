@@ -16,7 +16,7 @@
 package org.commonjava.maven.ext.common.util;
 
 import lombok.experimental.UtilityClass;
-import org.commonjava.maven.atlas.ident.ref.ProjectVersionRef;
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.jboss.da.model.rest.GAV;
 
 import java.util.HashSet;

@@ -296,7 +296,7 @@ public class CliTest
         String cliOutput = systemOutRule.getLogWithNormalizedLineSeparator().replaceAll( "org.commonjava.maven.ext:pom-manipulation-.*\\n", "" );
         System.out.println(cliOutput);
 
-        assertTrue( cliOutput.contains( "Found 83" ) );
+        assertTrue( cliOutput.contains( "Found 84" ) );
         assertTrue( cliOutput.matches( "(?s).*"
                 + "ch.qos.logback:logback-classic:1.[.\\d+]+\\s+                                   jar                                     compile             \n"
                 + "ch.qos.logback:logback-core:1.[.\\d+]+\\s+                                      jar                                     compile             \n"
@@ -319,6 +319,7 @@ public class CliTest
                 + "info.picocli:picocli:4.[.\\d+]+\\s+                                             jar                                     compile             \n"
                 + "javax.inject:javax.inject:1                                                     jar                                     compile             \n"
                 + "junit:junit:4[.\\d+]+\\s+                                                       jar                                     test                \n"
+                + "net.minidev:json-smart:2.5.2                                                    jar                                     compile             \n"
                 + "org.apache.commons:commons-lang3:3.[.\\d+]+\\s+                                 jar                                     compile             \n"
                 + "org.apache.httpcomponents:httpclient:4.[.\\d+]+\\s+                             jar                                     compile             \n"
                 + "org.apache.ivy:ivy:[.\\d+]+\\s+                                                 jar                                     compile             \n"
@@ -348,12 +349,12 @@ public class CliTest
                 + "org.codehaus.mojo:animal-sniffer-maven-plugin:1.[.\\d+]+\\s+                    maven-plugin                                                \n"
                 + "org.codehaus.plexus:plexus-interpolation:[.\\d+]+\\s+                           jar                                     provided            \n"
                 + "org.codehaus.plexus:plexus-utils:[.\\d+]+\\s+                                   jar                                     compile             \n"
-                + "org.commonjava.maven.atlas:atlas-identities:0.17.2                              jar                                     compile             \n"
-                + "org.commonjava.maven.galley:galley-api:0.16.6                                   jar                                     compile             \n"
-                + "org.commonjava.maven.galley:galley-core:0.16.6                                  jar                                     compile             \n"
-                + "org.commonjava.maven.galley:galley-maven:0.16.6                                 jar                                     compile             \n"
-                + "org.commonjava.maven.galley:galley-transport-filearc:0.16.6                     jar                                     compile             \n"
-                + "org.commonjava.maven.galley:galley-transport-httpclient:0.16.6                  jar                                     compile             \n"
+                + "org.commonjava.atlas:atlas-identities:1.1.8                                     jar                                     compile             \n"
+                + "org.commonjava.maven.galley:galley-api:1.21                                     jar                                     compile             \n"
+                + "org.commonjava.maven.galley:galley-core:1.21                                    jar                                     compile             \n"
+                + "org.commonjava.maven.galley:galley-maven:1.21                                   jar                                     compile             \n"
+                + "org.commonjava.maven.galley:galley-transport-filearc:1.21                       jar                                     compile             \n"
+                + "org.commonjava.maven.galley:galley-transport-httpclient:1.21                    jar                                     compile             \n"
                 + "org.eclipse.aether:aether-api:1.1.0                                             jar                                     provided            \n"
                 + "org.eclipse.jetty:jetty-server:9.[.\\d+]+[v\\d+]*\\s+                           jar                                     compile             \n"
                 + "org.eclipse.sisu:org.eclipse.sisu.plexus:0.3.4                                  jar                                     compile             \n"

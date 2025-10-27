@@ -17,7 +17,7 @@ package org.commonjava.maven.ext.core.io;
 
 import org.apache.maven.model.Model;
 import org.apache.maven.repository.DefaultMirrorSelector;
-import org.commonjava.maven.atlas.ident.ref.SimpleProjectVersionRef;
+import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.core.ManipulationSession;
 import org.commonjava.maven.ext.core.fixture.TestUtils;

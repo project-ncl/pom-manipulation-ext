@@ -16,7 +16,7 @@
 package org.commonjava.maven.ext.core.groovy;
 
 import lombok.Getter;
-import org.commonjava.maven.atlas.ident.ref.ProjectVersionRef;
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.common.model.Project;
 import org.commonjava.maven.ext.common.session.MavenSessionHandler;
@@ -85,7 +85,7 @@ public abstract class BaseScript extends BaseScriptUtils
 
     /**
      * Obtain the GAV of the current project
-     * @return a {@link org.commonjava.maven.atlas.ident.ref.ProjectVersionRef}
+     * @return a {@link org.commonjava.atlas.maven.ident.ref.ProjectVersionRef}
      */
     public ProjectVersionRef getGAV()
     {

@@ -15,7 +15,7 @@
  */
 package org.commonjava.maven.ext.core.util;
 
-import org.commonjava.maven.atlas.ident.ref.ArtifactRef;
+import org.commonjava.atlas.maven.ident.ref.ArtifactRef;
 import org.commonjava.maven.ext.common.model.Project;
 import org.commonjava.maven.ext.core.ManipulationSession;
 import org.commonjava.maven.ext.core.fixture.TestUtils;

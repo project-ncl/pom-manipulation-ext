@@ -22,7 +22,7 @@ import org.apache.maven.execution.MavenExecutionRequest;
 import org.apache.maven.execution.MavenSession;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusContainer;
-import org.commonjava.maven.atlas.ident.ref.ProjectVersionRef;
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.maven.ext.common.json.PME;
 import org.commonjava.maven.ext.common.model.Project;
 import org.commonjava.maven.ext.common.util.JSONUtils;
@@ -129,8 +129,8 @@ public class ProjectComparatorTest
         assertFalse( result.contains( "Non-Aligned Managed plugins" ) );
 
         String jsonString = JSONUtils.jsonToString(json);
-        assertTrue( jsonString.contains( "org.commonjava.maven.galley:galley-maven:0.16.6\" : {" ) );
-        assertTrue( jsonString.contains( "\"version\" : \"0.16.6-redhat-1\"" ) );
+        assertTrue( jsonString.contains( "org.commonjava.maven.galley:galley-maven:1.21\" : {" ) );
+        assertTrue( jsonString.contains( "\"version\" : \"1.21-redhat-1\"" ) );
     }
 
     @Test

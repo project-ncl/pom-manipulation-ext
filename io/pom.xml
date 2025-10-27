@@ -95,7 +95,7 @@
     </dependency>
 
     <dependency>
-      <groupId>org.commonjava.maven.atlas</groupId>
+      <groupId>org.commonjava.atlas</groupId>
       <artifactId>atlas-identities</artifactId>
     </dependency>
 

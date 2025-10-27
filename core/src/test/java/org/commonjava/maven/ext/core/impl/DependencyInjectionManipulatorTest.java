@@ -24,7 +24,7 @@ import java.util.UUID;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.DependencyManagement;
 import org.apache.maven.model.Model;
-import org.commonjava.maven.atlas.ident.ref.InvalidRefException;
+import org.commonjava.atlas.maven.ident.ref.InvalidRefException;
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.common.model.Project;
 import org.commonjava.maven.ext.core.ManipulationSession;

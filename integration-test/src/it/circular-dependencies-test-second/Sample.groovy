@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import org.commonjava.maven.atlas.ident.ref.SimpleProjectVersionRef
+import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef
 import org.commonjava.maven.ext.core.groovy.BaseScript
 import org.commonjava.maven.ext.core.groovy.InvocationPoint
 import org.commonjava.maven.ext.core.groovy.InvocationStage

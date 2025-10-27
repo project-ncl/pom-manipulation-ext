@@ -16,7 +16,7 @@
 package org.commonjava.maven.ext.common.util;
 
 import org.apache.maven.model.Dependency;
-import org.commonjava.maven.atlas.ident.ref.ProjectRef;
+import org.commonjava.atlas.maven.ident.ref.ProjectRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

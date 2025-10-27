@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.maven.model.Dependency;
-import org.commonjava.maven.atlas.ident.ref.InvalidRefException;
+import org.commonjava.atlas.maven.ident.ref.InvalidRefException;
 import org.commonjava.maven.ext.annotation.ConfigValue;
 import org.commonjava.maven.ext.core.util.RefParseUtils;
 

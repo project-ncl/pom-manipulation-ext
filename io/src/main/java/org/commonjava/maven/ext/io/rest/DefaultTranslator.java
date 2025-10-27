@@ -24,7 +24,7 @@ import kong.unirest.Unirest;
 import kong.unirest.UnirestException;
 import lombok.Getter;
 import org.apache.http.HttpStatus;
-import org.commonjava.maven.atlas.ident.ref.ProjectVersionRef;
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.maven.ext.common.ManipulationUncheckedException;
 import org.commonjava.maven.ext.common.json.DependencyAnalyserResult;
 import org.commonjava.maven.ext.common.json.ErrorMessage;

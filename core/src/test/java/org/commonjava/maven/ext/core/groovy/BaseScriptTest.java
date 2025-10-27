@@ -21,8 +21,8 @@ import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
-import org.commonjava.maven.atlas.ident.ref.ProjectRef;
-import org.commonjava.maven.atlas.ident.ref.SimpleProjectRef;
+import org.commonjava.atlas.maven.ident.ref.ProjectRef;
+import org.commonjava.atlas.maven.ident.ref.SimpleProjectRef;
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.common.model.Project;
 import org.commonjava.maven.ext.core.ManipulationSession;
@@ -144,7 +144,7 @@ public class BaseScriptTest
         };
         bs.setValues( pomIO, fileIO, null, ms, projects, root, null );
 
-        bs.inlineProperty( root, SimpleProjectRef.parse( "org.commonjava.maven.atlas:atlas-identities" ) );
+        bs.inlineProperty( root, SimpleProjectRef.parse( "org.commonjava.atlas:atlas-identities" ) );
         bs.inlineProperty( root, SimpleProjectRef.parse( "org.commonjava.maven.galley:*" ) );
 
         try
@@ -161,7 +161,7 @@ public class BaseScriptTest
             // else pass
         }
 
-        assertEquals( "0.17.2", root.getModel()
+        assertEquals( "1.1.8", root.getModel()
                                     .getDependencyManagement()
                                     .getDependencies()
                                     .stream()
@@ -174,7 +174,7 @@ public class BaseScriptTest
                                     .getDependencies()
                                     .stream()
                                     .filter( d -> d.getGroupId().equals( "org.commonjava.maven.galley" ) )
-                                    .filter( d -> d.getVersion().equals( "0.16.6" ) )
+                                    .filter( d -> d.getVersion().equals( "1.21" ) )
                                     .count() );
 
 

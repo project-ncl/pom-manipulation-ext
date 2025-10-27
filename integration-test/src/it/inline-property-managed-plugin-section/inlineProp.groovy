@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import org.commonjava.maven.atlas.ident.ref.SimpleProjectRef
+import org.commonjava.atlas.maven.ident.ref.SimpleProjectRef
 import org.commonjava.maven.ext.core.groovy.BaseScript
 import org.commonjava.maven.ext.core.groovy.InvocationStage
 import org.commonjava.maven.ext.core.groovy.PMEBaseScript

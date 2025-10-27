@@ -17,7 +17,7 @@ package org.commonjava.maven.ext.core.util;
 
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
-import org.commonjava.maven.atlas.ident.ref.ArtifactRef;
+import org.commonjava.atlas.maven.ident.ref.ArtifactRef;
 import org.commonjava.maven.ext.common.model.Project;
 import org.commonjava.maven.ext.common.util.PropertyInterpolator;
 import org.commonjava.maven.ext.core.ManipulationSession;

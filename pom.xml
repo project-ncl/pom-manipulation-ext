@@ -68,9 +68,9 @@
     <addJarIndex>false</addJarIndex>
 
     <mavenVersion>3.8.9</mavenVersion>
-    <atlasVersion>0.17.2</atlasVersion>
+    <atlasVersion>1.1.8</atlasVersion>
     <daVersion>2.6.9</daVersion>
-    <galleyVersion>0.16.6</galleyVersion>
+    <galleyVersion>1.21</galleyVersion>
 
     <groovyVersion>3.0.25</groovyVersion>
     <unirestVersion>3.14.2</unirestVersion>
@@ -217,7 +217,7 @@
       </dependency>
 
       <dependency>
-        <groupId>org.commonjava.maven.atlas</groupId>
+        <groupId>org.commonjava.atlas</groupId>
         <artifactId>atlas-identities</artifactId>
         <version>${atlasVersion}</version>
       </dependency>
@@ -245,6 +245,18 @@
           <exclusion>
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.commonjava.util</groupId>
+            <artifactId>o11yphant-trace-core</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.commonjava.util</groupId>
+            <artifactId>o11yphant-trace-helper-jhttpc</artifactId>
+          </exclusion>
+          <exclusion>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>*</artifactId>
           </exclusion>
         </exclusions>
       </dependency>
@@ -391,6 +403,12 @@
         <groupId>com.jayway.jsonpath</groupId>
         <artifactId>json-path</artifactId>
         <version>${jsonPathVersion}</version>
+      </dependency>
+      <!-- Manage the version of json-smart from json-path to avoid CVE -->
+      <dependency>
+         <groupId>net.minidev</groupId>
+         <artifactId>json-smart</artifactId>
+         <version>2.5.2</version>
       </dependency>
 
       <dependency>
@@ -727,7 +745,7 @@
               <goal>check</goal>
             </goals>
             <configuration>
-              <ignoreDependencies>true</ignoreDependencies>
+             <ignoreDependencies>true</ignoreDependencies>
               <signature>
                 <groupId>org.codehaus.mojo.signature</groupId>
                 <artifactId>java18</artifactId>
