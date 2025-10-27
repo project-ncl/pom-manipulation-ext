@@ -396,7 +396,7 @@
       <dependency>
         <groupId>org.eclipse.jetty</groupId>
         <artifactId>jetty-server</artifactId>
-        <version>9.4.51.v20230217</version>
+        <version>12.1.3</version>
       </dependency>
 
       <!-- Attempting to upgrade this causes performance issues on Appveyor CI -->
