@@ -301,13 +301,17 @@
         <version>3.4.2</version>
       </dependency>
 
+      <!-- Use the same versions of guava and guice as Maven : https://maven.apache.org/ref/3.9.11/maven-core/dependencies.html -->
       <dependency>
         <groupId>com.google.inject</groupId>
         <artifactId>guice</artifactId>
-        <version>4.0</version>
-        <classifier>no_aop</classifier>
+        <version>5.1.0</version>
       </dependency>
-
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>33.4.8-jre</version>
+      </dependency>
       <dependency>
         <groupId>info.picocli</groupId>
         <artifactId>picocli</artifactId>

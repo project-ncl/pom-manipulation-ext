@@ -296,7 +296,7 @@ public class CliTest
         String cliOutput = systemOutRule.getLogWithNormalizedLineSeparator().replaceAll( "org.commonjava.maven.ext:pom-manipulation-.*\\n", "" );
         System.out.println(cliOutput);
 
-        assertTrue( cliOutput.contains( "Found 84" ) );
+        assertTrue( cliOutput.contains( "Found 85" ) );
         assertTrue( cliOutput.matches( "(?s).*"
                 + "ch.qos.logback:logback-classic:1.[.\\d+]+\\s+                                   jar                                     compile             \n"
                 + "ch.qos.logback:logback-core:1.[.\\d+]+\\s+                                      jar                                     compile             \n"
@@ -305,7 +305,8 @@ public class CliTest
                 + "com.fasterxml.jackson.core:jackson-databind:2.[.\\w+|-]+\\s+                    jar                                     compile             \n"
                 + "com.github.olivergondza:maven-jdk-tools-wrapper:0.1                             jar                                     compile             \n"
                 + "com.github.stefanbirkner:system-rules:1.[.\\d+]+\\s+                            jar                                     test                \n"
-                + "com.google.inject:guice:4.0                                                     jar                 no_aop              compile             \n"
+                + "com.google.guava:guava:33.4.8-jre                                               jar                                     compile             \n"
+                + "com.google.inject:guice:5.1.0                                                   jar                                     compile             \n"
                 + "com.jayway.jsonpath:json-path:2.[.\\d+]+\\s+                                    jar                                     compile             \n"
                 + "com.konghq:unirest-java:3.[.\\d+]+\\s+                                          jar                                     compile             \n"
                 + "com.konghq:unirest-objectmapper-jackson:3.[.\\d+]+\\s+                          jar                                     compile             \n"
