@@ -615,7 +615,7 @@
         <plugin>
           <groupId>com.soebes.maven.plugins</groupId>
           <artifactId>iterator-maven-plugin</artifactId>
-          <version>0.3</version>
+          <version>0.5.1</version>
         </plugin>
         <plugin>
           <groupId>com.mycila</groupId>
