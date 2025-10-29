@@ -15,21 +15,21 @@
  */
 package org.commonjava.maven.ext.common.util;
 
-import lombok.experimental.UtilityClass;
+import java.util.List;
+import java.util.Properties;
+
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.common.ManipulationUncheckedException;
 import org.commonjava.maven.ext.common.model.Project;
 import org.commonjava.maven.ext.common.session.MavenSessionHandler;
 
-import java.util.List;
-import java.util.Properties;
+import lombok.experimental.UtilityClass;
 
 /**
  * Commonly used manipulations / extractions from project / user (CLI) properties.
  */
 @UtilityClass
-public final class PropertyResolver
-{
+public final class PropertyResolver {
     /**
      * This recursively checks the supplied value and recursively resolves it if its a property.
      *
@@ -39,16 +39,15 @@ public final class PropertyResolver
      * @return the version string
      * @throws ManipulationException if an error occurs
      */
-    public static String resolveInheritedProperties( MavenSessionHandler session, Project start, String value ) throws ManipulationException
-    {
-        return resolveProperties( session, start.getInheritedList(), value );
+    public static String resolveInheritedProperties(MavenSessionHandler session, Project start, String value)
+            throws ManipulationException {
+        return resolveProperties(session, start.getInheritedList(), value);
     }
 
-    private static Properties searchProfiles( MavenSessionHandler session, Project p )
-    {
+    private static Properties searchProfiles(MavenSessionHandler session, Project p) {
         final Properties result = new Properties();
 
-        ProfileUtils.getProfiles( session, p.getModel() ).forEach( pr -> result.putAll( pr.getProperties() ) );
+        ProfileUtils.getProfiles(session, p.getModel()).forEach(pr -> result.putAll(pr.getProperties()));
 
         return result;
     }
@@ -62,15 +61,11 @@ public final class PropertyResolver
      * @param value value to check
      * @return the version string
      */
-    public static String resolvePropertiesUnchecked( MavenSessionHandler session, List<Project> projects, String value )
-    {
-        try
-        {
-            return resolveProperties( session, projects, value );
-        }
-        catch ( ManipulationException e )
-        {
-            throw new ManipulationUncheckedException( e );
+    public static String resolvePropertiesUnchecked(MavenSessionHandler session, List<Project> projects, String value) {
+        try {
+            return resolveProperties(session, projects, value);
+        } catch (ManipulationException e) {
+            throw new ManipulationUncheckedException(e);
         }
     }
 
@@ -83,18 +78,17 @@ public final class PropertyResolver
      * @return the version string
      * @throws ManipulationException if an error occurs
      */
-    public static String resolveProperties( MavenSessionHandler session, List<Project> projects, String value ) throws ManipulationException
-    {
+    public static String resolveProperties(MavenSessionHandler session, List<Project> projects, String value)
+            throws ManipulationException {
         final Properties amalgamated = new Properties();
 
         // The projects passed in are in a crafted order (determined by Project::getInherited or getReverseInherited)
         // so therefore there is no need to save the execution root.
-        for ( Project p : projects )
-        {
-            amalgamated.putAll( p.getModel().getProperties() );
-            amalgamated.putAll( searchProfiles( session, p ) );
+        for (Project p : projects) {
+            amalgamated.putAll(p.getModel().getProperties());
+            amalgamated.putAll(searchProfiles(session, p));
         }
-        PropertyInterpolator pi = new PropertyInterpolator( amalgamated, projects.get( 0 ) );
-        return pi.interp( value );
+        PropertyInterpolator pi = new PropertyInterpolator(amalgamated, projects.get(0));
+        return pi.interp(value);
     }
 }

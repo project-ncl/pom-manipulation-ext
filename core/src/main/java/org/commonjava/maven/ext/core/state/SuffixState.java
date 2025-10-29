@@ -15,54 +15,51 @@
  */
 package org.commonjava.maven.ext.core.state;
 
+import java.util.Properties;
+
 import org.apache.commons.lang3.StringUtils;
 import org.commonjava.maven.ext.annotation.ConfigValue;
 import org.commonjava.maven.ext.core.impl.SuffixManipulator;
-
-import java.util.Properties;
 
 /**
  * Captures configuration relating to suffix stripping from the POM version. Used by {@link SuffixManipulator}.
  *
  */
 public class SuffixState
-    implements State
-{
+        implements State {
     private static final String DEFAULT_SUFFIX_STRIP = "(.*)(.jbossorg-\\d+)$";
 
     /**
      * Suffix to enable and configure this modder.
      *
      * This will activate this modder with the preconfigured default of <code>(.*)(.jbossorg-\d+)$</code>
+     * 
      * <pre>
      * <code>-DversionSuffixStrip</code>
      * </pre>
      *
      * This will activate this modder with the specified suffix
+     * 
      * <pre>
      * <code>-DversionSuffixStrip=jbossorg-\d+</code>
      * </pre>
      */
-    @ConfigValue( docIndex = "project-version-manip.html#suffix-stripping")
+    @ConfigValue(docIndex = "project-version-manip.html#suffix-stripping")
     static final String SUFFIX_STRIP_PROPERTY = "versionSuffixStrip";
 
     private String suffixStrip;
 
-    public SuffixState( final Properties userProps )
-    {
-        initialise( userProps );
+    public SuffixState(final Properties userProps) {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps )
-    {
-        suffixStrip = userProps.getProperty( SUFFIX_STRIP_PROPERTY );
+    public void initialise(Properties userProps) {
+        suffixStrip = userProps.getProperty(SUFFIX_STRIP_PROPERTY);
 
-        if ( StringUtils.isEmpty( suffixStrip ) && userProps.containsKey( SUFFIX_STRIP_PROPERTY ) )
-        {
+        if (StringUtils.isEmpty(suffixStrip) && userProps.containsKey(SUFFIX_STRIP_PROPERTY)) {
             suffixStrip = DEFAULT_SUFFIX_STRIP;
         }
-        if ( "NONE".equals( suffixStrip ) )
-        {
+        if ("NONE".equals(suffixStrip)) {
             suffixStrip = "";
         }
     }
@@ -73,13 +70,11 @@ public class SuffixState
      * @see State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return suffixStrip != null && !suffixStrip.isEmpty();
     }
 
-    public String getSuffixStrip()
-    {
+    public String getSuffixStrip() {
         return suffixStrip;
     }
 }

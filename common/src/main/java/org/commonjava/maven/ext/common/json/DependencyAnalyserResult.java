@@ -15,24 +15,25 @@
  */
 package org.commonjava.maven.ext.common.json;
 
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
+import org.goots.hiderdoclet.doclet.JavadocExclude;
+import org.jboss.da.model.rest.GAV;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
-import org.goots.hiderdoclet.doclet.JavadocExclude;
-import org.jboss.da.model.rest.GAV;
 
 @JavadocExclude
 @EqualsAndHashCode(exclude = "projectVersionRef")
 @NoArgsConstructor
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DependencyAnalyserResult
-{
+public class DependencyAnalyserResult {
     @NonNull
     @JsonUnwrapped
     private GAV gav;

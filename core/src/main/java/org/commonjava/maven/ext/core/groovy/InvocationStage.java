@@ -20,28 +20,27 @@ import lombok.Getter;
 /**
  * Denotes when the groovy script should be run in relation to the other manipulators.
  */
-public enum InvocationStage
-{
+public enum InvocationStage {
     /**
      * Run before any projects are parsed, i.e., before any manipulators.
      *
      * @since 4.6
      */
-    PREPARSE( 0 ),
+    PREPARSE(0),
     /**
      * Run before any other manipulators.
      */
-    FIRST( 1 ),
+    FIRST(1),
     /**
      * Run after any other manipulators.
      */
-    LAST( 99 ),
+    LAST(99),
     /**
      * Run during all stages.
      *
      * @since 4.6
      */
-    ALL( Integer.MAX_VALUE );
+    ALL(Integer.MAX_VALUE);
 
     /**
      * Gets the stage value.
@@ -51,8 +50,7 @@ public enum InvocationStage
     @Getter
     private final int stageValue;
 
-    InvocationStage( int stageValue )
-    {
+    InvocationStage(int stageValue) {
         this.stageValue = stageValue;
     }
 
@@ -63,14 +61,11 @@ public enum InvocationStage
      * @return the {@code InvocationStage} representing {@code stageValue}
      * @since 4.6
      */
-    public static InvocationStage valueOf( int stageValue )
-    {
+    public static InvocationStage valueOf(int stageValue) {
         InvocationStage result = null;
 
-        for ( InvocationStage stage : values() )
-        {
-            if ( stage.getStageValue() == stageValue )
-            {
+        for (InvocationStage stage : values()) {
+            if (stage.getStageValue() == stageValue) {
                 result = stage;
                 break;
             }

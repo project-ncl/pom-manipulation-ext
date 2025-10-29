@@ -24,9 +24,8 @@ import java.lang.annotation.Target;
  * Annotation to denote configuration options.
  */
 @Retention(RetentionPolicy.SOURCE)
-@Target({ElementType.FIELD, ElementType.TYPE })
-public @interface ConfigValue
-{
+@Target({ ElementType.FIELD, ElementType.TYPE })
+public @interface ConfigValue {
     /**
      * @return String denoting the location in the online documentation used for index generation.
      */

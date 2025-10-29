@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright (C) 2012 Red Hat, Inc.
@@ -89,10 +89,10 @@
         <executions>
           <execution>
             <id>jacoco-merge</id>
-            <phase>verify</phase>
             <goals>
               <goal>merge</goal>
             </goals>
+            <phase>verify</phase>
             <configuration>
               <destFile>${project.build.directory}/jacoco.exec</destFile>
               <fileSets>
@@ -107,10 +107,10 @@
           </execution>
           <execution>
             <id>jacoco-report-aggregate</id>
-            <phase>verify</phase>
             <goals>
               <goal>report-aggregate</goal>
             </goals>
+            <phase>verify</phase>
           </execution>
         </executions>
       </plugin>

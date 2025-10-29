@@ -15,7 +15,15 @@
  */
 package org.commonjava.maven.ext.core.fixture;
 
-import lombok.Getter;
+import java.io.File;
+import java.io.Reader;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Collections;
+import java.util.Properties;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
@@ -39,30 +47,24 @@ import org.commonjava.maven.ext.core.ManipulationManager;
 import org.commonjava.maven.ext.core.ManipulationSession;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.Reader;
-import java.lang.reflect.Method;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Collections;
-import java.util.Properties;
+import lombok.Getter;
 
 /**
  * Common test utilities.
  */
-public final class TestUtils
-{
+public final class TestUtils {
     /**
      * The test root directory.
      */
-    public static final Path ROOT_DIRECTORY = resolveFileResource( "", "" ).getParentFile()
-            .getParentFile().getParentFile().toPath();
+    public static final Path ROOT_DIRECTORY = resolveFileResource("", "").getParentFile()
+            .getParentFile()
+            .getParentFile()
+            .toPath();
 
     /**
      * The integration test directory.
      */
-    public static final Path INTEGRATION_TEST = ROOT_DIRECTORY.resolve( "integration-test" );
+    public static final Path INTEGRATION_TEST = ROOT_DIRECTORY.resolve("integration-test");
 
     /**
      * The URL for maven central.
@@ -77,12 +79,10 @@ public final class TestUtils
      * @return the maven model
      * @throws Exception if an error occurs while reading the resource
      */
-    public static Model resolveModelResource( final String resourceBase, final String resourceName )
-        throws Exception
-    {
-        try ( Reader reader = Files.newBufferedReader( resolveFileResource( resourceBase, resourceName ).toPath() ) )
-        {
-            return new MavenXpp3Reader().read( reader );
+    public static Model resolveModelResource(final String resourceBase, final String resourceName)
+            throws Exception {
+        try (Reader reader = Files.newBufferedReader(resolveFileResource(resourceBase, resourceName).toPath())) {
+            return new MavenXpp3Reader().read(reader);
         }
     }
 
@@ -93,19 +93,19 @@ public final class TestUtils
      * @param resourceName the resource name
      * @return the file
      */
-    public static File resolveFileResource( final String resourceBase, final String resourceName )
-    {
-        final String separator = StringUtils.isNotEmpty( resourceBase ) ? "/" : "";
+    public static File resolveFileResource(final String resourceBase, final String resourceName) {
+        final String separator = StringUtils.isNotEmpty(resourceBase) ? "/" : "";
         final URL resource = Thread.currentThread()
                 .getContextClassLoader()
-                .getResource( resourceBase + separator + resourceName );
+                .getResource(resourceBase + separator + resourceName);
 
-        if ( resource == null )
-        {
-            throw new ManipulationUncheckedException( "Unable to locate resource for {}{}", resourceBase,
-                    resourceName );
+        if (resource == null) {
+            throw new ManipulationUncheckedException(
+                    "Unable to locate resource for {}{}",
+                    resourceBase,
+                    resourceName);
         }
-        return new File( resource.getPath() );
+        return new File(resource.getPath());
     }
 
     /**
@@ -113,12 +113,11 @@ public final class TestUtils
      *
      * @return the dummy model
      */
-    public static Model getDummyModel()
-    {
+    public static Model getDummyModel() {
         Model result = new Model();
-        result.setGroupId( "org.commonjava.maven.ext" );
-        result.setArtifactId( "dummy-model" );
-        result.setVersion( "1.0.0-SNAPSHOT" );
+        result.setGroupId("org.commonjava.maven.ext");
+        result.setArtifactId("dummy-model");
+        result.setVersion("1.0.0-SNAPSHOT");
         return result;
     }
 
@@ -131,9 +130,8 @@ public final class TestUtils
      * @return the manipulation session
      * @throws ManipulationException if an error occurs while creating the session
      */
-    public static ManipulationSession createSession( Properties p, File pom ) throws ManipulationException
-    {
-        return createSessionAndManager( p, pom ).getSession();
+    public static ManipulationSession createSession(Properties p, File pom) throws ManipulationException {
+        return createSessionAndManager(p, pom).getSession();
     }
 
     // Public API for manipulator-examples-project
@@ -144,9 +142,8 @@ public final class TestUtils
      * @return the manipulation session
      * @throws ManipulationException if an error occurs while creating the session
      */
-    public static ManipulationSession createSession( Properties p ) throws ManipulationException
-    {
-        return createSessionAndManager( p, null ).getSession();
+    public static ManipulationSession createSession(Properties p) throws ManipulationException {
+        return createSessionAndManager(p, null).getSession();
     }
 
     // Public API for manipulator-examples-project
@@ -157,10 +154,9 @@ public final class TestUtils
      * @return the manipulation session/manager
      * @throws ManipulationException if an error occurs while creating the session/manager
      */
-    @SuppressWarnings( "deprecation" )
-    public static SMContainer createSessionAndManager( Properties  p ) throws ManipulationException
-    {
-        return createSessionAndManager( p, null );
+    @SuppressWarnings("deprecation")
+    public static SMContainer createSessionAndManager(Properties p) throws ManipulationException {
+        return createSessionAndManager(p, null);
     }
 
     // Public API for manipulator-examples-project
@@ -172,52 +168,52 @@ public final class TestUtils
      * @return the manipulation session/manager
      * @throws ManipulationException if an error occurs while creating the session/manager
      */
-    @SuppressWarnings( "deprecation" )
-    public static SMContainer createSessionAndManager( Properties p, File pom ) throws ManipulationException
-    {
+    @SuppressWarnings("deprecation")
+    public static SMContainer createSessionAndManager(Properties p, File pom) throws ManipulationException {
         ManipulationSession session;
 
-        final ArtifactRepository ar =
-                        new MavenArtifactRepository( "test", MVN_CENTRAL, new DefaultRepositoryLayout(),
-                                                     new ArtifactRepositoryPolicy(), new ArtifactRepositoryPolicy() );
+        final ArtifactRepository ar = new MavenArtifactRepository(
+                "test",
+                MVN_CENTRAL,
+                new DefaultRepositoryLayout(),
+                new ArtifactRepositoryPolicy(),
+                new ArtifactRepositoryPolicy());
 
         final MavenExecutionRequest req = new DefaultMavenExecutionRequest()
-                .setSystemProperties( System.getProperties() ).setUserProperties( p )
-                .setRemoteRepositories( Collections.singletonList( ar ) );
+                .setSystemProperties(System.getProperties())
+                .setUserProperties(p)
+                .setRemoteRepositories(Collections.singletonList(ar));
         final PlexusContainer container;
         final ManipulationManager manipulationManager;
         final DefaultContainerConfiguration config = new DefaultContainerConfiguration();
 
-        config.setClassPathScanning( PlexusConstants.SCANNING_ON );
-        config.setComponentVisibility( PlexusConstants.GLOBAL_VISIBILITY );
-        config.setName( "PME" );
+        config.setClassPathScanning(PlexusConstants.SCANNING_ON);
+        config.setComponentVisibility(PlexusConstants.GLOBAL_VISIBILITY);
+        config.setName("PME");
 
-        LoggerFactory.getLogger( TestUtils.class )
-                .info( "Creating session with Maven Central using configuration PME" );
+        LoggerFactory.getLogger(TestUtils.class)
+                .info("Creating session with Maven Central using configuration PME");
 
-        try
-        {
-            container = new DefaultPlexusContainer( config );
-            manipulationManager = container.lookup( ManipulationManager.class );
-            session = container.lookup( ManipulationSession.class );
+        try {
+            container = new DefaultPlexusContainer(config);
+            manipulationManager = container.lookup(ManipulationManager.class);
+            session = container.lookup(ManipulationSession.class);
+        } catch (PlexusContainerException | ComponentLookupException e) {
+            throw new ManipulationException("Unable to create DefaultPlexusContainer", e);
         }
-        catch ( PlexusContainerException | ComponentLookupException e )
-        {
-            throw new ManipulationException( "Unable to create DefaultPlexusContainer", e );
-        }
-        final MavenSession mavenSession = new MavenSession( container, null, req, new DefaultMavenExecutionResult() );
+        final MavenSession mavenSession = new MavenSession(container, null, req, new DefaultMavenExecutionResult());
 
-        mavenSession.getRequest().setPom( pom );
+        mavenSession.getRequest().setPom(pom);
 
-        session.setMavenSession( mavenSession );
-        manipulationManager.init( session );
+        session.setMavenSession(mavenSession);
+        manipulationManager.init(session);
 
-        return new SMContainer( session,  manipulationManager );
+        return new SMContainer(session, manipulationManager);
     }
 
     /**
-     * Executes a method on an object instance.  The name and parameters of
-     * the method are specified.  The method will be executed and the value
+     * Executes a method on an object instance. The name and parameters of
+     * the method are specified. The method will be executed and the value
      * of it returned, even if the method would have private or protected access.
      *
      * @param instance the object the underlying method is invoked from
@@ -226,33 +222,28 @@ public final class TestUtils
      * @param params the arguments used for the method call
      * @throws Exception if an error occurs while executing the method
      */
-    public static Object executeMethod( Object instance, String name, Class<?>[] types, Object[] params )
-        throws Exception
-    {
+    public static Object executeMethod(Object instance, String name, Class<?>[] types, Object[] params)
+            throws Exception {
         Class<?> c = instance.getClass();
 
         Method m;
-        try
-        {
-            m = c.getDeclaredMethod( name, types );
-        }
-        catch ( NoSuchMethodException e)
-        {
+        try {
+            m = c.getDeclaredMethod(name, types);
+        } catch (NoSuchMethodException e) {
             c = c.getSuperclass();
-            m = c.getDeclaredMethod( name, types );
+            m = c.getDeclaredMethod(name, types);
         }
 
-        m.setAccessible( true );
+        m.setAccessible(true);
 
-        return m.invoke( instance, params );
+        return m.invoke(instance, params);
     }
 
     /**
      * Container object to allow a {@link ManipulationSession} to be created but also return the
      * {@link ManipulationManager}.
      */
-    public static class SMContainer
-    {
+    public static class SMContainer {
         /**
          * Gets the session.
          *
@@ -269,8 +260,7 @@ public final class TestUtils
         @Getter
         private final ManipulationManager manager;
 
-        private SMContainer( ManipulationSession session, ManipulationManager manager )
-        {
+        private SMContainer(ManipulationSession session, ManipulationManager manager) {
             this.session = session;
             this.manager = manager;
         }

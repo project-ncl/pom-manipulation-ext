@@ -15,55 +15,50 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import org.junit.Test;
-
-import java.util.Properties;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class VersioningStateTest
-{
+import java.util.Properties;
+
+import org.junit.Test;
+
+public class VersioningStateTest {
 
     @Test
-    public void disabledByDefault()
-    {
-        final VersioningState state = new VersioningState( new Properties() );
+    public void disabledByDefault() {
+        final VersioningState state = new VersioningState(new Properties());
 
-        assertThat( state.isEnabled(), equalTo( false ) );
+        assertThat(state.isEnabled(), equalTo(false));
     }
 
     @Test
-    public void enableViaStaticSuffix()
-    {
+    public void enableViaStaticSuffix() {
         final Properties p = new Properties();
-        p.setProperty( VersioningState.VERSION_SUFFIX_SYSPROP, "rebuild-1" );
+        p.setProperty(VersioningState.VERSION_SUFFIX_SYSPROP, "rebuild-1");
 
-        final VersioningState state = new VersioningState( p );
+        final VersioningState state = new VersioningState(p);
 
-        assertThat( state.isEnabled(), equalTo( true ) );
+        assertThat(state.isEnabled(), equalTo(true));
     }
 
     @Test
-    public void enableViaIncrementalSuffix()
-    {
+    public void enableViaIncrementalSuffix() {
         final Properties p = new Properties();
-        p.setProperty( VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "rebuild-1" );
+        p.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "rebuild-1");
 
-        final VersioningState state = new VersioningState( p );
+        final VersioningState state = new VersioningState(p);
 
-        assertThat( state.isEnabled(), equalTo( true ) );
+        assertThat(state.isEnabled(), equalTo(true));
     }
 
     @Test
-    public void versionModificationEnabled()
-    {
+    public void versionModificationEnabled() {
         final Properties p = new Properties();
-        p.setProperty( VersioningState.VERSION_MODIFICATION, "galse" );
-        p.setProperty( VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "rebuild-1" );
+        p.setProperty(VersioningState.VERSION_MODIFICATION, "galse");
+        p.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "rebuild-1");
 
-        final VersioningState state = new VersioningState( p );
+        final VersioningState state = new VersioningState(p);
 
-        assertThat( state.isEnabled(), equalTo( false ) );
+        assertThat(state.isEnabled(), equalTo(false));
     }
 }

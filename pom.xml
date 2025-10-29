@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright (C) 2012 Red Hat, Inc.
@@ -31,12 +31,10 @@
   <packaging>pom</packaging>
 
   <name>POM Manipulation Extension for Maven</name>
+
+  <description>Manipulation Tool (available as library, extension and CLI) for Apache Maven that allows pre-processing of Maven pom.xml's.</description>
   <url>https://github.com/project-ncl/pom-manipulation-ext</url>
   <inceptionYear>2012</inceptionYear>
-
-  <description>
-    Manipulation Tool (available as library, extension and CLI) for Apache Maven that allows pre-processing of Maven pom.xml's.
-  </description>
 
   <licenses>
     <license>
@@ -53,11 +51,22 @@
     </developer>
   </developers>
 
+  <modules>
+    <module>annotation</module>
+    <module>common</module>
+    <module>io</module>
+    <module>core</module>
+    <module>cli</module>
+    <module>ext</module>
+    <module>integration-test</module>
+    <module>coverage-reporting</module>
+  </modules>
+
   <scm>
     <connection>scm:git:https://github.com/project-ncl/pom-manipulation-ext.git</connection>
     <developerConnection>scm:git:git@github.com:project-ncl/pom-manipulation-ext.git</developerConnection>
-    <url>https://github.com/project-ncl/pom-manipulation-ext</url>
     <tag>pom-manipulation-parent-4.22</tag>
+    <url>https://github.com/project-ncl/pom-manipulation-ext</url>
   </scm>
 
   <properties>
@@ -86,10 +95,9 @@
     <jacksonVersion>2.15.0</jacksonVersion>
     <jacksonJavadocVersion>2.14</jacksonJavadocVersion>
 
-    <argLine />
-    <surefireSecurityManager />
+    <argLine/>
+    <surefireSecurityManager/>
   </properties>
-
 
   <dependencyManagement>
     <dependencies>
@@ -111,8 +119,8 @@
       <dependency>
         <groupId>org.commonjava.maven.ext</groupId>
         <artifactId>pom-manipulation-cli</artifactId>
-        <classifier>minimal</classifier>
         <version>4.23-SNAPSHOT</version>
+        <classifier>minimal</classifier>
       </dependency>
       <dependency>
         <groupId>org.commonjava.maven.ext</groupId>
@@ -199,8 +207,8 @@
         <groupId>org.apache.maven</groupId>
         <artifactId>apache-maven</artifactId>
         <version>${mavenVersion}</version>
-        <type>zip</type>
         <classifier>bin</classifier>
+        <type>zip</type>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -410,9 +418,9 @@
       </dependency>
       <!-- Manage the version of json-smart from json-path to avoid CVE -->
       <dependency>
-         <groupId>net.minidev</groupId>
-         <artifactId>json-smart</artifactId>
-         <version>2.5.2</version>
+        <groupId>net.minidev</groupId>
+        <artifactId>json-smart</artifactId>
+        <version>2.5.2</version>
       </dependency>
 
       <dependency>
@@ -516,7 +524,7 @@
       <dependency>
         <groupId>org.jboss.byteman</groupId>
         <artifactId>byteman-bmunit</artifactId>
-        <version>4.0.19</version>
+        <version>4.0.26</version>
         <scope>test</scope>
       </dependency>
       <dependency>
@@ -549,10 +557,10 @@
           <executions>
             <execution>
               <id>make-assembly</id>
-              <phase>prepare-package</phase>
               <goals>
                 <goal>single</goal>
               </goals>
+              <phase>prepare-package</phase>
             </execution>
           </executions>
         </plugin>
@@ -602,13 +610,13 @@
             </additionalClasspathElements>
             <!-- ensure we don't inherit a byteman jar from any env settings -->
             <environmentVariables>
-              <BYTEMAN_HOME />
+              <BYTEMAN_HOME/>
             </environmentVariables>
             <systemProperties>
-                <property>
-                    <name>org.jboss.byteman.home</name>
-                  <value />
-                </property>
+              <property>
+                <name>org.jboss.byteman.home</name>
+                <value/>
+              </property>
             </systemProperties>
           </configuration>
         </plugin>
@@ -660,10 +668,10 @@
         <executions>
           <execution>
             <id>delombok</id>
-            <phase>process-sources</phase>
             <goals>
               <goal>delombok</goal>
             </goals>
+            <phase>process-sources</phase>
             <configuration>
               <outputDirectory>${project.build.directory}/javadoc-generated-sources</outputDirectory>
               <addOutputDirectory>false</addOutputDirectory>
@@ -704,25 +712,25 @@
               </docletArtifact>
               <links>
                 <!-- TODO: Doesn't seem to work in JDK 11 -->
-<!--                <link>https://www.javadoc.io/doc/org.commonjava.maven.ext/pom-manipulation-common/${project.version}</link>-->
-<!--                <link>https://www.javadoc.io/doc/org.commonjava.maven.ext/pom-manipulation-io/${project.version}</link>-->
-<!--                <link>https://www.javadoc.io/doc/org.commonjava.maven.ext/pom-manipulation-core/${project.version}</link>-->
-<!--                <link>https://www.javadoc.io/doc/org.commonjava.maven.ext/pom-manipulation-cli/${project.version}</link>-->
-<!--                <link>https://www.javadoc.io/doc/org.commonjava.maven.ext/pom-manipulation-ext/${project.version}</link>-->
-<!--                <link>https://www.javadoc.io/doc/org.commonjava.maven.ext/pom-manipulation-integration-test/${project.version}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/org.commonjava.maven.ext/pom-manipulation-common/${project.version}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/org.commonjava.maven.ext/pom-manipulation-io/${project.version}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/org.commonjava.maven.ext/pom-manipulation-core/${project.version}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/org.commonjava.maven.ext/pom-manipulation-cli/${project.version}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/org.commonjava.maven.ext/pom-manipulation-ext/${project.version}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/org.commonjava.maven.ext/pom-manipulation-integration-test/${project.version}</link>-->
 
                 <!-- Causes build failures until https://github.com/maxcellent/javadoc.io/issues/222 is fixed -->
-<!--                <link>https://javadoc.io/doc/org.commonjava.maven.atlas/atlas-identities/${atlasVersion}</link>-->
-<!--                <link>https://javadoc.io/doc/org.commonjava.maven.galley/galley-api/${galleyVersion}</link>-->
-<!--                <link>https://javadoc.io/doc/org.commonjava.maven.galley/galley-maven/${galleyVersion}</link>-->
+                <!--                <link>https://javadoc.io/doc/org.commonjava.maven.atlas/atlas-identities/${atlasVersion}</link>-->
+                <!--                <link>https://javadoc.io/doc/org.commonjava.maven.galley/galley-api/${galleyVersion}</link>-->
+                <!--                <link>https://javadoc.io/doc/org.commonjava.maven.galley/galley-maven/${galleyVersion}</link>-->
 
                 <link>https://maven.apache.org/ref/${mavenVersion}/maven-model/apidocs</link>
                 <link>https://maven.apache.org/ref/${mavenVersion}/maven-core/apidocs</link>
                 <link>https://maven.apache.org/ref/${mavenVersion}/maven-artifact/apidocs</link>
 
-<!--                <link>https://www.javadoc.io/doc/org.slf4j/slf4j-api/${slf4jVersion}</link>-->
-<!--                <link>https://www.javadoc.io/doc/com.jayway.jsonpath/json-path/${jsonPathVersion}</link>-->
-<!--                <link>https://www.javadoc.io/doc/org.codehaus.groovy/groovy-all/${groovyVersion}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/org.slf4j/slf4j-api/${slf4jVersion}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/com.jayway.jsonpath/json-path/${jsonPathVersion}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/org.codehaus.groovy/groovy-all/${groovyVersion}</link>-->
                 <link>https://fasterxml.github.io/jackson-core/javadoc/${jacksonJavadocVersion}</link>
               </links>
               <additionalJOptions>
@@ -742,14 +750,14 @@
         <executions>
           <execution>
             <id>check-java-api</id>
-            <!-- It needs to run after class compilation. No need to include test classes -->
-            <!-- as it does not support it: https://github.com/mojohaus/animal-sniffer/issues/5 -->
-            <phase>process-classes</phase>
             <goals>
               <goal>check</goal>
             </goals>
+            <!-- It needs to run after class compilation. No need to include test classes -->
+            <!-- as it does not support it: https://github.com/mojohaus/animal-sniffer/issues/5 -->
+            <phase>process-classes</phase>
             <configuration>
-             <ignoreDependencies>true</ignoreDependencies>
+              <ignoreDependencies>true</ignoreDependencies>
               <signature>
                 <groupId>org.codehaus.mojo.signature</groupId>
                 <artifactId>java18</artifactId>
@@ -780,6 +788,44 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <!-- Currently the CI uses JDK11 so can't upgrade this to 3.0.0 -->
+        <version>2.46.1</version>
+        <configuration>
+          <pom>
+            <sortPom>
+              <expandEmptyElements>false</expandEmptyElements>
+            </sortPom>
+          </pom>
+          <java>
+            <removeUnusedImports/>
+            <importOrder>
+              <file>java-import-order.txt</file>
+            </importOrder>
+            <eclipse>
+              <file>java-formatter.xml</file>
+            </eclipse>
+            <lineEndings>UNIX</lineEndings>
+          </java>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.jboss.pnc</groupId>
+            <artifactId>ide-config</artifactId>
+            <version>1.1.0</version>
+          </dependency>
+        </dependencies>
+        <executions>
+          <execution>
+            <goals>
+              <goal>apply</goal>
+            </goals>
+            <phase>compile</phase>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 
@@ -795,18 +841,6 @@
       </plugin>
     </plugins>
   </reporting>
-
-  <modules>
-    <module>annotation</module>
-    <module>common</module>
-    <module>io</module>
-    <module>core</module>
-    <module>cli</module>
-    <module>ext</module>
-    <module>integration-test</module>
-    <module>coverage-reporting</module>
-  </modules>
-
 
   <profiles>
     <profile>

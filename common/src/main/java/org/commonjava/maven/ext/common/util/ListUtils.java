@@ -19,7 +19,8 @@ import java.util.AbstractList;
 import java.util.List;
 
 /**
- * From Apache Commons Collections. Avoids a dependency (which means shading it in) on the entire collections for a single
+ * From Apache Commons Collections. Avoids a dependency (which means shading it in) on the entire collections for a
+ * single
  * method.
  *
  * https://github.com/apache/commons-collections/blob/master/src/main/java/org/apache/commons/collections4/ListUtils.java
@@ -27,8 +28,7 @@ import java.util.List;
  * This was originally based upon http://www.vogella.com/tutorials/JavaAlgorithmsPartitionCollection/article.html and
  * background here http://www.baeldung.com/java-list-split
  */
-public final class ListUtils
-{
+public final class ListUtils {
     /**
      * Returns consecutive {@link List#subList(int, int) sublists} of a
      * list, each of the same size (the final list may be smaller). For example,
@@ -44,68 +44,59 @@ public final class ListUtils
      * Adapted from http://code.google.com/p/guava-libraries/
      *
      * @param <T> the element type
-     * @param list  the list to return consecutive sublists of
-     * @param size  the desired size of each sublist (the last may be smaller)
+     * @param list the list to return consecutive sublists of
+     * @param size the desired size of each sublist (the last may be smaller)
      * @return a list of consecutive sublists
      * @throws NullPointerException if list is null
      * @throws IllegalArgumentException if size is not strictly positive
      */
-    public static <T> List<List<T>> partition( final List<T> list, final int size )
-    {
-        if ( list == null )
-        {
-            throw new NullPointerException( "List must not be null" );
+    public static <T> List<List<T>> partition(final List<T> list, final int size) {
+        if (list == null) {
+            throw new NullPointerException("List must not be null");
         }
-        if ( size <= 0 )
-        {
-            throw new IllegalArgumentException( "Size must be greater than 0" );
+        if (size <= 0) {
+            throw new IllegalArgumentException("Size must be greater than 0");
         }
-        return new Partition<>( list, size );
+        return new Partition<>(list, size);
     }
 
     /**
      * Provides a partition view on a {@link List}.
      */
-    private static class Partition<T> extends AbstractList<List<T>>
-    {
+    private static class Partition<T> extends AbstractList<List<T>> {
         private final List<T> list;
 
         private final int size;
 
-        private Partition( final List<T> list, final int size )
-        {
+        private Partition(final List<T> list, final int size) {
             this.list = list;
             this.size = size;
         }
 
         @Override
-        public List<T> get( final int index )
-        {
+        public List<T> get(final int index) {
             final int listSize = size();
-            if ( index < 0 )
-            {
-                throw new IndexOutOfBoundsException( "Index " + index + " must not be negative" );
+            if (index < 0) {
+                throw new IndexOutOfBoundsException("Index " + index + " must not be negative");
             }
-            if ( index >= listSize )
-            {
-                throw new IndexOutOfBoundsException( "Index " + index + " must be less than size " +
-                                                                     listSize );
+            if (index >= listSize) {
+                throw new IndexOutOfBoundsException(
+                        "Index " + index + " must be less than size " +
+                                listSize);
             }
             final int start = index * size;
-            final int end = Math.min( start + size, list.size() );
-            return list.subList( start, end );
+            final int end = Math.min(start + size, list.size());
+            return list.subList(start, end);
         }
 
         @Override
-        public int size()
-        {
+        public int size() {
             // https://github.com/apache/commons-collections/commit/b88b065aa955d7a7d8f74c427b05d2243eda0779
             return (int) Math.ceil((double) list.size() / (double) size);
         }
 
         @Override
-        public boolean isEmpty()
-        {
+        public boolean isEmpty() {
             return list.isEmpty();
         }
     }

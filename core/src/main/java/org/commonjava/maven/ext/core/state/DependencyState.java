@@ -15,6 +15,14 @@
  */
 package org.commonjava.maven.ext.core.state;
 
+import static org.commonjava.maven.ext.core.util.PropertiesUtils.getPropertiesByPrefix;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+
 import org.apache.commons.lang3.StringUtils;
 import org.commonjava.atlas.maven.ident.ref.ArtifactRef;
 import org.commonjava.atlas.maven.ident.ref.ProjectRef;
@@ -25,23 +33,15 @@ import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.core.impl.DependencyManipulator;
 import org.commonjava.maven.ext.core.util.IdUtils;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-
-import static org.commonjava.maven.ext.core.util.PropertiesUtils.getPropertiesByPrefix;
-
 /**
  * Captures configuration relating to dependency alignment from the POMs. Used by {@link DependencyManipulator}.
  */
 public class DependencyState
-                implements State
-{
+        implements State {
     /**
      * The String that needs to be prepended a system property to make it a dependencyExclusion.
      * For example to exclude junit alignment for the GAV (org.groupId:artifactId)
+     * 
      * <pre>
      * <code>-DdependencyExclusion.junit:junit@org.groupId:artifactId</code>
      * </pre>
@@ -50,17 +50,18 @@ public class DependencyState
      */
     @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
-    @ConfigValue( docIndex = "dep-manip.html#exclusions-and-overrides", deprecated = true )
+    @ConfigValue(docIndex = "dep-manip.html#exclusions-and-overrides", deprecated = true)
     public static final String DEPENDENCY_EXCLUSION_PREFIX = "dependencyExclusion.";
 
     /**
      * Defines how dependencies are located.
      */
-    @ConfigValue( docIndex = "dep-manip.html#dependency-source")
+    @ConfigValue(docIndex = "dep-manip.html#dependency-source")
     public static final String DEPENDENCY_SOURCE = "dependencySource";
 
     /**
      * Merging precedence for dependency sources:
+     * 
      * <pre>
      * <code>BOM</code> Solely Remote POM i.e. BOM.
      * <code>REST</code> Solely restURL.
@@ -68,10 +69,10 @@ public class DependencyState
      * <code>BOMREST</code> Merges the information but takes the bom as precedence.
      * <code>NONE</code> No remote alignment.
      * </pre>
+     * 
      * Configured by the property <code>-DdependencySource=[REST|BOM|RESTBOM|BOMREST]</code>
      */
-    public enum DependencyPrecedence
-    {
+    public enum DependencyPrecedence {
         REST,
         BOM,
         RESTBOM,
@@ -79,10 +80,8 @@ public class DependencyState
         NONE;
 
         @Override
-        public String toString()
-        {
-            switch ( this )
-            {
+        public String toString() {
+            switch (this) {
                 case BOMREST:
                     return "BOM first, then REST";
                 case RESTBOM:
@@ -96,26 +95,29 @@ public class DependencyState
     /**
      * The String that needs to be prepended a system property to make it a dependencyOverride.
      * For example to exclude junit alignment for the GAV (org.groupId:artifactId)
+     * 
      * <pre>
      * <code>-DdependencyOverride.junit:junit@org.groupId:artifactId</code>
      * </pre>
      */
-    @ConfigValue( docIndex = "dep-manip.html#exclusions-and-overrides")
+    @ConfigValue(docIndex = "dep-manip.html#exclusions-and-overrides")
     public static final String DEPENDENCY_OVERRIDE_PREFIX = "dependencyOverride.";
 
     /**
      * The name of the property which contains the GAV of the remote pom from which to retrieve dependency management
      * information.
+     * 
      * <pre>
      * <code>-DdependencyManagement:org.foo:bar-dep-mgmt:1.0</code>
      * </pre>
      */
-    @ConfigValue( docIndex = "dep-manip.html#remote-pom")
+    @ConfigValue(docIndex = "dep-manip.html#remote-pom")
     public static final String DEPENDENCY_MANAGEMENT_POM_PROPERTY = "dependencyManagement";
 
     /**
      * The String that needs to be prepended a system property to make it an extra BOM.
      * For example, used to align only parts of a project to a different BOM
+     * 
      * <pre>
      * <code>-DdependencyManagement:org.foo:bar-dep-mgmt:1.0</code>
      * <code>-DdependencyManagement.xyzzy=org.foo:bar-dep-mgmt:2.0</code>
@@ -136,71 +138,64 @@ public class DependencyState
 
     private DependencyPrecedence precedence;
 
-    public DependencyState( final Properties userProps ) throws ManipulationException
-    {
-        initialise( userProps );
+    public DependencyState(final Properties userProps) throws ManipulationException {
+        initialise(userProps);
     }
 
     @Override
-    public void initialise(Properties userProps ) throws ManipulationException
-    {
-        remoteBOMdepMgmt = IdUtils.parseGAVs( userProps.getProperty( DEPENDENCY_MANAGEMENT_POM_PROPERTY ) );
+    public void initialise(Properties userProps) throws ManipulationException {
+        remoteBOMdepMgmt = IdUtils.parseGAVs(userProps.getProperty(DEPENDENCY_MANAGEMENT_POM_PROPERTY));
 
         extraBOMDepMgmts = new HashMap<>();
         extraBOMs = new HashMap<>();
 
-        for ( Entry<String, String> extra : getPropertiesByPrefix( userProps, EXTRA_BOM_PREFIX ).entrySet() )
-        {
-            extraBOMs.put( extra.getKey(), SimpleProjectVersionRef.parse( extra.getValue() ) );
+        for (Entry<String, String> extra : getPropertiesByPrefix(userProps, EXTRA_BOM_PREFIX).entrySet()) {
+            extraBOMs.put(extra.getKey(), SimpleProjectVersionRef.parse(extra.getValue()));
         }
 
-        dependencyOverrides = getPropertiesByPrefix( userProps, DEPENDENCY_EXCLUSION_PREFIX );
+        dependencyOverrides = getPropertiesByPrefix(userProps, DEPENDENCY_EXCLUSION_PREFIX);
 
-        final Map<String, String> oP = getPropertiesByPrefix( userProps, DEPENDENCY_OVERRIDE_PREFIX );
-        for ( final Entry<String, String> entry : oP.entrySet() )
-        {
+        final Map<String, String> oP = getPropertiesByPrefix(userProps, DEPENDENCY_OVERRIDE_PREFIX);
+        for (final Entry<String, String> entry : oP.entrySet()) {
             final String s = entry.getKey();
-            if ( dependencyOverrides.put( s, entry.getValue() ) != null )
-            {
-                throw new ManipulationException( "Property clash between dependencyOverride and dependencyExclusion for {}", s );
+            if (dependencyOverrides.put(s, entry.getValue()) != null) {
+                throw new ManipulationException(
+                        "Property clash between dependencyOverride and dependencyExclusion for {}",
+                        s);
             }
         }
-        String sourceValue = userProps.getProperty( DEPENDENCY_SOURCE,
-                                                            DependencyPrecedence.BOM.toString() ).toUpperCase();
-        if ( StringUtils.isEmpty(sourceValue))
-        {
+        String sourceValue = userProps.getProperty(
+                DEPENDENCY_SOURCE,
+                DependencyPrecedence.BOM.toString()).toUpperCase();
+        if (StringUtils.isEmpty(sourceValue)) {
             sourceValue = "NONE";
         }
-        switch ( DependencyPrecedence.valueOf( sourceValue ) )
-        {
-            case REST:
-            {
+        switch (DependencyPrecedence.valueOf(sourceValue)) {
+            case REST: {
                 precedence = DependencyPrecedence.REST;
                 break;
             }
-            case BOM:
-            {
+            case BOM: {
                 precedence = DependencyPrecedence.BOM;
                 break;
             }
-            case RESTBOM:
-            {
+            case RESTBOM: {
                 precedence = DependencyPrecedence.RESTBOM;
                 break;
             }
-            case BOMREST:
-            {
+            case BOMREST: {
                 precedence = DependencyPrecedence.BOMREST;
                 break;
             }
-            case NONE:
-            {
+            case NONE: {
                 precedence = DependencyPrecedence.NONE;
                 break;
             }
-            default:
-            {
-                throw new ManipulationException( "Unknown value {} for {}", userProps.getProperty( DEPENDENCY_SOURCE ), DEPENDENCY_SOURCE);
+            default: {
+                throw new ManipulationException(
+                        "Unknown value {} for {}",
+                        userProps.getProperty(DEPENDENCY_SOURCE),
+                        DEPENDENCY_SOURCE);
             }
         }
     }
@@ -211,50 +206,41 @@ public class DependencyState
      * @see org.commonjava.maven.ext.core.state.State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
-        return ( ( !( precedence == DependencyPrecedence.NONE ) ) &&
-                 ( remoteBOMdepMgmt != null && !remoteBOMdepMgmt.isEmpty()   ) ||
-                 ( remoteRESTdepMgmt != null && !remoteRESTdepMgmt.isEmpty() ) ||
-                 ( !dependencyOverrides.isEmpty()) );
+    public boolean isEnabled() {
+        return ((!(precedence == DependencyPrecedence.NONE)) &&
+                (remoteBOMdepMgmt != null && !remoteBOMdepMgmt.isEmpty()) ||
+                (remoteRESTdepMgmt != null && !remoteRESTdepMgmt.isEmpty()) ||
+                (!dependencyOverrides.isEmpty()));
     }
 
-    public List<ProjectVersionRef> getRemoteBOMDepMgmt()
-    {
+    public List<ProjectVersionRef> getRemoteBOMDepMgmt() {
         return remoteBOMdepMgmt;
     }
 
-    public Map<String, ProjectVersionRef> getExtraBOMs()
-    {
+    public Map<String, ProjectVersionRef> getExtraBOMs() {
         return extraBOMs;
     }
 
-    public Map<String, Map<ProjectRef, String>> getExtraBOMDepMgmts( )
-    {
+    public Map<String, Map<ProjectRef, String>> getExtraBOMDepMgmts() {
         return extraBOMDepMgmts;
     }
 
-    public DependencyPrecedence getPrecedence()
-    {
+    public DependencyPrecedence getPrecedence() {
         return precedence;
     }
 
-    public void setRemoteRESTOverrides( Map<ArtifactRef, String> overrides )
-    {
+    public void setRemoteRESTOverrides(Map<ArtifactRef, String> overrides) {
         remoteRESTdepMgmt = overrides;
     }
 
-    public Map<ArtifactRef, String> getRemoteRESTOverrides( )
-    {
-        if ( remoteRESTdepMgmt == null )
-        {
-            remoteRESTdepMgmt = new HashMap<>(  );
+    public Map<ArtifactRef, String> getRemoteRESTOverrides() {
+        if (remoteRESTdepMgmt == null) {
+            remoteRESTdepMgmt = new HashMap<>();
         }
         return remoteRESTdepMgmt;
     }
 
-    public Map<String, String> getDependencyOverrides( )
-    {
+    public Map<String, String> getDependencyOverrides() {
         return dependencyOverrides;
     }
 }

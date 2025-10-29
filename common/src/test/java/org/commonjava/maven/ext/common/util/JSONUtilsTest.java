@@ -15,39 +15,34 @@
  */
 package org.commonjava.maven.ext.common.util;
 
-import org.commonjava.maven.ext.common.json.PME;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import static org.junit.Assert.assertEquals;
+import org.commonjava.maven.ext.common.json.PME;
+import org.junit.Test;
 
-public class JSONUtilsTest
-{
+public class JSONUtilsTest {
     @Test
-    public void fileToJSON() throws IOException
-    {
-        PME pme = JSONUtils.fileToJSON( resolveFileResource() );
+    public void fileToJSON() throws IOException {
+        PME pme = JSONUtils.fileToJSON(resolveFileResource());
 
-        assertEquals( "org.kie:kie-parent:7.24.0.Final", pme.getGav().getOriginalGAV() );
-        assertEquals( 11, pme.getModules().size() );
-        assertEquals( pme.getModules().get( 0 ).getGav().getPVR(), pme.getGav().getPVR() );
+        assertEquals("org.kie:kie-parent:7.24.0.Final", pme.getGav().getOriginalGAV());
+        assertEquals(11, pme.getModules().size());
+        assertEquals(pme.getModules().get(0).getGav().getPVR(), pme.getGav().getPVR());
     }
 
-
     private static File resolveFileResource()
-                    throws IOException
-    {
+            throws IOException {
         final URL resource = Thread.currentThread()
-                                   .getContextClassLoader()
-                                   .getResource( "sample.json" );
+                .getContextClassLoader()
+                .getResource("sample.json");
 
-        if ( resource == null )
-        {
-            throw new IOException( "Unable to locate resource for " + "sample.json" );
+        if (resource == null) {
+            throw new IOException("Unable to locate resource for " + "sample.json");
         }
-        return new File( resource.getPath() );
+        return new File(resource.getPath());
     }
 }

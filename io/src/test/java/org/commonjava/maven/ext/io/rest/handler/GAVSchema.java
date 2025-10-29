@@ -15,15 +15,15 @@
  */
 package org.commonjava.maven.ext.io.rest.handler;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.ToString;
-
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import lombok.ToString;
+
 @ToString
-public class GAVSchema
-{
+public class GAVSchema {
     @JsonInclude(value = JsonInclude.Include.NON_EMPTY)
     public List<Map<String, Object>> artifacts;
 
@@ -33,5 +33,6 @@ public class GAVSchema
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     public Boolean brewPullActive;
 
-    public GAVSchema() {}
+    public GAVSchema() {
+    }
 }

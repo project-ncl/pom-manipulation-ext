@@ -15,16 +15,15 @@
  */
 package org.commonjava.maven.ext.common.session;
 
-import org.apache.maven.artifact.repository.ArtifactRepository;
-import org.apache.maven.settings.Settings;
-import org.commonjava.maven.ext.common.ManipulationException;
-
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
-public interface MavenSessionHandler
-{
+import org.apache.maven.artifact.repository.ArtifactRepository;
+import org.apache.maven.settings.Settings;
+import org.commonjava.maven.ext.common.ManipulationException;
+
+public interface MavenSessionHandler {
     Properties getUserProperties();
 
     List<ArtifactRepository> getRemoteRepositories();

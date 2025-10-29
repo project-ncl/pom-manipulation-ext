@@ -24,72 +24,49 @@ import org.commonjava.maven.ext.common.ManipulationException;
 /**
  * Simple wrapper to allow a Plugin or Dependency to be handled within the same way.
  */
-public class DependencyPluginWrapper
-{
+public class DependencyPluginWrapper {
     private Plugin plugin = null;
 
     private Dependency dependency = null;
 
     private PluginReference pluginReference = null;
 
-    public DependencyPluginWrapper( InputLocationTracker o ) throws ManipulationException
-    {
-        if ( o instanceof Dependency)
-        {
-            dependency = (Dependency)o;
-        }
-        else if (o instanceof Plugin)
-        {
-            plugin = (Plugin)o;
-        }
-        else if (o instanceof PluginReference)
-        {
-            pluginReference = (PluginReference)o;
-        }
-        else
-        {
-            throw new ManipulationException( "Unknown type for wrapper {}", o );
+    public DependencyPluginWrapper(InputLocationTracker o) throws ManipulationException {
+        if (o instanceof Dependency) {
+            dependency = (Dependency) o;
+        } else if (o instanceof Plugin) {
+            plugin = (Plugin) o;
+        } else if (o instanceof PluginReference) {
+            pluginReference = (PluginReference) o;
+        } else {
+            throw new ManipulationException("Unknown type for wrapper {}", o);
         }
     }
 
-    public String getVersion()
-    {
-        if ( dependency != null )
-        {
+    public String getVersion() {
+        if (dependency != null) {
             return dependency.getVersion();
-        }
-        else if (plugin != null)
-        {
+        } else if (plugin != null) {
             return plugin.getVersion();
-        }
-        else
-        {
+        } else {
             return pluginReference.getVersion();
         }
     }
 
-    public void setVersion( String target )
-                    throws ManipulationException
-    {
-        if ( dependency != null )
-        {
-            dependency.setVersion( target );
-        }
-        else if (plugin != null)
-        {
-            plugin.setVersion( target );
-        }
-        else
-        {
-            pluginReference.setVersion( target );
+    public void setVersion(String target)
+            throws ManipulationException {
+        if (dependency != null) {
+            dependency.setVersion(target);
+        } else if (plugin != null) {
+            plugin.setVersion(target);
+        } else {
+            pluginReference.setVersion(target);
         }
     }
 
-    public void addExclusion( Exclusion e ) throws ManipulationException
-    {
-        if ( dependency == null )
-        {
-            throw new ManipulationException( "Type is not a dependency {}", e);
+    public void addExclusion(Exclusion e) throws ManipulationException {
+        if (dependency == null) {
+            throw new ManipulationException("Type is not a dependency {}", e);
         }
         dependency.addExclusion(e);
     }

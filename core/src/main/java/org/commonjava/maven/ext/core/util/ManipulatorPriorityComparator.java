@@ -15,20 +15,18 @@
  */
 package org.commonjava.maven.ext.core.util;
 
-import org.commonjava.maven.ext.core.impl.Manipulator;
-
 import java.util.Comparator;
+
+import org.commonjava.maven.ext.core.impl.Manipulator;
 
 /**
  * Sorts {@link Manipulator} implementations by their execution index, in ascending order.
  */
 public class ManipulatorPriorityComparator
-    implements Comparator<Manipulator>
-{
+        implements Comparator<Manipulator> {
 
     @Override
-    public int compare( final Manipulator first, final Manipulator second )
-    {
+    public int compare(final Manipulator first, final Manipulator second) {
         return first.getExecutionIndex() - second.getExecutionIndex();
     }
 

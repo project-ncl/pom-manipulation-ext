@@ -15,40 +15,37 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import org.commonjava.maven.ext.annotation.ConfigValue;
-import org.commonjava.maven.ext.core.impl.ProfileInjectionManipulator;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import org.commonjava.maven.ext.annotation.ConfigValue;
+import org.commonjava.maven.ext.core.impl.ProfileInjectionManipulator;
 
 /**
  * Captures configuration relating to injection profiles from a remote POM.
  * Used by {@link ProfileInjectionManipulator}.
  */
 public class ProfileRemovalState
-    implements State
-{
+        implements State {
     /**
      * Suffix to enable this modder
      */
-    @ConfigValue( docIndex = "misc.html#profile-removal")
+    @ConfigValue(docIndex = "misc.html#profile-removal")
     private static final String PROFILE_REMOVAL_PROPERTY = "profileRemoval";
 
     private List<String> profiles;
 
-    public ProfileRemovalState( final Properties userProps )
-    {
-        initialise( userProps );
+    public ProfileRemovalState(final Properties userProps) {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps )
-    {
-        final String p = userProps.getProperty( PROFILE_REMOVAL_PROPERTY );
+    public void initialise(Properties userProps) {
+        final String p = userProps.getProperty(PROFILE_REMOVAL_PROPERTY);
 
-        profiles = isNotEmpty( p ) ? Arrays.asList(p.split( "," )) : null;
+        profiles = isNotEmpty(p) ? Arrays.asList(p.split(",")) : null;
     }
 
     /**
@@ -58,14 +55,11 @@ public class ProfileRemovalState
      * @see State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return profiles != null && profiles.size() > 0;
     }
 
-
-    public List<String> getProfileRemoval()
-    {
+    public List<String> getProfileRemoval() {
         return profiles;
     }
 }

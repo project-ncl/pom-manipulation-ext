@@ -15,6 +15,8 @@
  */
 package org.commonjava.maven.ext.core.util;
 
+import java.util.List;
+
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Parent;
 import org.apache.maven.project.MavenProject;
@@ -24,68 +26,59 @@ import org.commonjava.atlas.maven.ident.ref.SimpleProjectRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
 import org.commonjava.maven.ext.common.model.Project;
 
-import java.util.List;
-
 /**
- * Convenience utilities for converting between {@link ProjectVersionRef}, {@link Model}, {@link MavenProject} and GA / GAV strings.
+ * Convenience utilities for converting between {@link ProjectVersionRef}, {@link Model}, {@link MavenProject} and GA /
+ * GAV strings.
  *
  * @author jdcasey
  */
-public final class IdUtils
-{
-    private IdUtils()
-    {
+public final class IdUtils {
+    private IdUtils() {
     }
 
     /**
      * Splits the value on ',', then wraps each value in {@link SimpleProjectVersionRef#parse(String)}. Returns null
      * if the input value is null.
+     * 
      * @param value a comma separated list of GAV to parse
      * @return a collection of parsed ProjectVersionRef.
      */
-    public static List<ProjectVersionRef> parseGAVs( final String value )
-    {
-        return RefParseUtils.parseRefs( value, SimpleProjectVersionRef::parse );
+    public static List<ProjectVersionRef> parseGAVs(final String value) {
+        return RefParseUtils.parseRefs(value, SimpleProjectVersionRef::parse);
     }
 
     /**
      * Splits the value on ',', then wraps each value in {@link SimpleProjectRef#parse(String)}. Returns null if the
      * input value is null.
+     * 
      * @param value a comma separated list of GA to parse
      * @return a collection of parsed ProjectRef.
      */
-    public static List<ProjectRef> parseGAs( final String value )
-    {
-        return RefParseUtils.parseRefs( value, SimpleProjectRef::parse );
+    public static List<ProjectRef> parseGAs(final String value) {
+        return RefParseUtils.parseRefs(value, SimpleProjectRef::parse);
     }
 
-    public static String gav( final Project project )
-    {
-        return String.format( "%s:%s:%s", project.getGroupId(), project.getArtifactId(), project.getVersion() );
+    public static String gav(final Project project) {
+        return String.format("%s:%s:%s", project.getGroupId(), project.getArtifactId(), project.getVersion());
     }
 
-    public static String ga( final MavenProject project )
-    {
-        return ga( project.getGroupId(), project.getArtifactId() );
+    public static String ga(final MavenProject project) {
+        return ga(project.getGroupId(), project.getArtifactId());
     }
 
-    public static String ga( final Project project )
-    {
-        return ga( project.getGroupId(), project.getArtifactId() );
+    public static String ga(final Project project) {
+        return ga(project.getGroupId(), project.getArtifactId());
     }
 
-    public static String ga( final Parent project )
-    {
-        return ga( project.getGroupId(), project.getArtifactId() );
+    public static String ga(final Parent project) {
+        return ga(project.getGroupId(), project.getArtifactId());
     }
 
-    public static String ga( final String g, final String a )
-    {
-        return String.format( "%s:%s", g, a );
+    public static String ga(final String g, final String a) {
+        return String.format("%s:%s", g, a);
     }
 
-    public static String gav( final String g, final String a, final String v )
-    {
-        return String.format( "%s:%s:%s", g, a, v );
+    public static String gav(final String g, final String a, final String v) {
+        return String.format("%s:%s:%s", g, a, v);
     }
 }

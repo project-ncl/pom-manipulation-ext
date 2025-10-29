@@ -15,6 +15,16 @@
  */
 package org.commonjava.maven.ext.integrationtest;
 
+import static org.commonjava.maven.ext.integrationtest.ITestUtils.DEFAULT_MVN_PARAMS;
+import static org.commonjava.maven.ext.integrationtest.ITestUtils.IT_LOCATION;
+import static org.commonjava.maven.ext.integrationtest.ITestUtils.getDefaultTestLocation;
+import static org.commonjava.maven.ext.integrationtest.ITestUtils.runLikeInvoker;
+import static org.commonjava.maven.ext.integrationtest.ITestUtils.runMaven;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,41 +33,23 @@ import org.junit.runners.Parameterized.Parameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
+@RunWith(Parameterized.class)
+public class DefaultCliIntegrationTest {
+    private static final Logger logger = LoggerFactory.getLogger(DefaultCliIntegrationTest.class);
 
-import static org.commonjava.maven.ext.integrationtest.ITestUtils.DEFAULT_MVN_PARAMS;
-import static org.commonjava.maven.ext.integrationtest.ITestUtils.IT_LOCATION;
-import static org.commonjava.maven.ext.integrationtest.ITestUtils.getDefaultTestLocation;
-import static org.commonjava.maven.ext.integrationtest.ITestUtils.runLikeInvoker;
-import static org.commonjava.maven.ext.integrationtest.ITestUtils.runMaven;
-
-@RunWith( Parameterized.class )
-public class DefaultCliIntegrationTest
-{
-    private static final Logger logger = LoggerFactory.getLogger( DefaultCliIntegrationTest.class );
-
-    @Parameters( name = "{0}" )
-    public static Collection<Object[]> getFiles()
-    {
+    @Parameters(name = "{0}")
+    public static Collection<Object[]> getFiles() {
         Collection<Object[]> params = new ArrayList<>();
         // Hack to allow a single parameterized test to be run.
-        if ( ! "*".equals( System.getProperties().getProperty( "selectedTest", "*" ) ) )
-        {
-            for (String t : System.getProperty("selectedTest").split( "," ))
-            {
-                params.add( new Object[] { t } );
+        if (!"*".equals(System.getProperties().getProperty("selectedTest", "*"))) {
+            for (String t : System.getProperty("selectedTest").split(",")) {
+                params.add(new Object[] { t });
             }
-        }
-        else
-        {
-            for ( File rl : IT_LOCATION.listFiles() )
-            {
-                if ( rl.isDirectory() && !ITestUtils.EXCLUDED_FILES.contains( rl.getName() ) )
-                {
+        } else {
+            for (File rl : IT_LOCATION.listFiles()) {
+                if (rl.isDirectory() && !ITestUtils.EXCLUDED_FILES.contains(rl.getName())) {
                     Object[] arr = new Object[] { rl.getName() };
-                    params.add( arr );
+                    params.add(arr);
                 }
             }
         }
@@ -67,58 +59,47 @@ public class DefaultCliIntegrationTest
 
     private final String testRelativeLocation;
 
-    public DefaultCliIntegrationTest( String testRelativeLocation )
-    {
+    public DefaultCliIntegrationTest(String testRelativeLocation) {
         this.testRelativeLocation = testRelativeLocation;
     }
 
     @BeforeClass
     public static void setUp()
-        throws Exception
-    {
-        for ( File setupTest : new File( getDefaultTestLocation( "setup" ) ).listFiles() )
-        {
-            logger.info ("Running install for {}", setupTest.toString());
+            throws Exception {
+        for (File setupTest : new File(getDefaultTestLocation("setup")).listFiles()) {
+            logger.info("Running install for {}", setupTest.toString());
 
             // Try to do some simplistic checks to see if this has already been done.
-            if ( ! setupExists( setupTest ))
-            {
-                runMaven( "install", DEFAULT_MVN_PARAMS, setupTest.toString() );
+            if (!setupExists(setupTest)) {
+                runMaven("install", DEFAULT_MVN_PARAMS, setupTest.toString());
             }
         }
     }
 
     @Test
     public void testIntegration()
-        throws Exception
-    {
+            throws Exception {
         String testRelativeLocation = this.testRelativeLocation;
-        if ( ITestUtils.LOCATION_REWRITE.containsKey( this.testRelativeLocation ) )
-        {
-            testRelativeLocation = ITestUtils.LOCATION_REWRITE.get( this.testRelativeLocation );
+        if (ITestUtils.LOCATION_REWRITE.containsKey(this.testRelativeLocation)) {
+            testRelativeLocation = ITestUtils.LOCATION_REWRITE.get(this.testRelativeLocation);
         }
-        logger.info ("Testing {}", testRelativeLocation);
-        String test = getDefaultTestLocation( testRelativeLocation );
-        runLikeInvoker( test, null );
+        logger.info("Testing {}", testRelativeLocation);
+        String test = getDefaultTestLocation(testRelativeLocation);
+        runLikeInvoker(test, null);
     }
 
-
-    static boolean setupExists( File test )
-    {
+    static boolean setupExists(File test) {
         boolean result = false;
-        File t1 = new File( DEFAULT_MVN_PARAMS.get( "maven.repo.local" ),
-                "org" + File.separator + "commonjava" + File.separator + "maven" + File.separator + "ext" );
-        if ( t1.exists())
-        {
-            File t2 = new File( t1, test.getName() );
-            File[] directories = t2.listFiles( File::isDirectory );
-            if ( directories != null)
-            {
-                for ( File dir : directories )
-                {
-                    if ( t2.exists() && dir.exists() && dir.listFiles() != null && dir.listFiles().length > 0)
-                    {
-                        logger.info( "Setup has already been run for {}", test);
+        File t1 = new File(
+                DEFAULT_MVN_PARAMS.get("maven.repo.local"),
+                "org" + File.separator + "commonjava" + File.separator + "maven" + File.separator + "ext");
+        if (t1.exists()) {
+            File t2 = new File(t1, test.getName());
+            File[] directories = t2.listFiles(File::isDirectory);
+            if (directories != null) {
+                for (File dir : directories) {
+                    if (t2.exists() && dir.exists() && dir.listFiles() != null && dir.listFiles().length > 0) {
+                        logger.info("Setup has already been run for {}", test);
                         return true;
                     }
                 }

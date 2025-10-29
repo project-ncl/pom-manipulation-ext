@@ -15,7 +15,11 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import lombok.Getter;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
+import java.util.Map;
+import java.util.Properties;
+
 import org.commonjava.atlas.maven.ident.ref.ProjectRef;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectRef;
@@ -27,17 +31,13 @@ import org.commonjava.maven.ext.core.util.PropertiesUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-import java.util.Properties;
-
-import static org.apache.commons.lang3.StringUtils.isEmpty;
+import lombok.Getter;
 
 /**
  * Captures configuration relating to groupId relocation for POMs.
  */
 public class RelocationState
-    implements State
-{
+        implements State {
     /**
      * The name of the property which contains a groupId and optional version relocation to perform. Multiple can be
      * passed using multiple dependencyRelocations arguments.
@@ -54,14 +54,13 @@ public class RelocationState
      * <li>If version is specified we force set the version.</li>
      * </ul>
      */
-    @ConfigValue( docIndex = "dep-manip.html#dependency-relocations" )
+    @ConfigValue(docIndex = "dep-manip.html#dependency-relocations")
     public static final String DEPENDENCY_RELOCATIONS = "dependencyRelocations.";
 
-    @ConfigValue( docIndex = "plugin-manip.html#plugin-relocations" )
+    @ConfigValue(docIndex = "plugin-manip.html#plugin-relocations")
     public static final String PLUGIN_RELOCATIONS = "pluginRelocations.";
 
-
-    private static final Logger logger = LoggerFactory.getLogger( RelocationState.class );
+    private static final Logger logger = LoggerFactory.getLogger(RelocationState.class);
 
     @Getter
     private final WildcardMap<ProjectVersionRef> dependencyRelocations = new WildcardMap<>();
@@ -69,82 +68,78 @@ public class RelocationState
     @Getter
     private final WildcardMap<ProjectVersionRef> pluginRelocations = new WildcardMap<>();
 
-    public RelocationState( final Properties userProps )
-                    throws ManipulationException
-    {
-        initialise( userProps );
+    public RelocationState(final Properties userProps)
+            throws ManipulationException {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps ) throws ManipulationException
-    {
+    public void initialise(Properties userProps) throws ManipulationException {
         // This contains everything before the equals and a possibly null set of values. We now need to further
         // post-process this into something useful i.e. establish whether we are relocating groupIds and artifactIds.
-        Map<String, String> depPropRelocs = PropertiesUtils.getPropertiesByPrefix( userProps, DEPENDENCY_RELOCATIONS );
-        Map<String, String> pluginPropRelocs = PropertiesUtils.getPropertiesByPrefix( userProps, PLUGIN_RELOCATIONS );
+        Map<String, String> depPropRelocs = PropertiesUtils.getPropertiesByPrefix(userProps, DEPENDENCY_RELOCATIONS);
+        Map<String, String> pluginPropRelocs = PropertiesUtils.getPropertiesByPrefix(userProps, PLUGIN_RELOCATIONS);
 
-        processProperties( dependencyRelocations, depPropRelocs);
-        processProperties( pluginRelocations, pluginPropRelocs);
+        processProperties(dependencyRelocations, depPropRelocs);
+        processProperties(pluginRelocations, pluginPropRelocs);
     }
 
-
-    private void processProperties(WildcardMap<ProjectVersionRef> map, Map<String,String> propRelocs)
-                    throws ManipulationException
-    {
-        for ( Map.Entry<String, String> entry : propRelocs.entrySet() )
-        {
-            String[] split = entry.getKey().split( ":", 3 );
-            if ( split.length != 3 )
-            {
+    private void processProperties(WildcardMap<ProjectVersionRef> map, Map<String, String> propRelocs)
+            throws ManipulationException {
+        for (Map.Entry<String, String> entry : propRelocs.entrySet()) {
+            String[] split = entry.getKey().split(":", 3);
+            if (split.length != 3) {
                 throw new ManipulationException(
-                                "Incorrect relocation format; should be <..> : [ <...> ] @ <..> : [ <...> ]" );
+                        "Incorrect relocation format; should be <..> : [ <...> ] @ <..> : [ <...> ]");
             }
             String groupId = split[0];
             String newArtifactId = split[2];
-            split = split[1].split( "@" );
+            split = split[1].split("@");
 
-            if ( split.length != 2 )
-            {
+            if (split.length != 2) {
                 throw new ManipulationException(
-                                "Incorrect relocation format for oldArtifactId/newGroupdId; should be <..> : [ <...> ] @ <..> : [ <...> ]" );
+                        "Incorrect relocation format for oldArtifactId/newGroupdId; should be <..> : [ <...> ] @ <..> : [ <...> ]");
             }
             String artifactId = split[0];
             String newGroupId = split[1];
 
             // Sanity checks
-            if ( ! ( isEmpty( artifactId ) == isEmpty( newArtifactId ) ) )
-            {
+            if (!(isEmpty(artifactId) == isEmpty(newArtifactId))) {
                 throw new ManipulationException(
-                                "Incorrect relocation format for artifactId ({} : {}); should be <..> : [ <...> ] @ <..> : [ <...> ]",
-                                artifactId, newArtifactId );
+                        "Incorrect relocation format for artifactId ({} : {}); should be <..> : [ <...> ] @ <..> : [ <...> ]",
+                        artifactId,
+                        newArtifactId);
             }
 
-            if ( isEmpty( artifactId ) )
-            {
+            if (isEmpty(artifactId)) {
                 artifactId = WildcardMap.WILDCARD;
             }
-            if ( isEmpty( newArtifactId ) )
-            {
+            if (isEmpty(newArtifactId)) {
                 newArtifactId = WildcardMap.WILDCARD;
             }
 
-            if ( groupId.length() == 0 || newGroupId.length() == 0 )
-            {
+            if (groupId.length() == 0 || newGroupId.length() == 0) {
                 throw new ManipulationException(
-                                "Incorrect relocation format for groupIds ({} : {}); should be <..> : [ <...> ] @ <..> : [ <...> ]",
-                                groupId, newGroupId );
+                        "Incorrect relocation format for groupIds ({} : {}); should be <..> : [ <...> ] @ <..> : [ <...> ]",
+                        groupId,
+                        newGroupId);
             }
 
-            String version = ( isEmpty( entry.getValue() ) ? WildcardMap.WILDCARD : entry.getValue() );
+            String version = (isEmpty(entry.getValue()) ? WildcardMap.WILDCARD : entry.getValue());
 
-            logger.debug( "Relocation found oldGroupId '{}' : oldArtifactId '{}' -> newGroupId '{}' : newArtifactId '{}' and version '{}' ",
-                          groupId, artifactId, newGroupId, newArtifactId, version );
+            logger.debug(
+                    "Relocation found oldGroupId '{}' : oldArtifactId '{}' -> newGroupId '{}' : newArtifactId '{}' and version '{}' ",
+                    groupId,
+                    artifactId,
+                    newGroupId,
+                    newArtifactId,
+                    version);
 
-            ProjectRef sp = new SimpleProjectRef( groupId, artifactId );
+            ProjectRef sp = new SimpleProjectRef(groupId, artifactId);
 
-            map.put( sp, new SimpleProjectVersionRef( newGroupId, newArtifactId, version ) );
+            map.put(sp, new SimpleProjectVersionRef(newGroupId, newArtifactId, version));
         }
 
-        logger.trace ("Wildcard map {}", map);
+        logger.trace("Wildcard map {}", map);
     }
 
     /**
@@ -153,8 +148,7 @@ public class RelocationState
      * @see State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return (!dependencyRelocations.isEmpty() || !pluginRelocations.isEmpty());
     }
 }

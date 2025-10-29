@@ -15,14 +15,14 @@
  */
 package org.commonjava.maven.ext.core.util;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import org.commonjava.atlas.maven.ident.ref.ProjectRef;
-
 import java.util.HashSet;
 import java.util.Set;
 
+import org.commonjava.atlas.maven.ident.ref.ProjectRef;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Used to hold multiple mapping information when mapping properties to update within the Manipulators.
@@ -34,8 +34,7 @@ import java.util.Set;
 @Setter
 @Getter
 @ToString
-public class PropertyMapper
-{
+public class PropertyMapper {
     private String originalVersion;
 
     private String newVersion;

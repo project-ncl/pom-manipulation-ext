@@ -15,38 +15,41 @@
  */
 package org.commonjava.maven.ext.core.groovy;
 
+import java.io.File;
+import java.util.Properties;
+
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.io.FileIO;
 import org.commonjava.maven.ext.io.rest.Translator;
 
-import java.io.File;
-import java.util.Properties;
-
 /**
  * Common API for developers implementing Groovy scripts for PME or GME.
  */
-public interface CommonBaseScript
-{
+public interface CommonBaseScript {
     /**
      * Get the working directory (the execution root).
+     * 
      * @return a {@link File} reference.
      */
     File getBaseDir();
 
     /**
      * Get the user properties
+     * 
      * @return a {@link Properties} reference.
      */
     Properties getUserProperties();
 
     /**
      * Get the current stage
+     * 
      * @return a {@link InvocationStage} reference.
      */
     InvocationStage getInvocationStage();
 
     /**
      * Return a FileIO instance to read a raw file from a given URL
+     * 
      * @return a {@link FileIO} reference.
      */
     FileIO getFileIO();

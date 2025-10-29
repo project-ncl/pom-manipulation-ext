@@ -18,8 +18,7 @@ package org.commonjava.maven.ext.io.server;
 /**
  * @author vdedik@redhat.com
  */
-public interface HttpServer
-{
+public interface HttpServer {
 
     Integer getPort();
 

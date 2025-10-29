@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright (C) 2012 Red Hat, Inc.
@@ -28,6 +28,17 @@
   <artifactId>pom-manipulation-integration-test</artifactId>
 
   <name>POM Manipulation Integration Tests</name>
+
+  <properties>
+    <it.maven.home>${project.build.directory}/apache-maven-${mavenVersion}</it.maven.home>
+    <cliIter>cli</cliIter>
+    <extIter>ext</extIter>
+    <!--suppress UnresolvedMavenProperty -->
+    <localRepositoryUrl>${project.build.directory}/local-repo-${testMode}</localRepositoryUrl>
+    <localRepositoryUrlExt>${project.build.directory}/local-repo-${extIter}</localRepositoryUrlExt>
+    <localRepositoryUrlCli>${project.build.directory}/local-repo-${cliIter}</localRepositoryUrlCli>
+    <selectedTest>*</selectedTest>
+  </properties>
 
   <dependencies>
     <dependency>
@@ -82,8 +93,8 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>apache-maven</artifactId>
-      <type>zip</type>
       <classifier>bin</classifier>
+      <type>zip</type>
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -121,17 +132,6 @@
     </dependency>
   </dependencies>
 
-  <properties>
-    <it.maven.home>${project.build.directory}/apache-maven-${mavenVersion}</it.maven.home>
-    <cliIter>cli</cliIter>
-    <extIter>ext</extIter>
-    <!--suppress UnresolvedMavenProperty -->
-    <localRepositoryUrl>${project.build.directory}/local-repo-${testMode}</localRepositoryUrl>
-    <localRepositoryUrlExt>${project.build.directory}/local-repo-${extIter}</localRepositoryUrlExt>
-    <localRepositoryUrlCli>${project.build.directory}/local-repo-${cliIter}</localRepositoryUrlCli>
-    <selectedTest>*</selectedTest>
-  </properties>
-
   <build>
     <pluginManagement>
       <plugins>
@@ -161,10 +161,10 @@
           <executions>
             <execution>
               <id>test-javadoc</id>
-              <phase>package</phase>
               <goals>
                 <goal>test-jar</goal>
               </goals>
+              <phase>package</phase>
               <configuration>
                 <sourcepath>${basedir}/src/test/java</sourcepath>
               </configuration>
@@ -201,10 +201,10 @@
             <executions>
               <execution>
                 <id>unpack-maven</id>
-                <phase>generate-test-resources</phase>
                 <goals>
                   <goal>unpack-dependencies</goal>
                 </goals>
+                <phase>generate-test-resources</phase>
                 <configuration>
                   <includeArtifactIds>apache-maven</includeArtifactIds>
                   <includeClassifiers>bin</includeClassifiers>
@@ -214,10 +214,10 @@
               </execution>
               <execution>
                 <id>copy-pme-ext</id>
-                <phase>pre-integration-test</phase>
                 <goals>
                   <goal>copy</goal>
                 </goals>
+                <phase>pre-integration-test</phase>
                 <configuration>
                   <artifactItems>
                     <artifactItem>
@@ -237,10 +237,10 @@
             <artifactId>iterator-maven-plugin</artifactId>
             <executions>
               <execution>
-                <phase>process-test-resources</phase>
                 <goals>
                   <goal>iterator</goal>
                 </goals>
+                <phase>process-test-resources</phase>
                 <configuration>
                   <items>
                     <item>${extIter}</item>
@@ -259,7 +259,7 @@
                         <resources>
                           <resource>
                             <directory>src/it</directory>
-                             <filtering>true</filtering>
+                            <filtering>true</filtering>
                             <excludes>
                               <exclude>expression-not-rewritten/pom.xml</exclude>
                             </excludes>
@@ -309,7 +309,7 @@
                   </goals>
                   <localRepositoryPath>${localRepositoryUrlExt}</localRepositoryPath>
                   <mavenHome>${it.maven.home}</mavenHome>
-                  <cloneProjectsTo />
+                  <cloneProjectsTo/>
                   <setupIncludes>
                     <setupInclude>setup/*/pom.xml</setupInclude>
                   </setupIncludes>

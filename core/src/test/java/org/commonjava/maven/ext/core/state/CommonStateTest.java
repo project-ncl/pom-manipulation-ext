@@ -15,63 +15,56 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import org.commonjava.maven.ext.common.ManipulationException;
-import org.junit.Test;
-
-import java.util.Properties;
-
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.commonjava.maven.ext.core.state.DependencyState.DEPENDENCY_SOURCE;
 
-public class CommonStateTest
-{
+import java.util.Properties;
+
+import org.commonjava.maven.ext.common.ManipulationException;
+import org.junit.Test;
+
+public class CommonStateTest {
     @Test
-    public void testEnum() throws ManipulationException
-    {
-        Properties p = new Properties(  );
-        p.setProperty( DEPENDENCY_SOURCE, "" );
-        new DependencyState( p );
+    public void testEnum() throws ManipulationException {
+        Properties p = new Properties();
+        p.setProperty(DEPENDENCY_SOURCE, "");
+        new DependencyState(p);
     }
 
     @Test
-    public void excludedScopes() throws ManipulationException
-    {
-        final CommonState state = new CommonState( new Properties() );
+    public void excludedScopes() throws ManipulationException {
+        final CommonState state = new CommonState(new Properties());
 
-        assertEquals( 0, state.getExcludedScopes().size() );
+        assertEquals(0, state.getExcludedScopes().size());
     }
 
     @Test
-    public void excludedScopesTestScope() throws ManipulationException
-    {
-        Properties p = new Properties(  );
-        p.setProperty( CommonState.EXCLUDED_SCOPES, "test" );
+    public void excludedScopesTestScope() throws ManipulationException {
+        Properties p = new Properties();
+        p.setProperty(CommonState.EXCLUDED_SCOPES, "test");
 
-        final CommonState state = new CommonState( p );
+        final CommonState state = new CommonState(p);
 
-        assertTrue( state.getExcludedScopes().contains( "test" ));
+        assertTrue(state.getExcludedScopes().contains("test"));
     }
 
     @Test
-    public void excludedScopesMultipleScope() throws ManipulationException
-    {
-        Properties p = new Properties(  );
-        p.setProperty( CommonState.EXCLUDED_SCOPES, "test,provided" );
+    public void excludedScopesMultipleScope() throws ManipulationException {
+        Properties p = new Properties();
+        p.setProperty(CommonState.EXCLUDED_SCOPES, "test,provided");
 
-        final CommonState state = new CommonState( p );
+        final CommonState state = new CommonState(p);
 
-        assertEquals( 2, state.getExcludedScopes().size() );
-        assertTrue( state.getExcludedScopes().contains( "test" ) );
-        assertTrue( state.getExcludedScopes().contains( "provided" ) );
+        assertEquals(2, state.getExcludedScopes().size());
+        assertTrue(state.getExcludedScopes().contains("test"));
+        assertTrue(state.getExcludedScopes().contains("provided"));
     }
-
 
     @Test(expected = ManipulationException.class)
-    public void excludedScopesInvalid() throws ManipulationException
-    {
-        Properties p = new Properties(  );
-        p.setProperty( CommonState.EXCLUDED_SCOPES, "test,foo" );
-        new CommonState( p );
+    public void excludedScopesInvalid() throws ManipulationException {
+        Properties p = new Properties();
+        p.setProperty(CommonState.EXCLUDED_SCOPES, "test,foo");
+        new CommonState(p);
     }
 }

@@ -34,6 +34,10 @@
 
 package org.commonjava.maven.ext.core.groovy;
 
+import static org.apache.groovy.ast.tools.ClassNodeUtils.addGeneratedMethod;
+
+import java.util.List;
+
 import org.codehaus.groovy.ast.ASTNode;
 import org.codehaus.groovy.ast.AnnotatedNode;
 import org.codehaus.groovy.ast.AnnotationNode;
@@ -55,82 +59,70 @@ import org.codehaus.groovy.transform.AbstractASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.commonjava.maven.ext.common.ManipulationUncheckedException;
 
-import java.util.List;
-
-import static org.apache.groovy.ast.tools.ClassNodeUtils.addGeneratedMethod;
-
 /**
- * Ensures that Groovy scripts annotated with {@link GMEBaseScript} and {@link PMEBaseScript} are transformed into a class that
+ * Ensures that Groovy scripts annotated with {@link GMEBaseScript} and {@link PMEBaseScript} are transformed into a
+ * class that
  * extends {@link BaseScript}.
  * This class performs the same transformations as {@link org.codehaus.groovy.transform.BaseScriptASTTransformation},
  * and in addition moves the custom annotations to the generated script class.
  *
  * This uses code from
- * <a href="https://github.com/groovy/groovy-core/blob/master/src/main/org/codehaus/groovy/transform/BaseScriptASTTransformation.java">BaseScriptASTTransformation</a>
+ * <a href=
+ * "https://github.com/groovy/groovy-core/blob/master/src/main/org/codehaus/groovy/transform/BaseScriptASTTransformation.java">BaseScriptASTTransformation</a>
  * and
- * <a href="https://github.com/remkop/picocli/blob/master/picocli-groovy/src/main/java/picocli/groovy/PicocliScriptASTTransformation.java">PicocliScriptASTTransformation</a>.
+ * <a href=
+ * "https://github.com/remkop/picocli/blob/master/picocli-groovy/src/main/java/picocli/groovy/PicocliScriptASTTransformation.java">PicocliScriptASTTransformation</a>.
  */
-@SuppressWarnings( "unused" )
-@GroovyASTTransformation( phase = CompilePhase.SEMANTIC_ANALYSIS)
-public class ASTTransformer  extends AbstractASTTransformation {
+@SuppressWarnings("unused")
+@GroovyASTTransformation(phase = CompilePhase.SEMANTIC_ANALYSIS)
+public class ASTTransformer extends AbstractASTTransformation {
 
-    private static final ClassNode MAVEN_TYPE = ClassHelper.make( PMEBaseScript.class );
-    private static final ClassNode GRADLE_TYPE = ClassHelper.make( GMEBaseScript.class );
-    private static final ClassNode SBT_TYPE = ClassHelper.make( SMEGBaseScript.class );
-    private static final ClassNode COMMAND_TYPE = ClassHelper.make( InvocationPoint.class );
-    private static final ClassNode MAVEN_BASE_SCRIPT_TYPE = ClassHelper.make( BaseScript.class );
+    private static final ClassNode MAVEN_TYPE = ClassHelper.make(PMEBaseScript.class);
+    private static final ClassNode GRADLE_TYPE = ClassHelper.make(GMEBaseScript.class);
+    private static final ClassNode SBT_TYPE = ClassHelper.make(SMEGBaseScript.class);
+    private static final ClassNode COMMAND_TYPE = ClassHelper.make(InvocationPoint.class);
+    private static final ClassNode MAVEN_BASE_SCRIPT_TYPE = ClassHelper.make(BaseScript.class);
     private static final String MAVEN_TYPE_NAME = "@" + MAVEN_TYPE.getNameWithoutPackage();
-    private static final ClassNode GRADLE_BASE_SCRIPT_TYPE = ClassHelper.make( GradleBaseScript.class );
-    private static final ClassNode SBT_BASE_SCRIPT_TYPE = ClassHelper.make( SBTBaseScript.class );
+    private static final ClassNode GRADLE_BASE_SCRIPT_TYPE = ClassHelper.make(GradleBaseScript.class);
+    private static final ClassNode SBT_BASE_SCRIPT_TYPE = ClassHelper.make(SBTBaseScript.class);
     private static final String GRADLE_TYPE_NAME = "@" + GRADLE_TYPE.getNameWithoutPackage();
     private static final String SBT_TYPE_NAME = "@" + SBT_TYPE.getNameWithoutPackage();
 
-    enum Type { GRADLE, MAVEN, SBT}
+    enum Type {
+        GRADLE, MAVEN, SBT
+    }
 
     private Type type;
 
-    private static final Parameter[] CONTEXT_CTOR_PARAMETERS = {new Parameter(ClassHelper.BINDING_TYPE, "context")};
+    private static final Parameter[] CONTEXT_CTOR_PARAMETERS = { new Parameter(ClassHelper.BINDING_TYPE, "context") };
 
     public void visit(ASTNode[] nodes, SourceUnit source) {
         init(nodes, source);
         AnnotatedNode parent = (AnnotatedNode) nodes[1];
         AnnotationNode node = (AnnotationNode) nodes[0];
-        if (MAVEN_TYPE.equals( node.getClassNode())
-                        || GRADLE_TYPE.equals( node.getClassNode() )
-                        || SBT_TYPE.equals( node.getClassNode() ) )
-        {
-            if (MAVEN_TYPE.equals( node.getClassNode() ) )
-            {
+        if (MAVEN_TYPE.equals(node.getClassNode())
+                || GRADLE_TYPE.equals(node.getClassNode())
+                || SBT_TYPE.equals(node.getClassNode())) {
+            if (MAVEN_TYPE.equals(node.getClassNode())) {
                 type = Type.MAVEN;
-            }
-            else if (GRADLE_TYPE.equals( node.getClassNode() ) )
-            {
+            } else if (GRADLE_TYPE.equals(node.getClassNode())) {
                 type = Type.GRADLE;
-            }
-            else if ( SBT_TYPE.equals( node.getClassNode() ) )
-            {
+            } else if (SBT_TYPE.equals(node.getClassNode())) {
                 type = Type.SBT;
             }
 
-            if ( parent instanceof DeclarationExpression )
-            {
-                changeBaseScriptTypeFromDeclaration( (DeclarationExpression) parent, node );
-            }
-            else if ( parent instanceof ImportNode || parent instanceof PackageNode )
-            {
-                changeBaseScriptTypeFromPackageOrImport( source, parent, node );
-            }
-            else if ( parent instanceof ClassNode )
-            {
-                changeBaseScriptTypeFromClass( (ClassNode) parent );
+            if (parent instanceof DeclarationExpression) {
+                changeBaseScriptTypeFromDeclaration((DeclarationExpression) parent, node);
+            } else if (parent instanceof ImportNode || parent instanceof PackageNode) {
+                changeBaseScriptTypeFromPackageOrImport(source, parent, node);
+            } else if (parent instanceof ClassNode) {
+                changeBaseScriptTypeFromClass((ClassNode) parent);
             }
         }
     }
 
-    private String getType()
-    {
-        switch ( type )
-        {
+    private String getType() {
+        switch (type) {
             case MAVEN:
                 return MAVEN_TYPE_NAME;
             case GRADLE:
@@ -138,14 +130,12 @@ public class ASTTransformer  extends AbstractASTTransformation {
             case SBT:
                 return SBT_TYPE_NAME;
             default:
-                throw new ManipulationUncheckedException( "Unknown type " + type );
+                throw new ManipulationUncheckedException("Unknown type " + type);
         }
     }
 
-    private ClassNode getType (Type type)
-    {
-        switch (type)
-        {
+    private ClassNode getType(Type type) {
+        switch (type) {
             case MAVEN:
                 return MAVEN_BASE_SCRIPT_TYPE;
             case GRADLE:
@@ -153,11 +143,14 @@ public class ASTTransformer  extends AbstractASTTransformation {
             case SBT:
                 return SBT_BASE_SCRIPT_TYPE;
             default:
-                throw new ManipulationUncheckedException( "Unknown type " + type );
+                throw new ManipulationUncheckedException("Unknown type " + type);
         }
     }
 
-    private void changeBaseScriptTypeFromPackageOrImport(final SourceUnit source, final AnnotatedNode parent, final AnnotationNode node) {
+    private void changeBaseScriptTypeFromPackageOrImport(
+            final SourceUnit source,
+            final AnnotatedNode parent,
+            final AnnotationNode node) {
         Expression value = node.getMember("value");
         ClassNode scriptType;
 
@@ -165,7 +158,7 @@ public class ASTTransformer  extends AbstractASTTransformation {
             scriptType = getType(type);
         } else {
             if (!(value instanceof ClassExpression)) {
-                addError( "Annotation " + getType() + " member 'value' should be a class literal.", value);
+                addError("Annotation " + getType() + " member 'value' should be a class literal.", value);
                 return;
             }
             scriptType = value.getType();
@@ -178,23 +171,23 @@ public class ASTTransformer  extends AbstractASTTransformation {
         }
     }
 
-    private void changeBaseScriptTypeFromClass( final ClassNode parent ) {
+    private void changeBaseScriptTypeFromClass(final ClassNode parent) {
         changeBaseScriptType(parent, parent, parent.getSuperClass());
     }
 
     private void changeBaseScriptTypeFromDeclaration(final DeclarationExpression de, final AnnotationNode node) {
         if (de.isMultipleAssignmentDeclaration()) {
-            addError( "Annotation " + getType() + " not supported with multiple assignment notation.", de);
+            addError("Annotation " + getType() + " not supported with multiple assignment notation.", de);
             return;
         }
 
         if (!(de.getRightExpression() instanceof EmptyExpression)) {
-            addError( "Annotation " + getType() + " not supported with variable assignment.", de);
+            addError("Annotation " + getType() + " not supported with variable assignment.", de);
             return;
         }
         Expression value = node.getMember("value");
         if (value != null) {
-            addError( "Annotation " + getType() + " cannot have member 'value' if used on a declaration.", value);
+            addError("Annotation " + getType() + " cannot have member 'value' if used on a declaration.", value);
             return;
         }
 
@@ -202,7 +195,7 @@ public class ASTTransformer  extends AbstractASTTransformation {
         ClassNode baseScriptType = de.getVariableExpression().getType().getPlainNodeReference();
         if (baseScriptType.isScript()) {
             if (!(de.getRightExpression() instanceof EmptyExpression)) {
-                addError( "Annotation " + getType() + " not supported with variable assignment.", de);
+                addError("Annotation " + getType() + " not supported with variable assignment.", de);
                 return;
             }
             de.setRightExpression(new VariableExpression("this"));
@@ -213,9 +206,12 @@ public class ASTTransformer  extends AbstractASTTransformation {
         changeBaseScriptType(de, cNode, baseScriptType);
     }
 
-    private void changeBaseScriptType(final AnnotatedNode parent, final ClassNode cNode, final ClassNode baseScriptType) {
+    private void changeBaseScriptType(
+            final AnnotatedNode parent,
+            final ClassNode cNode,
+            final ClassNode baseScriptType) {
         if (!cNode.isScriptBody()) {
-            addError( "Annotation " + getType() + " can only be used within a Script.", parent);
+            addError("Annotation " + getType() + " can only be used within a Script.", parent);
             return;
         }
 
@@ -224,8 +220,8 @@ public class ASTTransformer  extends AbstractASTTransformation {
             return;
         }
 
-        List<AnnotationNode> annotations = parent.getAnnotations( COMMAND_TYPE );
-        if (cNode.getAnnotations( COMMAND_TYPE ).isEmpty()) { // #388 prevent "Duplicate annotation for class" AnnotationFormatError
+        List<AnnotationNode> annotations = parent.getAnnotations(COMMAND_TYPE);
+        if (cNode.getAnnotations(COMMAND_TYPE).isEmpty()) { // #388 prevent "Duplicate annotation for class" AnnotationFormatError
 
             cNode.addAnnotations(annotations);
         }
@@ -242,9 +238,13 @@ public class ASTTransformer  extends AbstractASTTransformation {
             // The reason is that our transform is getting called more than once sometimes.
             if (defaultMethod != null) {
                 cNode.removeMethod(defaultMethod);
-                MethodNode methodNode = new MethodNode(runScriptMethod.getName(), runScriptMethod.getModifiers() & ~ACC_ABSTRACT
-                                , runScriptMethod.getReturnType(), runScriptMethod.getParameters(), runScriptMethod.getExceptions()
-                                , defaultMethod.getCode());
+                MethodNode methodNode = new MethodNode(
+                        runScriptMethod.getName(),
+                        runScriptMethod.getModifiers() & ~ACC_ABSTRACT,
+                        runScriptMethod.getReturnType(),
+                        runScriptMethod.getParameters(),
+                        runScriptMethod.getExceptions(),
+                        defaultMethod.getCode());
                 // The AST node metadata has the flag that indicates that this method is a script body.
                 // It may also be carrying data for other AST transforms.
                 methodNode.copyNodeMetaData(defaultMethod);
@@ -263,7 +263,7 @@ public class ASTTransformer  extends AbstractASTTransformation {
 
     private static boolean isCustomScriptBodyMethod(MethodNode node) {
         return node != null
-                        && !(node.getDeclaringClass().equals(ClassHelper.SCRIPT_TYPE)
+                && !(node.getDeclaringClass().equals(ClassHelper.SCRIPT_TYPE)
                         && "run".equals(node.getName())
                         && node.getParameters().length == 0);
     }

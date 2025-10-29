@@ -20,6 +20,7 @@ package org.commonjava.maven.ext.common.json;
  */
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,20 +30,20 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PropertiesItem
-{
+public class PropertiesItem {
     /**
      * The original value of the property.
+     * 
      * @return the old value
      */
     @Getter
     @Setter
-    @JsonProperty( "oldValue" )
+    @JsonProperty("oldValue")
     private String oldValue;
 
     /**
      * The new value of the property.
      */
-    @JsonProperty( "value" )
+    @JsonProperty("value")
     private String newValue;
 }

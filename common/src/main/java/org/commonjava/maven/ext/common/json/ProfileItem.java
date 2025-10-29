@@ -19,42 +19,44 @@ package org.commonjava.maven.ext.common.json;
  * Created by JacksonGenerator on 23/07/2019.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.Getter;
-import lombok.Setter;
-import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
-import org.commonjava.maven.ext.common.util.JSONUtils;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
+import org.commonjava.maven.ext.common.util.JSONUtils;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import lombok.Getter;
+import lombok.Setter;
+
 @Getter
 @Setter
-@JsonPropertyOrder( "profileId" )
-public class ProfileItem
-{
-    @JsonProperty( "profileId" )
+@JsonPropertyOrder("profileId")
+public class ProfileItem {
+    @JsonProperty("profileId")
     private String id;
 
     /**
      * A collection of managed plugins
      */
-    @JsonProperty( "managedPlugins" )
+    @JsonProperty("managedPlugins")
     private List<ManagedPluginsItem> managedPlugins = new ArrayList<>();
 
     /**
      * A collection of managed dependencies
      */
-    @JsonProperty( "managedDependencies" )
+    @JsonProperty("managedDependencies")
     private List<ManagedDependenciesItem> managedDependencies = new ArrayList<>();
 
     /**
      * A collection of plugins. Each plugin is rendered as
+     * 
      * <pre>
      *     original-GAV : {
      *         groupId
@@ -63,20 +65,21 @@ public class ProfileItem
      *     }
      * </pre>
      */
-    @JsonProperty( "plugins" )
-    @JsonDeserialize( contentUsing = JSONUtils.ProjectVersionRefDeserializer.class )
-    @JsonSerialize( contentUsing = JSONUtils.ProjectVersionRefSerializer.class )
+    @JsonProperty("plugins")
+    @JsonDeserialize(contentUsing = JSONUtils.ProjectVersionRefDeserializer.class)
+    @JsonSerialize(contentUsing = JSONUtils.ProjectVersionRefSerializer.class)
     private Map<String, ProjectVersionRef> plugins = new HashMap<>();
 
     /**
      * Represent a collection of properties, mapping to key to a {@link PropertiesItem} object
      * containing the new and old value
      */
-    @JsonProperty( "properties" )
+    @JsonProperty("properties")
     private Map<String, PropertiesItem> properties = new HashMap<>();
 
     /**
      * A collection of dependencies. Each dependency is rendered as
+     * 
      * <pre>
      *     original-GAV : {
      *         groupId
@@ -85,8 +88,8 @@ public class ProfileItem
      *     }
      * </pre>
      */
-    @JsonProperty( "dependencies" )
-    @JsonDeserialize( contentUsing = JSONUtils.ProjectVersionRefDeserializer.class )
-    @JsonSerialize( contentUsing = JSONUtils.ProjectVersionRefSerializer.class )
+    @JsonProperty("dependencies")
+    @JsonDeserialize(contentUsing = JSONUtils.ProjectVersionRefDeserializer.class)
+    @JsonSerialize(contentUsing = JSONUtils.ProjectVersionRefSerializer.class)
     private Map<String, ProjectVersionRef> dependencies = new HashMap<>();
 }

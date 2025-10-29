@@ -15,17 +15,18 @@
  */
 package org.commonjava.maven.ext.common.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 import org.apache.maven.model.Dependency;
 import org.commonjava.atlas.maven.ident.ref.InvalidRefException;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleArtifactRef;
 import org.commonjava.atlas.maven.ident.ref.TypeAndClassifier;
 
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Wrapper around SimpleArtifactRef to also store the scope of the dependency.
@@ -36,46 +37,47 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  */
 @Getter
 @Setter
-@EqualsAndHashCode( callSuper = true )
-public class SimpleScopedArtifactRef extends SimpleArtifactRef
-{
+@EqualsAndHashCode(callSuper = true)
+public class SimpleScopedArtifactRef extends SimpleArtifactRef {
     private final String scope;
 
-    public SimpleScopedArtifactRef( final String group, final String artifact, final String version, final String type,
-                                    final String classifier, final String scope )
-    {
-        super( group, artifact, version, type, classifier );
+    public SimpleScopedArtifactRef(
+            final String group,
+            final String artifact,
+            final String version,
+            final String type,
+            final String classifier,
+            final String scope) {
+        super(group, artifact, version, type, classifier);
         this.scope = scope;
     }
 
-    public SimpleScopedArtifactRef( final ProjectVersionRef ref, final TypeAndClassifier tc, final String scope )
-    {
-        super( ref, tc );
+    public SimpleScopedArtifactRef(final ProjectVersionRef ref, final TypeAndClassifier tc, final String scope) {
+        super(ref, tc);
         this.scope = scope;
     }
 
-    public SimpleScopedArtifactRef( final Dependency dependency )
-    {
-        super( dependency.getGroupId(), dependency.getArtifactId(),
-               isEmpty( dependency.getVersion() ) ? "*" : dependency.getVersion(),
-               dependency.getType(), dependency.getClassifier());
+    public SimpleScopedArtifactRef(final Dependency dependency) {
+        super(
+                dependency.getGroupId(),
+                dependency.getArtifactId(),
+                isEmpty(dependency.getVersion()) ? "*" : dependency.getVersion(),
+                dependency.getType(),
+                dependency.getClassifier());
         this.scope = dependency.getScope();
     }
 
-    public static SimpleScopedArtifactRef parse( final String spec )
-    {
-        return parse( spec, null );
+    public static SimpleScopedArtifactRef parse(final String spec) {
+        return parse(spec, null);
     }
 
-    public static SimpleScopedArtifactRef parse( final String spec, String scope )
-    {
-        final String[] parts = spec.split( ":" );
+    public static SimpleScopedArtifactRef parse(final String spec, String scope) {
+        final String[] parts = spec.split(":");
 
-        if ( parts.length < 3 || isEmpty( parts[0] ) || isEmpty( parts[1] ) || isEmpty( parts[2] ) )
-        {
+        if (parts.length < 3 || isEmpty(parts[0]) || isEmpty(parts[1]) || isEmpty(parts[2])) {
             throw new InvalidRefException(
-                            "SimpleArtifactRef must contain AT LEAST non-empty groupId, artifactId, AND version. (Given: '"
-                                            + spec + "')" );
+                    "SimpleArtifactRef must contain AT LEAST non-empty groupId, artifactId, AND version. (Given: '"
+                            + spec + "')");
         }
 
         final String g = parts[0];
@@ -86,32 +88,26 @@ public class SimpleScopedArtifactRef extends SimpleArtifactRef
         String t = "pom";
         String c = null;
 
-        if ( parts.length > 3 )
-        {
+        if (parts.length > 3) {
             // oops, it's a type, not a version...see toString() for the specification.
             t = v;
             v = parts[3];
 
-            if ( parts.length > 4 )
-            {
+            if (parts.length > 4) {
                 c = parts[4];
             }
         }
 
         // assume non-optional, because it might not matter if you're parsing a string like this...you'd be more careful if you were reading something
         // that had an optional field, because it's not in the normal GATV[C] spec.
-        return new SimpleScopedArtifactRef( g, a, v, t, c, scope );
+        return new SimpleScopedArtifactRef(g, a, v, t, c, scope);
     }
 
     @Override
-    public String toString()
-    {
-        if ( isNotEmpty( scope ) )
-        {
+    public String toString() {
+        if (isNotEmpty(scope)) {
             return super.toString() + " : scope=" + scope;
-        }
-        else
-        {
+        } else {
             return super.toString();
         }
     }

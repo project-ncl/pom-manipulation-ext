@@ -15,11 +15,6 @@
  */
 package org.commonjava.maven.ext.common.util;
 
-import lombok.experimental.UtilityClass;
-import org.commonjava.maven.ext.common.ManipulationUncheckedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -27,10 +22,15 @@ import java.security.CodeSource;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 
+import org.commonjava.maven.ext.common.ManipulationUncheckedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import lombok.experimental.UtilityClass;
+
 @UtilityClass
-public class ManifestUtils
-{
-    private static final Logger logger = LoggerFactory.getLogger( ManifestUtils.class );
+public class ManifestUtils {
+    private static final Logger logger = LoggerFactory.getLogger(ManifestUtils.class);
 
     /**
      * Retrieves the SHA this was built with.
@@ -38,50 +38,40 @@ public class ManifestUtils
      * @param target the Class within the jar to find and locate.
      * @return the GIT sha of this codebase.
      */
-    public static String getManifestInformation(Class<?> target)
-    {
+    public static String getManifestInformation(Class<?> target) {
         String result = "";
 
-        if (target == null)
-        {
-            throw new ManipulationUncheckedException( "No target specified." );
+        if (target == null) {
+            throw new ManipulationUncheckedException("No target specified.");
         }
 
-        try
-        {
+        try {
             final CodeSource cs = target.getProtectionDomain().getCodeSource();
-            if ( cs == null )
-            {
-                logger.debug( "Unable to retrieve manifest for {} as CodeSource was null for the protection domain ({})",
-                              target,
-                              target.getProtectionDomain() );
-            }
-            else
-            {
+            if (cs == null) {
+                logger.debug(
+                        "Unable to retrieve manifest for {} as CodeSource was null for the protection domain ({})",
+                        target,
+                        target.getProtectionDomain());
+            } else {
                 final URL jarUrl = cs.getLocation();
 
-                if ( new File( jarUrl.getPath() ).isDirectory() )
-                {
-                    logger.debug( "Unable to retrieve manifest for {} as location is a directory not a jar ({})", target,
-                                  jarUrl.getPath() );
-                }
-                else
-                {
-                    try (JarInputStream jarStream = new JarInputStream( jarUrl.openStream() ))
-                    {
+                if (new File(jarUrl.getPath()).isDirectory()) {
+                    logger.debug(
+                            "Unable to retrieve manifest for {} as location is a directory not a jar ({})",
+                            target,
+                            jarUrl.getPath());
+                } else {
+                    try (JarInputStream jarStream = new JarInputStream(jarUrl.openStream())) {
                         final Manifest manifest = jarStream.getManifest();
-                        if (manifest != null)
-                        {
-                            result = manifest.getMainAttributes().getValue( "Implementation-Version" );
-                            result += " ( SHA: " + manifest.getMainAttributes().getValue( "Scm-Revision" ) + " )";
+                        if (manifest != null) {
+                            result = manifest.getMainAttributes().getValue("Implementation-Version");
+                            result += " ( SHA: " + manifest.getMainAttributes().getValue("Scm-Revision") + " )";
                         }
                     }
                 }
             }
-        }
-        catch ( final IOException e )
-        {
-            throw new ManipulationUncheckedException( "Error retrieving information from manifest", e );
+        } catch (final IOException e) {
+            throw new ManipulationUncheckedException("Error retrieving information from manifest", e);
         }
 
         return result;

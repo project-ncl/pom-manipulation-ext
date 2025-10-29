@@ -15,49 +15,43 @@
  */
 package org.commonjava.maven.ext.core.state;
 
+import java.util.Properties;
+
 import org.apache.maven.model.Parent;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
 import org.commonjava.maven.ext.annotation.ConfigValue;
 import org.commonjava.maven.ext.core.impl.ParentInjectionManipulator;
 
-import java.util.Properties;
-
 /**
  * Captures configuration relating to injection of parent pom.
  * Used by {@link ParentInjectionManipulator}.
  */
 public class ParentInjectionState
-    implements State
-{
+        implements State {
     /**
      * Suffix to enable this modder
      */
-    @ConfigValue( docIndex = "misc.html#parent-injection")
+    @ConfigValue(docIndex = "misc.html#parent-injection")
     private static final String PARENT_INJECTION_PROPERTY = "parentInjection";
 
     private Parent parent = new Parent();
 
-    public ParentInjectionState( final Properties userProps )
-    {
-        initialise( userProps );
+    public ParentInjectionState(final Properties userProps) {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps )
-    {
-        final String gav = userProps.getProperty( PARENT_INJECTION_PROPERTY );
+    public void initialise(Properties userProps) {
+        final String gav = userProps.getProperty(PARENT_INJECTION_PROPERTY);
 
-        if ( gav != null )
-        {
-            ProjectVersionRef ref = SimpleProjectVersionRef.parse( gav );
+        if (gav != null) {
+            ProjectVersionRef ref = SimpleProjectVersionRef.parse(gav);
             parent = new Parent();
-            parent.setGroupId( ref.getGroupId() );
-            parent.setArtifactId( ref.getArtifactId() );
-            parent.setVersion( ref.getVersionString() );
-            parent.setRelativePath( "" );
-        }
-        else
-        {
+            parent.setGroupId(ref.getGroupId());
+            parent.setArtifactId(ref.getArtifactId());
+            parent.setVersion(ref.getVersionString());
+            parent.setRelativePath("");
+        } else {
             parent = null;
         }
     }
@@ -69,14 +63,11 @@ public class ParentInjectionState
      * @see State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return parent != null;
     }
 
-    public Parent getParentInjection()
-    {
+    public Parent getParentInjection() {
         return parent;
     }
 }
-

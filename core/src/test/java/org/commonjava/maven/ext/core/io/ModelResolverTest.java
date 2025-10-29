@@ -15,6 +15,9 @@
  */
 package org.commonjava.maven.ext.core.io;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
 import org.apache.maven.model.Model;
 import org.apache.maven.repository.DefaultMirrorSelector;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
@@ -31,67 +34,66 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 @RunWith(BMUnitRunner.class)
-public class ModelResolverTest
-{
+public class ModelResolverTest {
     @Rule
     public TemporaryFolder temp = new TemporaryFolder();
 
     @Test(expected = ManipulationException.class)
-    @BMRule(name = "retrieve-first-null",
-                    targetClass = "ArtifactManagerImpl",
-                    targetMethod = "retrieveFirst(List<? extends Location> locations, ArtifactRef ref)",
-                    targetLocation = "AT ENTRY",
-                    action = "RETURN null"
-    )
+    @BMRule(
+            name = "retrieve-first-null",
+            targetClass = "ArtifactManagerImpl",
+            targetMethod = "retrieveFirst(List<? extends Location> locations, ArtifactRef ref)",
+            targetLocation = "AT ENTRY",
+            action = "RETURN null")
     public void resolveArtifactTest()
-        throws Exception
-    {
+            throws Exception {
         final ManipulationSession session = new ManipulationSession();
-        final GalleyInfrastructure galleyInfra =
-            new GalleyInfrastructure( session, new DefaultMirrorSelector()).init( null, null, temp.newFolder(
-                            "cache-dir" ) );
-        final GalleyAPIWrapper wrapper = new GalleyAPIWrapper( galleyInfra );
+        final GalleyInfrastructure galleyInfra = new GalleyInfrastructure(session, new DefaultMirrorSelector()).init(
+                null,
+                null,
+                temp.newFolder(
+                        "cache-dir"));
+        final GalleyAPIWrapper wrapper = new GalleyAPIWrapper(galleyInfra);
         final ModelIO model = new ModelIO(wrapper);
 
-        model.resolveRawModel( SimpleProjectVersionRef.parse( "org.commonjava:commonjava:5"  ) );
+        model.resolveRawModel(SimpleProjectVersionRef.parse("org.commonjava:commonjava:5"));
     }
-
 
     @Test
     public void verifyModelEncoding()
-                    throws Exception
-    {
-        final ManipulationSession session = TestUtils.createSession( null );
-        final GalleyInfrastructure galleyInfra =
-                        new GalleyInfrastructure( session, new DefaultMirrorSelector()).init( null, null, temp.newFolder(
-                                        "cache-dir" ) );
-        final GalleyAPIWrapper wrapper = new GalleyAPIWrapper( galleyInfra );
-        final ModelIO model = new ModelIO( wrapper );
+            throws Exception {
+        final ManipulationSession session = TestUtils.createSession(null);
+        final GalleyInfrastructure galleyInfra = new GalleyInfrastructure(session, new DefaultMirrorSelector()).init(
+                null,
+                null,
+                temp.newFolder(
+                        "cache-dir"));
+        final GalleyAPIWrapper wrapper = new GalleyAPIWrapper(galleyInfra);
+        final ModelIO model = new ModelIO(wrapper);
 
-        Model m = model.resolveRawModel( SimpleProjectVersionRef.parse( "org.commonjava:commonjava:12"  ) );
-        assertNull( m.getModelEncoding() );
-        m = model.resolveRawModel( SimpleProjectVersionRef.parse( "org.goots.maven.extensions:alt-deploy-maven-extension:1.4" ) );
-        assertEquals( "UTF-8", m.getModelEncoding() );
+        Model m = model.resolveRawModel(SimpleProjectVersionRef.parse("org.commonjava:commonjava:12"));
+        assertNull(m.getModelEncoding());
+        m = model.resolveRawModel(
+                SimpleProjectVersionRef.parse("org.goots.maven.extensions:alt-deploy-maven-extension:1.4"));
+        assertEquals("UTF-8", m.getModelEncoding());
     }
 
     @Test
     public void resolveRemoteArtifactTest()
-                    throws Exception
-    {
-        final ManipulationSession session = TestUtils.createSession( null );
-        final GalleyInfrastructure galleyInfra =
-                        new GalleyInfrastructure( session, new DefaultMirrorSelector()).init( null, null, temp.newFolder(
-                                        "cache-dir" ) );
-        final GalleyAPIWrapper wrapper = new GalleyAPIWrapper( galleyInfra );
-        final ModelIO model = new ModelIO( wrapper );
+            throws Exception {
+        final ManipulationSession session = TestUtils.createSession(null);
+        final GalleyInfrastructure galleyInfra = new GalleyInfrastructure(session, new DefaultMirrorSelector()).init(
+                null,
+                null,
+                temp.newFolder(
+                        "cache-dir"));
+        final GalleyAPIWrapper wrapper = new GalleyAPIWrapper(galleyInfra);
+        final ModelIO model = new ModelIO(wrapper);
 
-        assertEquals( "groovy-cps",
-                      model.resolveRawModel( SimpleProjectVersionRef.parse( "com.cloudbees:groovy-cps:1.20" ) ).
-                                      getArtifactId() );
+        assertEquals(
+                "groovy-cps",
+                model.resolveRawModel(SimpleProjectVersionRef.parse("com.cloudbees:groovy-cps:1.20")).getArtifactId());
 
     }
 }

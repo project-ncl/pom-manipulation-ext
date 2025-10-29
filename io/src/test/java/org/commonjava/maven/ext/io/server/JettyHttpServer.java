@@ -15,6 +15,8 @@
  */
 package org.commonjava.maven.ext.io.server;
 
+import java.net.InetSocketAddress;
+
 import org.commonjava.maven.ext.io.server.exception.ServerInternalException;
 import org.commonjava.maven.ext.io.server.exception.ServerSetupException;
 import org.eclipse.jetty.server.Handler;
@@ -23,15 +25,12 @@ import org.eclipse.jetty.server.ServerConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.InetSocketAddress;
-
 /**
  * @author vdedik@redhat.com
  */
 public class JettyHttpServer
-        implements HttpServer
-{
-    private static final Logger logger = LoggerFactory.getLogger( JettyHttpServer.class );
+        implements HttpServer {
+    private static final Logger logger = LoggerFactory.getLogger(JettyHttpServer.class);
 
     private final Server jettyServer;
 
@@ -39,45 +38,35 @@ public class JettyHttpServer
 
     private Integer port;
 
-    public JettyHttpServer( Handler handler )
-    {
+    public JettyHttpServer(Handler handler) {
         this.handler = handler;
         this.jettyServer = createAndStartJetty();
     }
 
-    public Integer getPort()
-    {
+    public Integer getPort() {
         return this.port;
     }
 
-    public void shutdown()
-    {
-        try
-        {
+    public void shutdown() {
+        try {
             this.jettyServer.stop();
-        }
-        catch ( Exception e )
-        {
-            throw new ServerInternalException( "Error shutting down jetty", e );
+        } catch (Exception e) {
+            throw new ServerInternalException("Error shutting down jetty", e);
         }
     }
 
-    private Server createAndStartJetty()
-    {
-        Server jetty = new Server(new InetSocketAddress( "127.0.0.1", 0 ) );
-        jetty.setHandler( handler );
+    private Server createAndStartJetty() {
+        Server jetty = new Server(new InetSocketAddress("127.0.0.1", 0));
+        jetty.setHandler(handler);
 
-        try
-        {
+        try {
             jetty.start();
-        }
-        catch ( Exception e )
-        {
-            throw new ServerSetupException( "Error starting jetty", e );
+        } catch (Exception e) {
+            throw new ServerSetupException("Error starting jetty", e);
         }
 
-        logger.debug( "Returning local port for Jetty {}", ((ServerConnector)jetty.getConnectors()[0]).getLocalPort());
-        port = ((ServerConnector)jetty.getConnectors()[0]).getLocalPort();
+        logger.debug("Returning local port for Jetty {}", ((ServerConnector) jetty.getConnectors()[0]).getLocalPort());
+        port = ((ServerConnector) jetty.getConnectors()[0]).getLocalPort();
 
         return jetty;
     }

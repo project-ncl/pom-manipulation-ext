@@ -35,8 +35,7 @@ package org.commonjava.maven.ext.common.jdom;
  *
  * @version $Revision$ $Date$
  */
-class IndentationCounter
-{
+class IndentationCounter {
 
     // --------------------------/
     // - Class/Member Variables -/
@@ -56,8 +55,7 @@ class IndentationCounter
     // - Constructors -/
     // ----------------/
 
-    public IndentationCounter( final int depthLevel )
-    {
+    public IndentationCounter(final int depthLevel) {
         level = depthLevel;
     } // -- org.apache.maven.model.io.jdom.Counter(int)
 
@@ -70,8 +68,7 @@ class IndentationCounter
      *
      * @return int
      */
-    public int getCurrentIndex()
-    {
+    public int getCurrentIndex() {
         return currentIndex;
     } // -- int getCurrentIndex()
 
@@ -80,16 +77,14 @@ class IndentationCounter
      *
      * @return int
      */
-    public int getDepth()
-    {
+    public int getDepth() {
         return level;
     } // -- int getDepth()
 
     /**
      * Method increaseCount.
      */
-    public void increaseCount()
-    {
+    public void increaseCount() {
         currentIndex = currentIndex + 1;
     } // -- void increaseCount()
 

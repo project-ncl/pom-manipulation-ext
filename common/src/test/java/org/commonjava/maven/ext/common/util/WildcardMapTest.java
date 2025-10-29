@@ -15,9 +15,6 @@
  */
 package org.commonjava.maven.ext.common.util;
 
-import ch.qos.logback.classic.Logger;
-import ch.qos.logback.classic.spi.ILoggingEvent;
-import ch.qos.logback.core.read.ListAppender;
 import org.commonjava.atlas.maven.ident.ref.ProjectRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectRef;
 import org.hamcrest.Matchers;
@@ -29,8 +26,11 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.slf4j.LoggerFactory;
 
-public class WildcardMapTest
-{
+import ch.qos.logback.classic.Logger;
+import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.read.ListAppender;
+
+public class WildcardMapTest {
     private WildcardMap<String> map;
     private ListAppender<ILoggingEvent> m_listAppender;
 
@@ -38,8 +38,7 @@ public class WildcardMapTest
     public final SystemOutRule systemOutRule = new SystemOutRule().enableLog().muteForSuccessfulTests();
 
     @Before
-    public void setUp()
-    {
+    public void setUp() {
         m_listAppender = new ListAppender<>();
         m_listAppender.start();
 
@@ -50,91 +49,88 @@ public class WildcardMapTest
     }
 
     @After
-    public void tearDown()
-    {
+    public void tearDown() {
         Logger root = (Logger) LoggerFactory.getLogger(WildcardMap.class);
         root.detachAppender(m_listAppender);
     }
 
     @Test
-    public void testContainsKey()
-    {
-        map.put( SimpleProjectRef.parse( "org.group:new-artifact" ), "1.2");
+    public void testContainsKey() {
+        map.put(SimpleProjectRef.parse("org.group:new-artifact"), "1.2");
 
-        Assert.assertFalse( map.containsKey( SimpleProjectRef.parse( "org.group:*" )));
-        Assert.assertFalse( map.containsKey( SimpleProjectRef.parse( "org.group:old-artifact" )));
+        Assert.assertFalse(map.containsKey(SimpleProjectRef.parse("org.group:*")));
+        Assert.assertFalse(map.containsKey(SimpleProjectRef.parse("org.group:old-artifact")));
     }
 
     @Test
-    public void testGet()
-    {
+    public void testGet() {
         final String value = "1.2";
-        ProjectRef key1 = SimpleProjectRef.parse( "org.group:new-artifact" );
-        ProjectRef key2 = SimpleProjectRef.parse( "org.group:new-new-artifact" );
+        ProjectRef key1 = SimpleProjectRef.parse("org.group:new-artifact");
+        ProjectRef key2 = SimpleProjectRef.parse("org.group:new-new-artifact");
 
         map.put(key1, value);
         map.put(key2, value);
 
-        Assert.assertEquals( value, map.get( key1 ) );
-        Assert.assertEquals( value, map.get( key2 ) );
+        Assert.assertEquals(value, map.get(key1));
+        Assert.assertEquals(value, map.get(key2));
     }
 
     @Test
-    public void testGetSingle()
-    {
+    public void testGetSingle() {
         final String value = "1.2";
 
-        map.put( SimpleProjectRef.parse( "org.group:new-artifact" ), value);
+        map.put(SimpleProjectRef.parse("org.group:new-artifact"), value);
 
-        Assert.assertNotEquals( value, map.get( SimpleProjectRef.parse( "org.group:i-dont-exist-artifact" ) ) );
+        Assert.assertNotEquals(value, map.get(SimpleProjectRef.parse("org.group:i-dont-exist-artifact")));
     }
 
     @Test
-    public void testPut()
-    {
-        ProjectRef key = SimpleProjectRef.parse( "foo:bar" );
+    public void testPut() {
+        ProjectRef key = SimpleProjectRef.parse("foo:bar");
 
         map.put(key, "value");
-        Assert.assertTrue( "Should have retrieved value", map.containsKey( key));
+        Assert.assertTrue("Should have retrieved value", map.containsKey(key));
     }
 
     @Test
-    public void testPutWildcard()
-    {
-        ProjectRef key1 = SimpleProjectRef.parse( "org.group:*" );
-        ProjectRef key2 = SimpleProjectRef.parse( "org.group:artifact" );
-        ProjectRef key3 = SimpleProjectRef.parse( "org.group:new-artifact" );
+    public void testPutWildcard() {
+        ProjectRef key1 = SimpleProjectRef.parse("org.group:*");
+        ProjectRef key2 = SimpleProjectRef.parse("org.group:artifact");
+        ProjectRef key3 = SimpleProjectRef.parse("org.group:new-artifact");
 
         map.put(key1, "1.1");
 
-        Assert.assertTrue( "Should have retrieved wildcard value", map.containsKey( key2));
-        Assert.assertTrue( "Should have retrieved wildcard value", map.containsKey( key1));
+        Assert.assertTrue("Should have retrieved wildcard value", map.containsKey(key2));
+        Assert.assertTrue("Should have retrieved wildcard value", map.containsKey(key1));
 
         map.put(key3, "1.2");
 
-        Assert.assertTrue( "Should have retrieved wildcard value", map.containsKey( key2));
-        Assert.assertTrue( "Should have retrieved wildcard value", map.containsKey( key1));
+        Assert.assertTrue("Should have retrieved wildcard value", map.containsKey(key2));
+        Assert.assertTrue("Should have retrieved wildcard value", map.containsKey(key1));
 
-        Assert.assertThat( m_listAppender.list.toString(),
-                           Matchers.containsString( "Unable to add org.group:new-artifact with value 1.2 as wildcard mapping for org.group already exists"));
+        Assert.assertThat(
+                m_listAppender.list.toString(),
+                Matchers.containsString(
+                        "Unable to add org.group:new-artifact with value 1.2 as wildcard mapping for org.group already exists"));
 
     }
 
     @Test
-    public void testPutWildcardSecond()
-    {
-        ProjectRef key1 = SimpleProjectRef.parse( "org.group:artifact" );
-        ProjectRef key2 = SimpleProjectRef.parse( "org.group:*" );
+    public void testPutWildcardSecond() {
+        ProjectRef key1 = SimpleProjectRef.parse("org.group:artifact");
+        ProjectRef key2 = SimpleProjectRef.parse("org.group:*");
 
         map.put(key1, "1.1");
         map.put(key2, "1.2");
 
-        Assert.assertTrue( "Should have retrieved explicit value via wildcard", map.containsKey( key1));
-        Assert.assertTrue( "Should have retrieved wildcard value", map.containsKey( key2));
-        Assert.assertNotEquals( "Should not have retrieved value 1.1", "1.1", map.get( key1 ) );
+        Assert.assertTrue("Should have retrieved explicit value via wildcard", map.containsKey(key1));
+        Assert.assertTrue("Should have retrieved wildcard value", map.containsKey(key2));
+        Assert.assertNotEquals("Should not have retrieved value 1.1", "1.1", map.get(key1));
 
-        Assert.assertThat( m_listAppender.list.toString(),
-                           Matchers.containsString( "Emptying map with keys [artifact] as replacing with wildcard mapping org.group:*"));
+        Assert.assertThat(
+                m_listAppender.list.toString(),
+                Matchers.containsString(
+                        "Emptying map with keys [artifact] as replacing with wildcard mapping org.group:*"));
 
     }
 }

@@ -15,8 +15,6 @@
  */
 package org.commonjava.maven.ext.integrationtest.invoker;
 
-import org.apache.commons.lang3.SystemUtils;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -26,30 +24,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.commons.lang3.SystemUtils;
+
 /**
  * @author vdedik@redhat.com
  */
-public interface ExecutionParser
-{
-    ExecutionParserHandler SKIP_HANDLER = ( execution, params ) -> {
-        String key = params.get( "key" );
-        String value = params.get( "value" );
+public interface ExecutionParser {
+    ExecutionParserHandler SKIP_HANDLER = (execution, params) -> {
+        String key = params.get("key");
+        String value = params.get("value");
 
-        if ( key.matches( "invoker\\.os\\.family.*" ) && value != null)
-        {
+        if (key.matches("invoker\\.os\\.family.*") && value != null) {
             value = value.trim();
             boolean invert = false;
-            if ( value.startsWith( "!" ) )
-            {
+            if (value.startsWith("!")) {
                 invert = true;
-                value = value.substring( 1 );
+                value = value.substring(1);
             }
             // Very limited handling of selector conditions - just enough to skip for Windows.
-            if ( "windows".equalsIgnoreCase( value ) )
-            {
-                if ( invert && SystemUtils.IS_OS_WINDOWS )
-                {
-                    execution.setSkip( true );
+            if ("windows".equalsIgnoreCase(value)) {
+                if (invert && SystemUtils.IS_OS_WINDOWS) {
+                    execution.setSkip(true);
                 }
             }
         }
@@ -58,81 +53,72 @@ public interface ExecutionParser
     /**
      * Sets mvn command of Execution
      */
-    ExecutionParserHandler BUILD_HANDLER = ( execution, params ) -> {
-        String key = params.get( "key" );
-        String value = params.get( "value" );
+    ExecutionParserHandler BUILD_HANDLER = (execution, params) -> {
+        String key = params.get("key");
+        String value = params.get("value");
 
-        if ( key.matches( "invoker\\.goals.*" ) )
-        {
-            execution.setMvnCommand( value );
-        }
-        else if ( !key.matches( "invoker\\..*" ) && value.isEmpty() )
-        {
-            execution.setMvnCommand( key );
+        if (key.matches("invoker\\.goals.*")) {
+            execution.setMvnCommand(value);
+        } else if (!key.matches("invoker\\..*") && value.isEmpty()) {
+            execution.setMvnCommand(key);
         }
     };
 
-    ExecutionParserHandler BUILD_PROFILES_HANDLER = ( execution, params ) -> {
-        String key = params.get( "key" );
-        String value = params.get( "value" );
+    ExecutionParserHandler BUILD_PROFILES_HANDLER = (execution, params) -> {
+        String key = params.get("key");
+        String value = params.get("value");
 
-        if ( key.matches( "invoker\\.profiles.*" ) )
-        {
-            Map<String,String> flags = execution.getFlags();
-            if ( flags == null)
-            {
-                flags = new HashMap<>(  );
+        if (key.matches("invoker\\.profiles.*")) {
+            Map<String, String> flags = execution.getFlags();
+            if (flags == null) {
+                flags = new HashMap<>();
             }
-            flags.put( "activeProfiles", value );
-            execution.setFlags( flags );
+            flags.put("activeProfiles", value);
+            execution.setFlags(flags);
         }
     };
 
     /**
      * Sets expected result of Execution (i.e. success true/false)
      */
-    ExecutionParserHandler BUILD_RESULT_HANDLER = ( execution, params ) -> {
-        String key = params.get( "key" );
-        String value = params.get( "value" );
+    ExecutionParserHandler BUILD_RESULT_HANDLER = (execution, params) -> {
+        String key = params.get("key");
+        String value = params.get("value");
 
-        if ( key.matches( "invoker\\.buildResult.*" ) && value.equals( "failure" ) )
-        {
-            execution.setSuccess( false );
+        if (key.matches("invoker\\.buildResult.*") && value.equals("failure")) {
+            execution.setSuccess(false);
         }
     };
 
     /**
      * Sets java parameters to Execution
      */
-    ExecutionParserHandler SYSTEM_PROPERTIES_HANDLER = ( execution, params ) -> {
-        String key = params.get( "key" );
-        String value = params.get( "value" );
+    ExecutionParserHandler SYSTEM_PROPERTIES_HANDLER = (execution, params) -> {
+        String key = params.get("key");
+        String value = params.get("value");
 
-        if ( key.matches( "invoker\\.systemPropertiesFile.*" ) )
-        {
-            Properties props = loadProps( execution.getLocation() + "/" + value );
+        if (key.matches("invoker\\.systemPropertiesFile.*")) {
+            Properties props = loadProps(execution.getLocation() + "/" + value);
 
             // Properties to Map
-            Map<String, String> javaParams = propsToMap( props );
-            if ( execution.getJavaParams() != null )
-            {
-                javaParams.putAll( execution.getJavaParams() );
+            Map<String, String> javaParams = propsToMap(props);
+            if (execution.getJavaParams() != null) {
+                javaParams.putAll(execution.getJavaParams());
             }
 
             // And put it all into execution
-            execution.setJavaParams( javaParams );
+            execution.setJavaParams(javaParams);
         }
     };
 
     /**
      * Used after all other handlers were run
      */
-    ExecutionParserHandler POST_HANDLER = ( execution, params ) -> {
-        if ( execution.getJavaParams() == null )
-        {
-            Properties props = loadProps( execution.getLocation() + "/test.properties" );
-            Map<String, String> javaParams = propsToMap( props );
-            execution.setJavaParams( javaParams );
+    ExecutionParserHandler POST_HANDLER = (execution, params) -> {
+        if (execution.getJavaParams() == null) {
+            Properties props = loadProps(execution.getLocation() + "/test.properties");
+            Map<String, String> javaParams = propsToMap(props);
+            execution.setJavaParams(javaParams);
         }
     };
 
@@ -142,18 +128,13 @@ public interface ExecutionParser
      * @param filePath - File path of the *.properties file
      * @return Loaded properties
      */
-    static Properties loadProps(String filePath)
-    {
-        File propsFile = new File( filePath );
+    static Properties loadProps(String filePath) {
+        File propsFile = new File(filePath);
         Properties props = new Properties();
-        if ( propsFile.isFile() )
-        {
-            try ( Reader reader = Files.newBufferedReader( propsFile.toPath() ) )
-            {
-                props.load( reader );
-            }
-            catch ( IOException e )
-            {
+        if (propsFile.isFile()) {
+            try (Reader reader = Files.newBufferedReader(propsFile.toPath())) {
+                props.load(reader);
+            } catch (IOException e) {
                 // ignore
             }
         }
@@ -161,12 +142,10 @@ public interface ExecutionParser
         return props;
     }
 
-    static Map<String, String> propsToMap(Properties props)
-    {
-        Map<String, String> map = new HashMap<>( props.size() );
-        for ( Object p : props.keySet() )
-        {
-            map.put( (String) p, props.getProperty( (String) p ) );
+    static Map<String, String> propsToMap(Properties props) {
+        Map<String, String> map = new HashMap<>(props.size());
+        for (Object p : props.keySet()) {
+            map.put((String) p, props.getProperty((String) p));
         }
 
         return map;
@@ -178,5 +157,5 @@ public interface ExecutionParser
      * @param workingDir - Working directory where invoker.properties are present
      * @return Collection of executions
      */
-    Collection<Execution> parse( String workingDir );
+    Collection<Execution> parse(String workingDir);
 }

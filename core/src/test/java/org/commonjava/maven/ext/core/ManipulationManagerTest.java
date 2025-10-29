@@ -15,6 +15,19 @@
  */
 package org.commonjava.maven.ext.core;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.commons.io.FileUtils;
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.core.fixture.PlexusTestRunner;
@@ -28,88 +41,72 @@ import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import java.io.File;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Properties;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-@RunWith( PlexusTestRunner.class )
+@RunWith(PlexusTestRunner.class)
 @Named
-public class ManipulationManagerTest
-{
+public class ManipulationManagerTest {
     @Rule
     public final TemporaryFolder folder = new TemporaryFolder();
 
     @Rule
     public final SystemOutRule systemRule = new SystemOutRule().enableLog().muteForSuccessfulTests();
 
-    @SuppressWarnings( "unused" )
+    @SuppressWarnings("unused")
     @Inject
     private Map<String, Manipulator> manipulators;
 
     @Test
-    public void testListManipulators()
-    {
-        assertNotNull( manipulators );
+    public void testListManipulators() {
+        assertNotNull(manipulators);
 
-        for ( final Map.Entry<String, Manipulator> entry : manipulators.entrySet() )
-        {
-            assertTrue (entry.getValue().getExecutionIndex() > 0 && entry.getValue().getExecutionIndex() < 100);
+        for (final Map.Entry<String, Manipulator> entry : manipulators.entrySet()) {
+            assertTrue(entry.getValue().getExecutionIndex() > 0 && entry.getValue().getExecutionIndex() < 100);
         }
     }
 
     @Test
-    public void testSessionStartupMessage()
-    {
+    public void testSessionStartupMessage() {
         new ManipulationSession();
-        assertTrue( systemRule.getLog().contains( "Running Maven Manipulation Extension (PME)" ) );
+        assertTrue(systemRule.getLog().contains("Running Maven Manipulation Extension (PME)"));
     }
 
     @Test
     public void testDepOverrideAndStrictPropertyValidation()
-                    throws IOException, ManipulationException
-    {
+            throws IOException, ManipulationException {
         final File projectroot = folder.newFile();
-        final File resource = TestUtils.resolveFileResource( "", "pom-variables.xml" );
-        FileUtils.copyFile( resource, projectroot );
+        final File resource = TestUtils.resolveFileResource("", "pom-variables.xml");
+        FileUtils.copyFile(resource, projectroot);
         Properties p = new Properties();
-        p.put( DependencyState.DEPENDENCY_OVERRIDE_PREFIX + ".com.fasterxml.jackson.dataformat:*@*", "" );
-        p.put( CommonState.DEPENDENCY_PROPERTY_VALIDATION, "true" );
+        p.put(DependencyState.DEPENDENCY_OVERRIDE_PREFIX + ".com.fasterxml.jackson.dataformat:*@*", "");
+        p.put(CommonState.DEPENDENCY_PROPERTY_VALIDATION, "true");
 
-        CommonState commonState = TestUtils.createSessionAndManager( p, projectroot ).getSession().getState( CommonState.class );
+        CommonState commonState = TestUtils.createSessionAndManager(p, projectroot)
+                .getSession()
+                .getState(CommonState.class);
 
-        assertTrue( systemRule.getLog().contains( "Disabling strictPropertyValidation as dependencyOverrides are enabled" ) );
-        assertEquals( 0, (int) commonState.getStrictDependencyPluginPropertyValidation() );
+        assertTrue(
+                systemRule.getLog().contains("Disabling strictPropertyValidation as dependencyOverrides are enabled"));
+        assertEquals(0, (int) commonState.getStrictDependencyPluginPropertyValidation());
     }
-
 
     @Test
     public void testRewriteChanged()
-                    throws IOException, ManipulationException
-    {
+            throws IOException, ManipulationException {
         final File root = folder.newFolder();
-        final File base = TestUtils.resolveFileResource( "groovy-project-removal", "" );
-        FileUtils.copyDirectory( base, root );
-        final File projectRoot = new File ( root, "pom.xml");
-        final File projectRootBackup = new File ( root, "pom.backup.xml");
-        FileUtils.copyFile( projectRoot, projectRootBackup );
+        final File base = TestUtils.resolveFileResource("groovy-project-removal", "");
+        FileUtils.copyDirectory(base, root);
+        final File projectRoot = new File(root, "pom.xml");
+        final File projectRootBackup = new File(root, "pom.backup.xml");
+        FileUtils.copyFile(projectRoot, projectRootBackup);
 
         Properties p = new Properties();
-        p.setProperty( "versionIncrementalSuffix", "rebuild" );
-        p.put( ManipulationManager.REWRITE_CHANGED, "false" );
+        p.setProperty("versionIncrementalSuffix", "rebuild");
+        p.put(ManipulationManager.REWRITE_CHANGED, "false");
 
-        TestUtils.SMContainer smc = TestUtils.createSessionAndManager( p, projectRoot );
-        smc.getManager().scanAndApply( smc.getSession() );
+        TestUtils.SMContainer smc = TestUtils.createSessionAndManager(p, projectRoot);
+        smc.getManager().scanAndApply(smc.getSession());
 
-        assertTrue( systemRule.getLog().contains( "Maven-Manipulation-Extension: Finished" ) );
-        assertTrue( FileUtils.contentEquals( projectRoot, projectRootBackup) );
-        assertFalse( systemRule.getLog().contains( "Maven-Manipulation-Extension: Rewrite changed" ) );
+        assertTrue(systemRule.getLog().contains("Maven-Manipulation-Extension: Finished"));
+        assertTrue(FileUtils.contentEquals(projectRoot, projectRootBackup));
+        assertFalse(systemRule.getLog().contains("Maven-Manipulation-Extension: Rewrite changed"));
     }
 }

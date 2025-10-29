@@ -15,38 +15,34 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import org.commonjava.maven.ext.annotation.ConfigValue;
-
 import java.util.Properties;
+
+import org.commonjava.maven.ext.annotation.ConfigValue;
 
 /**
  * Captures configuration relating to enforcing removal of use of ${project.version} from pom.
  */
 public class ProjectVersionEnforcingState
-    implements State
-{
+        implements State {
     /**
      * Property used to set the enforcement mode.
      */
-    @ConfigValue( docIndex = "misc.html#projectversion-expression-replacement" )
+    @ConfigValue(docIndex = "misc.html#projectversion-expression-replacement")
     private static final String ENFORCE_PROJECT_VERSION = "enforceProjectVersion";
 
-    static
-    {
-        State.activeByDefault.add( ProjectVersionEnforcingState.class );
+    static {
+        State.activeByDefault.add(ProjectVersionEnforcingState.class);
     }
 
     // Default to on.
     private boolean enabled = true;
 
-    public ProjectVersionEnforcingState( final Properties userProps )
-    {
-        initialise( userProps );
+    public ProjectVersionEnforcingState(final Properties userProps) {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps )
-    {
-        enabled = Boolean.parseBoolean( userProps.getProperty( ENFORCE_PROJECT_VERSION, "true" ) );
+    public void initialise(Properties userProps) {
+        enabled = Boolean.parseBoolean(userProps.getProperty(ENFORCE_PROJECT_VERSION, "true"));
     }
 
     /**
@@ -57,8 +53,7 @@ public class ProjectVersionEnforcingState
      * @see EnforcingMode
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return enabled;
     }
 }

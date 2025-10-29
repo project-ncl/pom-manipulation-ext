@@ -15,6 +15,10 @@
  */
 package org.commonjava.maven.ext.core.fixture;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Map;
+
 import org.commonjava.maven.ext.io.resolver.MavenLocationExpander;
 import org.commonjava.maven.galley.TransferException;
 import org.commonjava.maven.galley.event.EventMetadata;
@@ -28,33 +32,28 @@ import org.commonjava.maven.galley.spi.transport.ListingJob;
 import org.commonjava.maven.galley.spi.transport.PublishJob;
 import org.commonjava.maven.galley.spi.transport.Transport;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Map;
-
 public class StubTransport
-    implements Transport
-{
+        implements Transport {
 
     private final Map<String, byte[]> dataMap;
 
-    public StubTransport( final Map<String, byte[]> dataMap )
-    {
+    public StubTransport(final Map<String, byte[]> dataMap) {
         this.dataMap = dataMap;
     }
 
     @Override
-    public DownloadJob createDownloadJob( final ConcreteResource resource, final Transfer transfer, Map<Transfer, Long> var3,
-                                          final int timeoutSeconds, EventMetadata eventMetadata )
-    {
-        System.out.println( "Creating download for: " + resource.getPath() );
-        return new DownloadJob()
-        {
+    public DownloadJob createDownloadJob(
+            final ConcreteResource resource,
+            final Transfer transfer,
+            Map<Transfer, Long> var3,
+            final int timeoutSeconds,
+            EventMetadata eventMetadata) {
+        System.out.println("Creating download for: " + resource.getPath());
+        return new DownloadJob() {
             Transfer t = null;
 
             @Override
-            public long getTransferSize()
-            {
+            public long getTransferSize() {
                 return 0;
             }
 
@@ -65,72 +64,69 @@ public class StubTransport
 
             @Override
             public DownloadJob call()
-                throws Exception
-            {
-                final byte[] data = dataMap.get( resource.getPath() );
+                    throws Exception {
+                final byte[] data = dataMap.get(resource.getPath());
 
-                if ( data == null )
-                {
+                if (data == null) {
                     return null;
                 }
 
                 t = transfer;
-                t.delete( false );
+                t.delete(false);
 
-                try ( OutputStream out = t.openOutputStream( TransferOperation.DOWNLOAD ) )
-                {
-                    out.write( data );
+                try (OutputStream out = t.openOutputStream(TransferOperation.DOWNLOAD)) {
+                    out.write(data);
                 }
                 return this;
             }
 
             @Override
-            public TransferException getError()
-            {
+            public TransferException getError() {
                 return null;
             }
         };
     }
 
     @Override
-    public ExistenceJob createExistenceJob( final ConcreteResource arg0, final Transfer transfer, final int arg1 )
-            throws TransferException
-    {
-        throw new TransferException( "Not implemented in this stub!" );
+    public ExistenceJob createExistenceJob(final ConcreteResource arg0, final Transfer transfer, final int arg1)
+            throws TransferException {
+        throw new TransferException("Not implemented in this stub!");
     }
 
     @Override
-        public PublishJob createPublishJob( final ConcreteResource arg0, final InputStream arg1, final long arg2,
-        final int arg3 )
-        throws TransferException
-    {
-        throw new TransferException( "Not implemented in this stub!" );
+    public PublishJob createPublishJob(
+            final ConcreteResource arg0,
+            final InputStream arg1,
+            final long arg2,
+            final int arg3)
+            throws TransferException {
+        throw new TransferException("Not implemented in this stub!");
     }
 
     @Override
-    public PublishJob createPublishJob( final ConcreteResource arg0, final InputStream arg1, final long arg2,
-                                        final String arg3, final int arg4 )
-        throws TransferException
-    {
-        throw new TransferException( "Not implemented in this stub!" );
+    public PublishJob createPublishJob(
+            final ConcreteResource arg0,
+            final InputStream arg1,
+            final long arg2,
+            final String arg3,
+            final int arg4)
+            throws TransferException {
+        throw new TransferException("Not implemented in this stub!");
     }
 
     @Override
-    public boolean handles( final Location loc )
-    {
-        return loc.equals( MavenLocationExpander.EXPANSION_TARGET );
+    public boolean handles(final Location loc) {
+        return loc.equals(MavenLocationExpander.EXPANSION_TARGET);
     }
 
     @Override
-    public boolean allowsCaching()
-    {
+    public boolean allowsCaching() {
         return false;
     }
 
     @Override
-    public ListingJob createListingJob( final ConcreteResource resource, final Transfer target, final int timeoutSeconds )
-        throws TransferException
-    {
-        throw new TransferException( "Not implemented in this stub!" );
+    public ListingJob createListingJob(final ConcreteResource resource, final Transfer target, final int timeoutSeconds)
+            throws TransferException {
+        throw new TransferException("Not implemented in this stub!");
     }
 }

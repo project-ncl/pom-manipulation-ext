@@ -15,38 +15,34 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import org.commonjava.maven.ext.annotation.ConfigValue;
-
 import java.util.Properties;
+
+import org.commonjava.maven.ext.annotation.ConfigValue;
 
 /**
  * Captures configuration relating to resolving Maven ranges
  * Used by {@link org.commonjava.maven.ext.core.impl.RangeResolver}.
  */
 public class RangeResolverState
-    implements State
-{
+        implements State {
     /**
      * Suffix to enable this modder
      */
-    @ConfigValue( docIndex = "misc.html#version-range-resolving")
+    @ConfigValue(docIndex = "misc.html#version-range-resolving")
     private static final String RESOLVE_RANGES_PROPERTY = "resolveRanges";
 
-    static
-    {
-        State.activeByDefault.add( RangeResolverState.class );
+    static {
+        State.activeByDefault.add(RangeResolverState.class);
     }
 
     private Boolean enabled;
 
-    public RangeResolverState( final Properties userProps )
-    {
-        initialise( userProps );
+    public RangeResolverState(final Properties userProps) {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps )
-    {
-         enabled = Boolean.parseBoolean( userProps.getProperty( RESOLVE_RANGES_PROPERTY, "true" ) );
+    public void initialise(Properties userProps) {
+        enabled = Boolean.parseBoolean(userProps.getProperty(RESOLVE_RANGES_PROPERTY, "true"));
     }
 
     /**
@@ -56,9 +52,7 @@ public class RangeResolverState
      * @see State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return enabled;
     }
 }
-

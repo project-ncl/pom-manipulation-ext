@@ -15,37 +15,34 @@
  */
 package org.commonjava.maven.ext.core.state;
 
+import java.util.List;
+import java.util.Properties;
+
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.maven.ext.annotation.ConfigValue;
 import org.commonjava.maven.ext.core.impl.ProfileInjectionManipulator;
 import org.commonjava.maven.ext.core.util.IdUtils;
-
-import java.util.List;
-import java.util.Properties;
 
 /**
  * Captures configuration relating to injection profiles from a remote POM.
  * Used by {@link ProfileInjectionManipulator}.
  */
 public class ProfileInjectionState
-    implements State
-{
+        implements State {
     /**
      * Suffix to enable this modder
      */
-    @ConfigValue( docIndex = "misc.html#profile-injection")
+    @ConfigValue(docIndex = "misc.html#profile-injection")
     private static final String PROFILE_INJECTION_PROPERTY = "profileInjection";
 
     private List<ProjectVersionRef> profileMgmt;
 
-    public ProfileInjectionState( final Properties userProps )
-    {
-        initialise( userProps );
+    public ProfileInjectionState(final Properties userProps) {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps )
-    {
-        profileMgmt = IdUtils.parseGAVs( userProps.getProperty( PROFILE_INJECTION_PROPERTY ) );
+    public void initialise(Properties userProps) {
+        profileMgmt = IdUtils.parseGAVs(userProps.getProperty(PROFILE_INJECTION_PROPERTY));
     }
 
     /**
@@ -55,13 +52,11 @@ public class ProfileInjectionState
      * @see org.commonjava.maven.ext.core.state.State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return profileMgmt != null && !profileMgmt.isEmpty();
     }
 
-    public List<ProjectVersionRef> getRemoteProfileInjectionMgmt()
-    {
+    public List<ProjectVersionRef> getRemoteProfileInjectionMgmt() {
         return profileMgmt;
     }
 }

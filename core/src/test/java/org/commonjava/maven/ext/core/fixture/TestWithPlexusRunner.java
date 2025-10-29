@@ -15,28 +15,26 @@
  */
 package org.commonjava.maven.ext.core.fixture;
 
-import org.apache.maven.settings.building.SettingsBuilder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import static org.junit.Assert.assertNotNull;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import static org.junit.Assert.assertNotNull;
+import org.apache.maven.settings.building.SettingsBuilder;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-@RunWith( PlexusTestRunner.class )
+@RunWith(PlexusTestRunner.class)
 @Named
-public class TestWithPlexusRunner
-{
+public class TestWithPlexusRunner {
     @Inject
     private SettingsBuilder settingsBuilder;
 
     @Test
-    public void bootUp()
-    {
-        System.out.println( "Settings builder: " + settingsBuilder );
+    public void bootUp() {
+        System.out.println("Settings builder: " + settingsBuilder);
 
-        assertNotNull( settingsBuilder );
+        assertNotNull(settingsBuilder);
     }
 
 }

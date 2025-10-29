@@ -15,16 +15,16 @@
  */
 package org.commonjava.maven.ext.core.impl;
 
-import org.commonjava.maven.ext.common.model.Project;
-import org.commonjava.maven.ext.core.ManipulationSession;
-import org.commonjava.maven.ext.core.state.CentralAndNexusMavenPluginRemovalState;
-import org.commonjava.maven.ext.core.state.PluginState;
+import java.util.List;
+import java.util.Set;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import java.util.List;
-import java.util.Set;
+import org.commonjava.maven.ext.common.model.Project;
+import org.commonjava.maven.ext.core.ManipulationSession;
+import org.commonjava.maven.ext.core.state.CentralAndNexusMavenPluginRemovalState;
+import org.commonjava.maven.ext.core.state.PluginState;
 
 /**
  * {@link Manipulator} implementation that can remove nexus-staging-maven-plugin from a project's pom file.
@@ -34,8 +34,7 @@ import java.util.Set;
 @Named("nexus-staging-maven-plugin-removal-manipulator")
 @Singleton
 public class CentralAndNexusMavenPluginRemovalManipulator extends BasePluginRemovalManipulator
-        implements Manipulator
-{
+        implements Manipulator {
     /**
      * Initialize the {@link PluginState} state holder in the {@link ManipulationSession}. This state holder detects
      * version-change configuration from the Maven user properties (-D properties from the CLI) and makes it available
@@ -44,10 +43,9 @@ public class CentralAndNexusMavenPluginRemovalManipulator extends BasePluginRemo
      * @param session the session
      */
     @Override
-    public void init( ManipulationSession session )
-    {
+    public void init(ManipulationSession session) {
         this.session = session;
-        session.setState( new CentralAndNexusMavenPluginRemovalState( session.getUserProperties() ) );
+        session.setState(new CentralAndNexusMavenPluginRemovalState(session.getUserProperties()));
     }
 
     /**
@@ -56,9 +54,8 @@ public class CentralAndNexusMavenPluginRemovalManipulator extends BasePluginRemo
      * @param projects the projects to apply changes to
      */
     @Override
-    public Set<Project> applyChanges( final List<Project> projects )
-    {
-        return applyChanges( projects, session.getState( CentralAndNexusMavenPluginRemovalState.class ) );
+    public Set<Project> applyChanges(final List<Project> projects) {
+        return applyChanges(projects, session.getState(CentralAndNexusMavenPluginRemovalState.class));
     }
 
     /**
@@ -68,8 +65,7 @@ public class CentralAndNexusMavenPluginRemovalManipulator extends BasePluginRemo
      * @return one greater than current index for {@code PluginRemovalManipulator}
      */
     @Override
-    public int getExecutionIndex()
-    {
+    public int getExecutionIndex() {
         return 53;
     }
 }

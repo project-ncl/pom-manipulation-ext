@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright (C) 2012 Red Hat, Inc.
@@ -177,18 +177,17 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-       <groupId>org.eclipse.jetty</groupId>
-       <artifactId>jetty-server</artifactId>
-       <scope>test</scope>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
-
 
   <build>
     <testResources>
       <testResource>
-        <directory>src/test/resources</directory>
         <filtering>true</filtering>
+        <directory>src/test/resources</directory>
       </testResource>
     </testResources>
 
@@ -225,14 +224,6 @@
       <plugin>
         <groupId>org.bsc.maven</groupId>
         <artifactId>maven-processor-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>process</id>
-            <goals>
-              <goal>process</goal>
-            </goals>
-          </execution>
-        </executions>
         <configuration>
           <defaultOutputDirectory>${project.build.directory}/generated-sources</defaultOutputDirectory>
           <processors>
@@ -252,10 +243,18 @@
           <dependency>
             <groupId>org.commonjava.maven.ext</groupId>
             <artifactId>pom-manipulation-annotation</artifactId>
-            <classifier>processor</classifier>
             <version>4.23-SNAPSHOT</version>
+            <classifier>processor</classifier>
           </dependency>
         </dependencies>
+        <executions>
+          <execution>
+            <id>process</id>
+            <goals>
+              <goal>process</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

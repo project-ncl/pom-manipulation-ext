@@ -15,7 +15,10 @@
  */
 package org.commonjava.maven.ext.core.groovy;
 
-import lombok.Getter;
+import java.io.File;
+import java.util.List;
+import java.util.Properties;
+
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.common.model.Project;
@@ -28,16 +31,13 @@ import org.commonjava.maven.ext.io.ModelIO;
 import org.commonjava.maven.ext.io.PomIO;
 import org.commonjava.maven.ext.io.rest.Translator;
 
-import java.io.File;
-import java.util.List;
-import java.util.Properties;
+import lombok.Getter;
 
 /**
  * Abstract class that should be used by developers wishing to implement groovy scripts
  * for PME.
  */
-public abstract class BaseScript extends BaseScriptUtils
-{
+public abstract class BaseScript extends BaseScriptUtils {
     private List<Project> projects;
 
     private Project project;
@@ -66,86 +66,87 @@ public abstract class BaseScript extends BaseScriptUtils
 
     /**
      * Return the current Project
+     * 
      * @return a {@link org.commonjava.maven.ext.common.model.Project} instance.
      */
     @Override
-    public Project getProject()
-    {
+    public Project getProject() {
         return project;
     }
 
     /**
-    * Returns the entire collection of Projects
-    * @return an {@link java.util.ArrayList} of {@link org.commonjava.maven.ext.common.model.Project} instances.
-    */
-    public List<Project> getProjects()
-    {
+     * Returns the entire collection of Projects
+     * 
+     * @return an {@link java.util.ArrayList} of {@link org.commonjava.maven.ext.common.model.Project} instances.
+     */
+    public List<Project> getProjects() {
         return projects;
     }
 
     /**
      * Obtain the GAV of the current project
+     * 
      * @return a {@link org.commonjava.atlas.maven.ident.ref.ProjectVersionRef}
      */
-    public ProjectVersionRef getGAV()
-    {
+    public ProjectVersionRef getGAV() {
         return gav;
     }
 
     /**
      * Get the working directory (the execution root).
+     * 
      * @return a {@link java.io.File} reference.
      */
     @Override
-    public File getBaseDir()
-    {
+    public File getBaseDir() {
         return basedir;
     }
 
     /**
      * Get the user properties
+     * 
      * @return a {@link java.util.Properties} reference.
      */
     @Override
-    public Properties getUserProperties()
-    {
+    public Properties getUserProperties() {
         return userProperties;
     }
 
     /**
      * Get the MavenSessionHandler instance
+     * 
      * @return a {@link MavenSessionHandler} reference.
      */
-    public MavenSessionHandler getSession()
-    {
+    public MavenSessionHandler getSession() {
         return session;
     }
 
     /**
      * Get the current stage
+     * 
      * @return a {@link InvocationStage} reference.
      */
     @Override
-    public InvocationStage getInvocationStage()
-    {
+    public InvocationStage getInvocationStage() {
         return stage;
     }
 
     /**
      * Gets a configured VersionTranslator to make REST calls to DA
+     * 
      * @return a VersionTranslator
      * @throws ManipulationException if an error occurs
      */
     @Override
-    public Translator getRESTAPI() throws ManipulationException
-    {
+    public Translator getRESTAPI() throws ManipulationException {
         validateSession();
-        return ((ManipulationSession)getSession()).getState( RESTState.class ).getVersionTranslator();
+        return ((ManipulationSession) getSession()).getState(RESTState.class).getVersionTranslator();
     }
 
     /**
      * Internal use only - the {@link InitialGroovyManipulator} uses this to
      * initialise the values
+     * 
      * @param pomIO the pomIO instance.
      * @param fileIO the fileIO instance.
      * @param modelIO the modelIO instance.
@@ -155,31 +156,37 @@ public abstract class BaseScript extends BaseScriptUtils
      * @param stage the current InvocationStage of the groovy script
      * @throws ManipulationException if an error occurs getting the base directory
      */
-    public void setValues( PomIO pomIO, FileIO fileIO, ModelIO modelIO, ManipulationSession session,
-                           List<Project> projects, Project project, InvocationStage stage )
-            throws ManipulationException
-    {
+    public void setValues(
+            PomIO pomIO,
+            FileIO fileIO,
+            ModelIO modelIO,
+            ManipulationSession session,
+            List<Project> projects,
+            Project project,
+            InvocationStage stage)
+            throws ManipulationException {
         this.fileIO = fileIO;
         this.pomIO = pomIO;
         this.modelIO = modelIO;
         this.session = session;
         this.projects = projects;
 
-        if ( project != null )
-        {
+        if (project != null) {
             this.gav = project.getKey();
         }
 
         this.project = project;
-        if ( session.getPom() != null )
-        {
+        if (session.getPom() != null) {
             this.basedir = session.getPom().getParentFile();
         }
 
         this.userProperties = session.getUserProperties();
         this.stage = stage;
 
-        logger.info( "Injecting values. Project is {} with basedir {} and properties {}", project, basedir,
-                userProperties );
+        logger.info(
+                "Injecting values. Project is {} with basedir {} and properties {}",
+                project,
+                basedir,
+                userProperties);
     }
 }

@@ -48,20 +48,21 @@ package org.commonjava.maven.ext.common;
  * was only made public in {@link org.slf4j.helpers.MessageFormatter} version 1.7.29 and later.
  * <br>
  * <br>
- * See the <a href="https://github.com/qos-ch/slf4j/commit/a7562cb4b928c225192405b4d849246db60107d4#diff-f99407dbe36d6d3e23534b6e5701b231">SLF4J source</a>
+ * See the <a href=
+ * "https://github.com/qos-ch/slf4j/commit/a7562cb4b928c225192405b4d849246db60107d4#diff-f99407dbe36d6d3e23534b6e5701b231">SLF4J
+ * source</a>
  */
-public final class ExceptionHelper
-{
-    private ExceptionHelper()
-    {}
+public final class ExceptionHelper {
+    private ExceptionHelper() {
+    }
 
     /**
      * Helper method to determine if an {@link Object} array contains a {@link Throwable} as last element
      *
      * @param argArray
-     *          The arguments off which we want to know if it contains a {@link Throwable} as last element
+     *        The arguments off which we want to know if it contains a {@link Throwable} as last element
      * @return if the last {@link Object} in argArray is a {@link Throwable} this method will return it,
-     *          otherwise it returns null
+     *         otherwise it returns null
      */
     public static Throwable getThrowableCandidate(final Object[] argArray) {
         if (argArray == null || argArray.length == 0) {

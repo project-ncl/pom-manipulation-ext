@@ -15,6 +15,11 @@
  */
 package org.commonjava.maven.ext.core.io;
 
+import static junit.framework.TestCase.assertTrue;
+
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+
 import org.apache.commons.io.FileUtils;
 import org.commonjava.maven.ext.common.model.SimpleScopedArtifactRef;
 import org.commonjava.maven.ext.core.ManipulationSession;
@@ -26,33 +31,25 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.nio.charset.StandardCharsets;
-
-import static junit.framework.TestCase.assertTrue;
-
-public class ResolverTest
-{
+public class ResolverTest {
     @Rule
     public TemporaryFolder temp = new TemporaryFolder();
 
     @Test
     public void resolveRealArtifactTest()
-                    throws Exception
-    {
+            throws Exception {
         File cache = temp.newFolder("cache-dir");
-        ManipulationSession session = TestUtils.createSession( null );
-        final GalleyInfrastructure galleyInfra =
-                        new GalleyInfrastructure( session, null).init( null, null, cache );
-        final GalleyAPIWrapper wrapper = new GalleyAPIWrapper( galleyInfra );
-        final ModelIO model = new ModelIO( wrapper );
+        ManipulationSession session = TestUtils.createSession(null);
+        final GalleyInfrastructure galleyInfra = new GalleyInfrastructure(session, null).init(null, null, cache);
+        final GalleyAPIWrapper wrapper = new GalleyAPIWrapper(galleyInfra);
+        final ModelIO model = new ModelIO(wrapper);
 
-        File c = model.resolveRawFile( SimpleScopedArtifactRef.parse( "academy.alex:custommatcher:1.0" ) );
+        File c = model.resolveRawFile(SimpleScopedArtifactRef.parse("academy.alex:custommatcher:1.0"));
 
-        assertTrue( c.exists() );
+        assertTrue(c.exists());
 
-        String academy = FileUtils.readFileToString( c, StandardCharsets.UTF_8 );
+        String academy = FileUtils.readFileToString(c, StandardCharsets.UTF_8);
 
-        assertTrue( academy.contains( "This is Custom Matcher to validate Credit Card" ) );
+        assertTrue(academy.contains("This is Custom Matcher to validate Credit Card"));
     }
 }

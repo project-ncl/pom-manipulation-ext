@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright (C) 2012 Red Hat, Inc.
@@ -211,7 +211,6 @@
     </dependency>
   </dependencies>
 
-
   <build>
     <plugins>
       <plugin>
@@ -220,10 +219,10 @@
         <executions>
           <execution>
             <id>index-dependencies</id>
-            <phase>prepare-package</phase>
             <goals>
               <goal>index</goal>
             </goals>
+            <phase>prepare-package</phase>
             <configuration>
               <includeGroupIds>org.commonjava</includeGroupIds>
             </configuration>
@@ -235,10 +234,10 @@
         <artifactId>maven-shade-plugin</artifactId>
         <executions>
           <execution>
-            <phase>package</phase>
             <goals>
               <goal>shade</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <artifactSet>
                 <includes>

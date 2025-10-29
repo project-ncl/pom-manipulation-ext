@@ -24,8 +24,7 @@ import org.commonjava.maven.ext.common.ManipulationUncheckedException;
 import org.commonjava.maven.ext.io.resolver.GalleyAPIWrapper;
 import org.w3c.dom.Node;
 
-public final class PluginReference implements InputLocationTracker
-{
+public final class PluginReference implements InputLocationTracker {
     public final ConfigurationContainer container;
 
     public final Node groupIdNode;
@@ -36,9 +35,12 @@ public final class PluginReference implements InputLocationTracker
 
     private final GalleyAPIWrapper galleyWrapper;
 
-    public PluginReference( GalleyAPIWrapper galleyWrapper, final ConfigurationContainer container,
-                            final Node groupIdNode, final Node artifactIdNode, final Node versionNode )
-    {
+    public PluginReference(
+            GalleyAPIWrapper galleyWrapper,
+            final ConfigurationContainer container,
+            final Node groupIdNode,
+            final Node artifactIdNode,
+            final Node versionNode) {
         this.container = container;
         this.groupIdNode = groupIdNode;
         this.artifactIdNode = artifactIdNode;
@@ -47,47 +49,39 @@ public final class PluginReference implements InputLocationTracker
     }
 
     @Override
-    public String toString()
-    {
-        return "PluginReference{" + "container=" + container + nodeToString( groupIdNode ) + nodeToString(
-                        artifactIdNode ) + nodeToString( versionNode ) + '}';
+    public String toString() {
+        return "PluginReference{" + "container=" + container + nodeToString(groupIdNode) + nodeToString(
+                artifactIdNode) + nodeToString(versionNode) + '}';
     }
 
-    private String nodeToString( Node node )
-    {
+    private String nodeToString(Node node) {
         return node == null ? "" : ", [" + node.getNodeName() + "=" + node.getTextContent() + "]";
     }
 
     @Override
-    public InputLocation getLocation( Object o )
-    {
-        throw new ManipulationUncheckedException( "Unused" );
+    public InputLocation getLocation(Object o) {
+        throw new ManipulationUncheckedException("Unused");
     }
 
     @Override
-    public void setLocation( Object o, InputLocation inputLocation )
-    {
-        throw new ManipulationUncheckedException( "Unused" );
+    public void setLocation(Object o, InputLocation inputLocation) {
+        throw new ManipulationUncheckedException("Unused");
     }
 
-    public String getGroupId()
-    {
+    public String getGroupId() {
         return groupIdNode.getTextContent();
     }
 
-    public String getArtifactId()
-    {
+    public String getArtifactId() {
         return artifactIdNode.getTextContent();
     }
 
-    public String getVersion()
-    {
+    public String getVersion() {
         return versionNode == null ? null : versionNode.getTextContent();
     }
 
-    public void setVersion( String version ) throws ManipulationException
-    {
-        versionNode.setTextContent( version );
-        container.setConfiguration( DependencyPluginUtils.getConfigXml( galleyWrapper, groupIdNode ) );
+    public void setVersion(String version) throws ManipulationException {
+        versionNode.setTextContent(version);
+        container.setConfiguration(DependencyPluginUtils.getConfigXml(galleyWrapper, groupIdNode));
     }
 }

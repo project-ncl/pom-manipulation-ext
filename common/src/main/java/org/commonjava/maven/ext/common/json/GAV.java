@@ -19,16 +19,17 @@ package org.commonjava.maven.ext.common.json;
  * Created by JacksonGenerator on 23/07/2019.
  */
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.Setter;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.Getter;
+import lombok.Setter;
+
 @Getter
 @Setter
-public class GAV
-{
+public class GAV {
     /**
      * A string representing the Maven groupId
      */
@@ -48,23 +49,23 @@ public class GAV
 
     /**
      * Convenience function to update the contents of this object using a {@link ProjectVersionRef}.
+     * 
      * @param p a ProjectVersionRef
      */
     @JsonIgnore
-    public void setPVR( ProjectVersionRef p )
-    {
-        setGroupId( p.getGroupId() );
-        setArtifactId( p.getArtifactId() );
-        setVersion( p.getVersionString() );
+    public void setPVR(ProjectVersionRef p) {
+        setGroupId(p.getGroupId());
+        setArtifactId(p.getArtifactId());
+        setVersion(p.getVersionString());
     }
 
     /**
      * Convenience function to convert this object to a {@link ProjectVersionRef}.
+     * 
      * @return a ProjectVersionRef
      */
     @JsonIgnore
-    public ProjectVersionRef getPVR()
-    {
-        return new SimpleProjectVersionRef( groupId, artifactId, version );
+    public ProjectVersionRef getPVR() {
+        return new SimpleProjectVersionRef(groupId, artifactId, version);
     }
 }

@@ -18,31 +18,26 @@ package org.commonjava.maven.ext.common;
 import org.slf4j.helpers.MessageFormatter;
 
 public class ManipulationUncheckedException
-    extends RuntimeException
-{
+        extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     protected Object[] params;
 
     private String formattedMessage;
 
-    public ManipulationUncheckedException( final String string, final Object... params )
-    {
-        super( string, ExceptionHelper.getThrowableCandidate( params ) );
+    public ManipulationUncheckedException(final String string, final Object... params) {
+        super(string, ExceptionHelper.getThrowableCandidate(params));
         this.params = params;
     }
 
-    public ManipulationUncheckedException( final Throwable cause )
-    {
-        super( cause );
+    public ManipulationUncheckedException(final Throwable cause) {
+        super(cause);
     }
 
     @Override
-    public synchronized String getMessage()
-    {
-        if ( formattedMessage == null )
-        {
-            formattedMessage = MessageFormatter.arrayFormat( super.getMessage(), params ).getMessage();
+    public synchronized String getMessage() {
+        if (formattedMessage == null) {
+            formattedMessage = MessageFormatter.arrayFormat(super.getMessage(), params).getMessage();
         }
         return formattedMessage;
     }

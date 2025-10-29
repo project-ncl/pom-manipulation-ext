@@ -15,6 +15,9 @@
  */
 package org.commonjava.maven.ext.core.state;
 
+import java.util.List;
+import java.util.Properties;
+
 import org.commonjava.atlas.maven.ident.ref.ProjectRef;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
@@ -22,39 +25,33 @@ import org.commonjava.maven.ext.annotation.ConfigValue;
 import org.commonjava.maven.ext.core.impl.RepositoryInjectionManipulator;
 import org.commonjava.maven.ext.core.util.IdUtils;
 
-import java.util.List;
-import java.util.Properties;
-
 /**
  * Captures configuration relating to injection repositories from a remote POM.
  * Used by {@link RepositoryInjectionManipulator}.
  */
 public class RepositoryInjectionState
-    implements State
-{
+        implements State {
     /**
      * Suffix to enable this modder
      */
-    @ConfigValue( docIndex = "misc.html#repository-injection")
+    @ConfigValue(docIndex = "misc.html#repository-injection")
     private static final String REPOSITORY_INJECTION_PROPERTY = "repositoryInjection";
 
-    @ConfigValue( docIndex = "misc.html#repository-injection")
+    @ConfigValue(docIndex = "misc.html#repository-injection")
     private static final String REPOSITORY_INJECTION_POMS = "repositoryInjectionPoms";
 
     private ProjectVersionRef repoMgmt;
 
     private List<ProjectRef> groupArtifact;
 
-    public RepositoryInjectionState( final Properties userProps )
-    {
-        initialise( userProps );
+    public RepositoryInjectionState(final Properties userProps) {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps )
-    {
-        final String gav = userProps.getProperty( REPOSITORY_INJECTION_PROPERTY );
-        groupArtifact = IdUtils.parseGAs( userProps.getProperty( REPOSITORY_INJECTION_POMS ) );
-        repoMgmt = gav == null ? null : SimpleProjectVersionRef.parse( gav );
+    public void initialise(Properties userProps) {
+        final String gav = userProps.getProperty(REPOSITORY_INJECTION_PROPERTY);
+        groupArtifact = IdUtils.parseGAs(userProps.getProperty(REPOSITORY_INJECTION_POMS));
+        repoMgmt = gav == null ? null : SimpleProjectVersionRef.parse(gav);
     }
 
     /**
@@ -64,19 +61,15 @@ public class RepositoryInjectionState
      * @see org.commonjava.maven.ext.core.state.State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return repoMgmt != null;
     }
 
-    public List<ProjectRef> getRemoteRepositoryInjectionTargets()
-    {
+    public List<ProjectRef> getRemoteRepositoryInjectionTargets() {
         return groupArtifact;
     }
 
-    public ProjectVersionRef getRemoteRepositoryInjectionMgmt()
-    {
+    public ProjectVersionRef getRemoteRepositoryInjectionMgmt() {
         return repoMgmt;
     }
 }
-

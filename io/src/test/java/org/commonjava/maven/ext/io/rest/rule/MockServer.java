@@ -25,47 +25,39 @@ import org.junit.rules.ExternalResource;
  * @author vdedik@redhat.com
  */
 public class MockServer
-    extends ExternalResource
-{
+        extends ExternalResource {
     private HttpServer httpServer;
     private AbstractHandler handler;
 
-    public MockServer (AbstractHandler handler)
-    {
+    public MockServer(AbstractHandler handler) {
         this.handler = handler;
     }
 
     @Override
-    public void before()
-    {
-        httpServer = new JettyHttpServer( handler );
+    public void before() {
+        httpServer = new JettyHttpServer(handler);
     }
 
     @Override
-    public void after()
-    {
+    public void after() {
         httpServer.shutdown();
     }
 
-    public String getUrl()
-    {
+    public String getUrl() {
         return "http://127.0.0.1:" + getPort();
     }
 
-    public Integer getPort()
-    {
+    public Integer getPort() {
         return httpServer.getPort();
     }
 
-    public static void main( String[] args )
-    {
-        final MockServer ms = new MockServer(new AddSuffixJettyHandler(  ));
+    public static void main(String[] args) {
+        final MockServer ms = new MockServer(new AddSuffixJettyHandler());
         ms.before();
-        Runtime.getRuntime().addShutdownHook(new Thread(){
+        Runtime.getRuntime().addShutdownHook(new Thread() {
             @Override
-            public void run()
-            {
-                System.out.println ("Shutting down JettyServer");
+            public void run() {
+                System.out.println("Shutting down JettyServer");
                 ms.after();
             }
         });

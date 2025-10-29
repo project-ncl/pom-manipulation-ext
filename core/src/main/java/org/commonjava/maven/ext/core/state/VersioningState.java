@@ -15,12 +15,8 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
-import org.commonjava.atlas.maven.ident.ref.ProjectRef;
-import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
-import org.commonjava.maven.ext.annotation.ConfigValue;
-import org.commonjava.maven.ext.core.impl.ProjectVersioningManipulator;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,8 +26,13 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import org.apache.commons.lang3.StringUtils;
+import org.commonjava.atlas.maven.ident.ref.ProjectRef;
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
+import org.commonjava.maven.ext.annotation.ConfigValue;
+import org.commonjava.maven.ext.core.impl.ProjectVersioningManipulator;
+
+import lombok.Getter;
 
 /**
  * Captures configuration and changes relating to the projects' versions. Used by {@link ProjectVersioningManipulator}.
@@ -40,30 +41,29 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  */
 @Getter
 public class VersioningState
-    implements State
-{
-    @ConfigValue( docIndex = "project-version-manip.html#manual-version-suffix" )
-    public static final String VERSION_SUFFIX_SYSPROP= "versionSuffix";
+        implements State {
+    @ConfigValue(docIndex = "project-version-manip.html#manual-version-suffix")
+    public static final String VERSION_SUFFIX_SYSPROP = "versionSuffix";
 
-    @ConfigValue( docIndex = "project-version-manip.html#automatic-version-increment")
-    public static final String INCREMENT_SERIAL_SUFFIX_SYSPROP= "versionIncrementalSuffix";
+    @ConfigValue(docIndex = "project-version-manip.html#automatic-version-increment")
+    public static final String INCREMENT_SERIAL_SUFFIX_SYSPROP = "versionIncrementalSuffix";
 
-    @ConfigValue( docIndex = "project-version-manip.html#version-increment-padding")
-    public static final String INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP= "versionIncrementalSuffixPadding";
+    @ConfigValue(docIndex = "project-version-manip.html#version-increment-padding")
+    public static final String INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP = "versionIncrementalSuffixPadding";
 
-    @ConfigValue( docIndex = "project-version-manip.html#snapshot-detection")
-    public static final String VERSION_SUFFIX_SNAPSHOT_SYSPROP= "versionSuffixSnapshot";
+    @ConfigValue(docIndex = "project-version-manip.html#snapshot-detection")
+    public static final String VERSION_SUFFIX_SNAPSHOT_SYSPROP = "versionSuffixSnapshot";
 
-    @ConfigValue( docIndex = "project-version-manip.html#osgi-compliance")
-    public static final String VERSION_OSGI_SYSPROP= "versionOsgi";
+    @ConfigValue(docIndex = "project-version-manip.html#osgi-compliance")
+    public static final String VERSION_OSGI_SYSPROP = "versionOsgi";
 
-    @ConfigValue( docIndex = "project-version-manip.html#version-override")
-    public static final String VERSION_OVERRIDE_SYSPROP= "versionOverride";
+    @ConfigValue(docIndex = "project-version-manip.html#version-override")
+    public static final String VERSION_OVERRIDE_SYSPROP = "versionOverride";
 
-    @ConfigValue( docIndex = "project-version-manip.html#alternate-suffix-handling")
+    @ConfigValue(docIndex = "project-version-manip.html#alternate-suffix-handling")
     public static final String VERSION_SUFFIX_ALT = "versionSuffixAlternatives";
 
-    @ConfigValue( docIndex = "project-version-manip.html#version-modification")
+    @ConfigValue(docIndex = "project-version-manip.html#version-modification")
     public static final String VERSION_MODIFICATION = "versionModification";
 
     /**
@@ -94,7 +94,8 @@ public class VersioningState
     private String override;
 
     /**
-     * @return the incremental suffix padding that will be appended to the project version i.e. whether to append 001 or 1.
+     * @return the incremental suffix padding that will be appended to the project version i.e. whether to append 001 or
+     *         1.
      */
     private int incrementalSerialSuffixPadding;
 
@@ -120,37 +121,36 @@ public class VersioningState
      */
     private boolean versionModification;
 
-    public VersioningState( final Properties userProps )
-    {
-        initialise( userProps );
+    public VersioningState(final Properties userProps) {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps )
-    {
-        suffix = userProps.getProperty( VERSION_SUFFIX_SYSPROP );
-        incrementalSerialSuffix = userProps.getProperty( INCREMENT_SERIAL_SUFFIX_SYSPROP );
-        incrementalSerialSuffixPadding = Integer.parseInt( userProps.getProperty( INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5" ) );
-        preserveSnapshot = Boolean.parseBoolean( userProps.getProperty( VERSION_SUFFIX_SNAPSHOT_SYSPROP ) );
-        osgi = Boolean.parseBoolean( userProps.getProperty( VERSION_OSGI_SYSPROP, "true" ) );
-        override = userProps.getProperty( VERSION_OVERRIDE_SYSPROP );
-        versionModification = Boolean.parseBoolean( userProps.getProperty( VERSION_MODIFICATION, "true" ) );
+    public void initialise(Properties userProps) {
+        suffix = userProps.getProperty(VERSION_SUFFIX_SYSPROP);
+        incrementalSerialSuffix = userProps.getProperty(INCREMENT_SERIAL_SUFFIX_SYSPROP);
+        incrementalSerialSuffixPadding = Integer
+                .parseInt(userProps.getProperty(INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5"));
+        preserveSnapshot = Boolean.parseBoolean(userProps.getProperty(VERSION_SUFFIX_SNAPSHOT_SYSPROP));
+        osgi = Boolean.parseBoolean(userProps.getProperty(VERSION_OSGI_SYSPROP, "true"));
+        override = userProps.getProperty(VERSION_OVERRIDE_SYSPROP);
+        versionModification = Boolean.parseBoolean(userProps.getProperty(VERSION_MODIFICATION, "true"));
 
         // Provide an alternative list of versionSuffixes split via a comma separator. Defaults to 'redhat' IF the current rebuild suffix is not that.
         suffixAlternatives = Arrays.asList(
-                        StringUtils.split( userProps.getProperty(
-                                        VERSION_SUFFIX_ALT, "redhat".equals( getRebuildSuffix() ) ? "" : "redhat" ), "," ) );
+                StringUtils.split(
+                        userProps.getProperty(
+                                VERSION_SUFFIX_ALT,
+                                "redhat".equals(getRebuildSuffix()) ? "" : "redhat"),
+                        ","));
 
-        allSuffixes = new ArrayList<>( );
+        allSuffixes = new ArrayList<>();
 
         // If no suffix is configured then don't fill in the all suffixes array.
-        if ( isNotEmpty( getRebuildSuffix() ) )
-        {
-            allSuffixes.add( getRebuildSuffix() );
-            allSuffixes.addAll( getSuffixAlternatives() );
+        if (isNotEmpty(getRebuildSuffix())) {
+            allSuffixes.add(getRebuildSuffix());
+            allSuffixes.addAll(getSuffixAlternatives());
         }
     }
-
-
 
     /**
      * Enabled ONLY if either versionIncrementalSuffix or versionSuffix is provided in the user properties / CLI -D
@@ -161,43 +161,34 @@ public class VersioningState
      * @see org.commonjava.maven.ext.core.state.State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return versionModification && (incrementalSerialSuffix != null || suffix != null || override != null);
     }
 
-    public void setRESTMetadata( Map<ProjectRef, Set<String>> versionStates )
-    {
+    public void setRESTMetadata(Map<ProjectRef, Set<String>> versionStates) {
         restMetaData = versionStates;
     }
 
-    public Map<ProjectRef, Set<String>> getRESTMetadata( )
-    {
+    public Map<ProjectRef, Set<String>> getRESTMetadata() {
         return restMetaData;
     }
 
-    public void setVersionsByGAVMap( Map<ProjectVersionRef, String> versionsByGAV )
-    {
-        this.versionsByGAV.putAll( versionsByGAV );
+    public void setVersionsByGAVMap(Map<ProjectVersionRef, String> versionsByGAV) {
+        this.versionsByGAV.putAll(versionsByGAV);
     }
 
-    public boolean hasVersionsByGAV()
-    {
+    public boolean hasVersionsByGAV() {
         return !versionsByGAV.isEmpty();
     }
 
-    public String getRebuildSuffix()
-    {
+    public String getRebuildSuffix() {
         String suffix = "";
 
         // Same precedence as VersionCalculator::calculate
-        if ( ! isEmpty ( getSuffix() ) )
-        {
-            int dashIndex = getSuffix().lastIndexOf( '-' );
-            suffix = getSuffix().substring( 0, dashIndex > 0 ? dashIndex : getSuffix().length() );
-        }
-        else if ( ! isEmpty ( getIncrementalSerialSuffix() ) )
-        {
+        if (!isEmpty(getSuffix())) {
+            int dashIndex = getSuffix().lastIndexOf('-');
+            suffix = getSuffix().substring(0, dashIndex > 0 ? dashIndex : getSuffix().length());
+        } else if (!isEmpty(getIncrementalSerialSuffix())) {
             suffix = getIncrementalSerialSuffix();
         }
         return suffix;

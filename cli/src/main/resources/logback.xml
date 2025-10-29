@@ -29,7 +29,7 @@
     <appender-ref ref="STDOUT" />
   </root>
 
-  <!-- Used to to output a minimal logger for the comparator -->
+  <!-- Used to output a minimal logger for the comparator -->
   <appender name="COMPARATOR" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
       <pattern>%logger{0} %msg%n</pattern>

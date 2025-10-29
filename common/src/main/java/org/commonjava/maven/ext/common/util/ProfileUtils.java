@@ -15,50 +15,44 @@
  */
 package org.commonjava.maven.ext.common.util;
 
-import lombok.experimental.UtilityClass;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Profile;
 import org.commonjava.maven.ext.annotation.ConfigValue;
 import org.commonjava.maven.ext.common.session.MavenSessionHandler;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.experimental.UtilityClass;
 
 /**
  * Commonly used manipulations from project profiles.
  */
 @UtilityClass
-public final class ProfileUtils
-{
+public final class ProfileUtils {
     /**
      * Denotes whether we only scan active profiles. Default is true (we scan only active profiles).
      */
-    @ConfigValue( docIndex = "misc.html#profile-handling")
+    @ConfigValue(docIndex = "misc.html#profile-handling")
     public static final String PROFILE_SCANNING = "scanActiveProfiles";
 
     public static String PROFILE_SCANNING_DEFAULT = "true";
 
-    public static List<Profile> getProfiles ( MavenSessionHandler session, Model model)
-    {
-        final List<Profile> result = new ArrayList<>( );
+    public static List<Profile> getProfiles(MavenSessionHandler session, Model model) {
+        final List<Profile> result = new ArrayList<>();
         final List<Profile> profiles = model.getProfiles();
-        final boolean scanActiveProfiles = Boolean.parseBoolean( session.getUserProperties().getProperty( PROFILE_SCANNING, PROFILE_SCANNING_DEFAULT ) );
+        final boolean scanActiveProfiles = Boolean
+                .parseBoolean(session.getUserProperties().getProperty(PROFILE_SCANNING, PROFILE_SCANNING_DEFAULT));
 
-        if ( profiles != null )
-        {
-            if ( scanActiveProfiles )
-            {
-                for ( Profile p : profiles )
-                {
-                    if ( session.getActiveProfiles().contains( p.getId() ) )
-                    {
-                        result.add( p );
+        if (profiles != null) {
+            if (scanActiveProfiles) {
+                for (Profile p : profiles) {
+                    if (session.getActiveProfiles().contains(p.getId())) {
+                        result.add(p);
                     }
                 }
-            }
-            else
-            {
-                result.addAll( profiles );
+            } else {
+                result.addAll(profiles);
             }
         }
         return result;

@@ -15,40 +15,39 @@
  */
 package org.commonjava.maven.ext.integrationtest;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
-
-import java.io.File;
-import java.nio.charset.StandardCharsets;
-
 import static org.commonjava.maven.ext.integrationtest.ITestUtils.DEFAULT_MVN_PARAMS;
 import static org.commonjava.maven.ext.integrationtest.ITestUtils.runMaven;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-public class CheckStandardMavenTest
-{
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+
+public class CheckStandardMavenTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
     @Test
     public void verifyMavenWithExtensions()
-        throws Exception
-    {
+            throws Exception {
         File tmpFolder = folder.newFolder();
 
-        runMaven( "-X install", DEFAULT_MVN_PARAMS, tmpFolder.toString() );
+        runMaven("-X install", DEFAULT_MVN_PARAMS, tmpFolder.toString());
 
         File[] files = tmpFolder.listFiles();
 
-        assertEquals( 1, files.length );
-        assertEquals( "build.log", files[0].getName() );
+        assertEquals(1, files.length);
+        assertEquals("build.log", files[0].getName());
 
-        String contents = FileUtils.readFileToString( files[0], StandardCharsets.UTF_8 );
+        String contents = FileUtils.readFileToString(files[0], StandardCharsets.UTF_8);
 
-        assertFalse( "Native Maven should not have PME installed!",
-                     contents.contains( "Manipulation engine disabled. No project found." ) );
+        assertFalse(
+                "Native Maven should not have PME installed!",
+                contents.contains("Manipulation engine disabled. No project found."));
     }
 }

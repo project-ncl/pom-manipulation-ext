@@ -15,17 +15,18 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+
 import org.apache.maven.artifact.ArtifactScopeEnum;
 import org.commonjava.maven.ext.annotation.ConfigValue;
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.core.impl.DependencyManipulator;
 import org.commonjava.maven.ext.core.impl.PluginManipulator;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * Captures configuration relating to plugin/dependency alignment from the POMs.
@@ -33,16 +34,16 @@ import java.util.Properties;
  */
 @Getter
 public class CommonState
-    implements State
-{
+        implements State {
     /**
      * Whether to override dependencies/plugins that are not directly specified in the project
      */
-    @ConfigValue( docIndex = "dep-manip.html#directtransitive-dependencies" )
+    @ConfigValue(docIndex = "dep-manip.html#directtransitive-dependencies")
     public static final String TRANSITIVE_OVERRIDE_PROPERTY = "overrideTransitive";
 
     /**
-     * When true, clashes with cached properties will throw an exception in PropertyResolver. Setting this to false will prevent
+     * When true, clashes with cached properties will throw an exception in PropertyResolver. Setting this to false will
+     * prevent
      * that. Default value is true.
      */
     @ConfigValue(docIndex = "dep-manip.html#property-clash-replacement")
@@ -50,41 +51,47 @@ public class CommonState
 
     /**
      * Enables strict checking of non-exclusion dependency versions before aligning to the given BOM dependencies.
-     * For example, <code>1.1</code> will match <code>1.1-rebuild-1</code> in strict mode, but <code>1.2</code> will not.
+     * For example, <code>1.1</code> will match <code>1.1-rebuild-1</code> in strict mode, but <code>1.2</code> will
+     * not.
      */
-    @ConfigValue( docIndex = "dep-manip.html#strict-mode-version-alignment" )
+    @ConfigValue(docIndex = "dep-manip.html#strict-mode-version-alignment")
     public static final String STRICT_ALIGNMENT = "strictAlignment";
 
     /**
-     * When false, strict version-alignment violations will be reported in the warning log-level, but WILL NOT FAIL THE BUILD. When true, the build
+     * When false, strict version-alignment violations will be reported in the warning log-level, but WILL NOT FAIL THE
+     * BUILD. When true, the build
      * will fail if such a violation is detected. Default value is false.
      */
-    @ConfigValue( docIndex = "dep-manip.html#strict-mode-version-alignment")
+    @ConfigValue(docIndex = "dep-manip.html#strict-mode-version-alignment")
     public static final String STRICT_VIOLATION_FAILS = "strictViolationFails";
 
     /**
-     * When true, it will ignore any suffix ( e.g. rebuild-2 ) on the source version during comparisons. Further, it will
+     * When true, it will ignore any suffix ( e.g. rebuild-2 ) on the source version during comparisons. Further, it
+     * will
      * only allow alignment to a higher incrementing suffix (e.g. rebuild-3 ).
      */
-    @ConfigValue( docIndex = "dep-manip.html#strict-mode-version-alignment")
+    @ConfigValue(docIndex = "dep-manip.html#strict-mode-version-alignment")
     public static final String STRICT_ALIGNMENT_IGNORE_SUFFIX = "strictAlignmentIgnoreSuffix";
 
     /**
      * Comma separated list of scopes to exclude and ignore when operating.
      */
-    @ConfigValue( docIndex = "dep-manip.html#scope-exclusion")
+    @ConfigValue(docIndex = "dep-manip.html#scope-exclusion")
     public static final String EXCLUDED_SCOPES = "excludedScopes";
 
     /**
-     * This aggressively checks whether, for a set of dependencies or plugins that have a common property, every dependency
-     * or plugin attempted to update the property. If one didn't this will throw an exception and fail fast. If it doesn't fail
-     * then its possible that one of the newly aligned dependencies/plugins aren't found and therefore the build will fail.
+     * This aggressively checks whether, for a set of dependencies or plugins that have a common property, every
+     * dependency
+     * or plugin attempted to update the property. If one didn't this will throw an exception and fail fast. If it
+     * doesn't fail
+     * then its possible that one of the newly aligned dependencies/plugins aren't found and therefore the build will
+     * fail.
      *
      * If set to false (the default) this is not active.
      * If set to true, then this will throw an exception.
      * If set to the string 'revert' then it will revert any changes, emitting warnings.
      */
-    @ConfigValue( docIndex = "dep-manip.html#strict-property-validation")
+    @ConfigValue(docIndex = "dep-manip.html#strict-property-validation")
     public static final String DEPENDENCY_PROPERTY_VALIDATION = "strictPropertyValidation";
 
     /**
@@ -115,52 +122,43 @@ public class CommonState
 
     private List<String> excludedScopes;
 
-    public CommonState( final Properties userProps ) throws ManipulationException
-    {
-        initialise( userProps );
+    public CommonState(final Properties userProps) throws ManipulationException {
+        initialise(userProps);
     }
 
     @Override
-    public void initialise(Properties userProps ) throws ManipulationException
-    {
-        overrideTransitive = Boolean.parseBoolean( userProps.getProperty( TRANSITIVE_OVERRIDE_PROPERTY, "false" ) );
-        propertyClashFails = Boolean.parseBoolean( userProps.getProperty( PROPERTY_CLASH_FAILS, "true" ) );
-        strict = Boolean.parseBoolean( userProps.getProperty( STRICT_ALIGNMENT, "true" ) );
-        strictIgnoreSuffix = Boolean.parseBoolean( userProps.getProperty( STRICT_ALIGNMENT_IGNORE_SUFFIX, "true" ) );
-        failOnStrictViolation = Boolean.parseBoolean( userProps.getProperty( STRICT_VIOLATION_FAILS, "false" ) );
-        excludedScopes = Arrays.asList( userProps.getProperty( EXCLUDED_SCOPES, "" ).length() > 0 ?
-                                                        userProps.getProperty( EXCLUDED_SCOPES).split( "," ) : new String[0]);
-        for ( String s : excludedScopes )
-        {
-            try
-            {
-                ArtifactScopeEnum.valueOf( s );
-            }
-            catch ( IllegalArgumentException e )
-            {
-                throw new ManipulationException( "Illegal scope value {}", s );
+    public void initialise(Properties userProps) throws ManipulationException {
+        overrideTransitive = Boolean.parseBoolean(userProps.getProperty(TRANSITIVE_OVERRIDE_PROPERTY, "false"));
+        propertyClashFails = Boolean.parseBoolean(userProps.getProperty(PROPERTY_CLASH_FAILS, "true"));
+        strict = Boolean.parseBoolean(userProps.getProperty(STRICT_ALIGNMENT, "true"));
+        strictIgnoreSuffix = Boolean.parseBoolean(userProps.getProperty(STRICT_ALIGNMENT_IGNORE_SUFFIX, "true"));
+        failOnStrictViolation = Boolean.parseBoolean(userProps.getProperty(STRICT_VIOLATION_FAILS, "false"));
+        excludedScopes = Arrays.asList(
+                userProps.getProperty(EXCLUDED_SCOPES, "").length() > 0
+                        ? userProps.getProperty(EXCLUDED_SCOPES).split(",")
+                        : new String[0]);
+        for (String s : excludedScopes) {
+            try {
+                ArtifactScopeEnum.valueOf(s);
+            } catch (IllegalArgumentException e) {
+                throw new ManipulationException("Illegal scope value {}", s);
             }
         }
 
-        switch ( userProps.getProperty( DEPENDENCY_PROPERTY_VALIDATION, "false" ).toUpperCase() )
-        {
-            case "TRUE":
-            {
+        switch (userProps.getProperty(DEPENDENCY_PROPERTY_VALIDATION, "false").toUpperCase()) {
+            case "TRUE": {
                 strictDependencyPluginPropertyValidation = 1;
                 break;
             }
-            case "FALSE":
-            {
+            case "FALSE": {
                 strictDependencyPluginPropertyValidation = 0;
                 break;
             }
-            case "REVERT":
-            {
+            case "REVERT": {
                 strictDependencyPluginPropertyValidation = 2;
                 break;
             }
-            default:
-            {
+            default: {
                 strictDependencyPluginPropertyValidation = 0;
                 break;
             }
@@ -173,8 +171,7 @@ public class CommonState
      * this should always return false so not to confuse PME whether its active or not.
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return false;
     }
 }

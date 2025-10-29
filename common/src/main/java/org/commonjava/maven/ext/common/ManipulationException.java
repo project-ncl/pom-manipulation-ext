@@ -18,31 +18,26 @@ package org.commonjava.maven.ext.common;
 import org.slf4j.helpers.MessageFormatter;
 
 public class ManipulationException
-    extends Exception
-{
+        extends Exception {
     private static final long serialVersionUID = 1L;
 
     private Object[] params;
 
     private String formattedMessage;
 
-    public ManipulationException( final String message, final Throwable cause )
-    {
-        super( message, cause );
+    public ManipulationException(final String message, final Throwable cause) {
+        super(message, cause);
     }
 
-    public ManipulationException( final String string, final Object... params )
-    {
-        super( string, ExceptionHelper.getThrowableCandidate( params ) );
+    public ManipulationException(final String string, final Object... params) {
+        super(string, ExceptionHelper.getThrowableCandidate(params));
         this.params = params;
     }
 
     @Override
-    public synchronized String getMessage()
-    {
-        if ( formattedMessage == null )
-        {
-            formattedMessage = MessageFormatter.arrayFormat( super.getMessage(), params ).getMessage();
+    public synchronized String getMessage() {
+        if (formattedMessage == null) {
+            formattedMessage = MessageFormatter.arrayFormat(super.getMessage(), params).getMessage();
         }
         return formattedMessage;
     }

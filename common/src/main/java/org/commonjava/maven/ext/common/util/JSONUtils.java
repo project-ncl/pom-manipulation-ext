@@ -15,6 +15,16 @@
  */
 package org.commonjava.maven.ext.common.util;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
+import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
+import org.commonjava.maven.ext.common.json.DependencyAnalyserResult;
+import org.commonjava.maven.ext.common.json.PME;
+import org.goots.hiderdoclet.doclet.JavadocExclude;
+import org.jboss.da.model.rest.GAV;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -28,19 +38,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
+
 import kong.unirest.jackson.JacksonObjectMapper;
-import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
-import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
-import org.commonjava.maven.ext.common.json.DependencyAnalyserResult;
-import org.commonjava.maven.ext.common.json.PME;
-import org.goots.hiderdoclet.doclet.JavadocExclude;
-import org.jboss.da.model.rest.GAV;
 
-import java.io.File;
-import java.io.IOException;
-
-public class JSONUtils
-{
+public class JSONUtils {
     private static final String GROUP_ID = "groupId";
     private static final String ARTIFACT_ID = "artifactId";
     private static final String VERSION = "version";
@@ -49,12 +50,11 @@ public class JSONUtils
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
-    static
-    {
+    static {
         MAPPER.enable(SerializationFeature.INDENT_OUTPUT);
-        MAPPER.configure( SerializationFeature.FAIL_ON_EMPTY_BEANS, false );
-        MAPPER.setSerializationInclusion( JsonInclude.Include.NON_NULL );
-        MAPPER.setSerializationInclusion( JsonInclude.Include.NON_EMPTY );
+        MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        MAPPER.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        MAPPER.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
     }
 
     /**
@@ -65,10 +65,9 @@ public class JSONUtils
      * @throws IOException if an error occurs.
      */
     // Public API.
-    public static String jsonToString( Object jsonReport )
-                    throws IOException
-    {
-        return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString( jsonReport );
+    public static String jsonToString(Object jsonReport)
+            throws IOException {
+        return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(jsonReport);
     }
 
     /**
@@ -79,32 +78,27 @@ public class JSONUtils
      * @throws IOException if an error occurs
      */
     @SuppressWarnings("WeakerAccess") // Public API.
-    public static PME fileToJSON( File jsonFile ) throws IOException
-    {
-        return MAPPER.readValue( jsonFile, PME.class );
+    public static PME fileToJSON(File jsonFile) throws IOException {
+        return MAPPER.readValue(jsonFile, PME.class);
     }
 
-
-    public static class ProjectVersionRefDeserializer extends JsonDeserializer<ProjectVersionRef>
-    {
+    public static class ProjectVersionRefDeserializer extends JsonDeserializer<ProjectVersionRef> {
         @Override
-        public ProjectVersionRef deserialize( JsonParser p, DeserializationContext ctxt)
-                throws IOException
-        {
-            JsonNode node = p.getCodec().readTree( p);
+        public ProjectVersionRef deserialize(JsonParser p, DeserializationContext ctxt)
+                throws IOException {
+            JsonNode node = p.getCodec().readTree(p);
             final String groupId = node.get(GROUP_ID).asText();
             final String artifactId = node.get(ARTIFACT_ID).asText();
             final String version = node.get(VERSION).asText();
 
-            return new SimpleProjectVersionRef ( groupId, artifactId, version);
+            return new SimpleProjectVersionRef(groupId, artifactId, version);
         }
     }
 
-    public static class ProjectVersionRefSerializer extends JsonSerializer<ProjectVersionRef>
-    {
+    public static class ProjectVersionRefSerializer extends JsonSerializer<ProjectVersionRef> {
         @Override
-        public void serialize( ProjectVersionRef value, JsonGenerator gen, SerializerProvider serializers) throws IOException
-        {
+        public void serialize(ProjectVersionRef value, JsonGenerator gen, SerializerProvider serializers)
+                throws IOException {
             gen.writeStartObject();
             gen.writeStringField(GROUP_ID, value.getGroupId());
             gen.writeStringField(ARTIFACT_ID, value.getArtifactId());
@@ -114,52 +108,45 @@ public class JSONUtils
     }
 
     @JavadocExclude
-    public static class MavenResultDeserializer extends JsonDeserializer<DependencyAnalyserResult>
-    {
+    public static class MavenResultDeserializer extends JsonDeserializer<DependencyAnalyserResult> {
         @Override
-        public DependencyAnalyserResult deserialize( JsonParser p, DeserializationContext ctxt)
-                        throws IOException
-        {
-            JsonNode node = p.getCodec().readTree( p);
+        public DependencyAnalyserResult deserialize(JsonParser p, DeserializationContext ctxt)
+                throws IOException {
+            JsonNode node = p.getCodec().readTree(p);
             final String groupId = node.get(GROUP_ID).asText();
-            final String artifactId = node.get( ARTIFACT_ID ).asText();
-            final String version = node.get( VERSION ).asText();
+            final String artifactId = node.get(ARTIFACT_ID).asText();
+            final String version = node.get(VERSION).asText();
 
             DependencyAnalyserResult result = new DependencyAnalyserResult();
-            result.setGav( new GAV( groupId, artifactId, version ) );
+            result.setGav(new GAV(groupId, artifactId, version));
 
-            if ( node.has( BEST_MATCH_VERSION ) && !node.get( BEST_MATCH_VERSION ).getNodeType().equals( JsonNodeType.NULL ) )
-            {
-                result.setBestMatchVersion( node.get( BEST_MATCH_VERSION ).asText() );
+            if (node.has(BEST_MATCH_VERSION) && !node.get(BEST_MATCH_VERSION).getNodeType().equals(JsonNodeType.NULL)) {
+                result.setBestMatchVersion(node.get(BEST_MATCH_VERSION).asText());
             }
-            if ( node.has( LATEST_VERSION ) && !node.get( LATEST_VERSION ).getNodeType().equals( JsonNodeType.NULL ) )
-            {
-                result.setLatestVersion( node.get( LATEST_VERSION ).asText() );
+            if (node.has(LATEST_VERSION) && !node.get(LATEST_VERSION).getNodeType().equals(JsonNodeType.NULL)) {
+                result.setLatestVersion(node.get(LATEST_VERSION).asText());
             }
 
-            result.setProjectVersionRef( new SimpleProjectVersionRef( groupId, artifactId, version ) );
+            result.setProjectVersionRef(new SimpleProjectVersionRef(groupId, artifactId, version));
 
             return result;
         }
     }
 
-
     @JavadocExclude
-    public static class InternalObjectMapper extends JacksonObjectMapper
-    {
-        public InternalObjectMapper ( ObjectMapper mapper)
-        {
-            super( mapper );
+    public static class InternalObjectMapper extends JacksonObjectMapper {
+        public InternalObjectMapper(ObjectMapper mapper) {
+            super(mapper);
 
-            mapper.configure( JsonGenerator.Feature.IGNORE_UNKNOWN, true );
-            mapper.configure( DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false );
-            mapper.setSerializationInclusion( JsonInclude.Include.NON_NULL);
+            mapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
             SimpleModule module = new SimpleModule();
-            module.addDeserializer( ProjectVersionRef.class, new ProjectVersionRefDeserializer());
+            module.addDeserializer(ProjectVersionRef.class, new ProjectVersionRefDeserializer());
             module.addSerializer(ProjectVersionRef.class, new ProjectVersionRefSerializer());
-            module.addDeserializer( DependencyAnalyserResult.class, new MavenResultDeserializer() );
-            mapper.registerModule( module );
+            module.addDeserializer(DependencyAnalyserResult.class, new MavenResultDeserializer());
+            mapper.registerModule(module);
 
         }
     }

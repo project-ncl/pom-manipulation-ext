@@ -15,6 +15,28 @@
  */
 package org.commonjava.maven.ext.core.impl;
 
+import static org.commonjava.maven.ext.core.impl.DistributionEnforcingManipulator.MAVEN_DEPLOY_ARTIFACTID;
+import static org.commonjava.maven.ext.core.impl.DistributionEnforcingManipulator.MAVEN_INSTALL_ARTIFACTID;
+import static org.commonjava.maven.ext.core.impl.DistributionEnforcingManipulator.MAVEN_PLUGIN_GROUPID;
+import static org.commonjava.maven.ext.core.state.DistributionEnforcingState.ENFORCE_SYSPROP;
+import static org.commonjava.maven.ext.core.state.EnforcingMode.detect;
+import static org.commonjava.maven.ext.core.state.EnforcingMode.none;
+import static org.commonjava.maven.ext.core.state.EnforcingMode.off;
+import static org.commonjava.maven.ext.core.state.EnforcingMode.on;
+import static org.commonjava.maven.ext.core.util.IdUtils.ga;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
+
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
 import org.apache.maven.execution.DefaultMavenExecutionRequest;
 import org.apache.maven.execution.DefaultMavenExecutionResult;
 import org.apache.maven.execution.MavenExecutionRequest;
@@ -40,291 +62,234 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import static org.commonjava.maven.ext.core.impl.DistributionEnforcingManipulator.MAVEN_DEPLOY_ARTIFACTID;
-import static org.commonjava.maven.ext.core.impl.DistributionEnforcingManipulator.MAVEN_INSTALL_ARTIFACTID;
-import static org.commonjava.maven.ext.core.impl.DistributionEnforcingManipulator.MAVEN_PLUGIN_GROUPID;
-import static org.commonjava.maven.ext.core.state.DistributionEnforcingState.ENFORCE_SYSPROP;
-import static org.commonjava.maven.ext.core.state.EnforcingMode.detect;
-import static org.commonjava.maven.ext.core.state.EnforcingMode.none;
-import static org.commonjava.maven.ext.core.state.EnforcingMode.off;
-import static org.commonjava.maven.ext.core.state.EnforcingMode.on;
-import static org.commonjava.maven.ext.core.util.IdUtils.ga;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
-
-public class DistributionEnforcingManipulatorTest
-{
+public class DistributionEnforcingManipulatorTest {
     private static final String RESOURCE_BASE = "enforce-skip/";
 
     @Test
     public void stateIsEnabledWhenModeIsUnspecified()
-        throws Exception
-    {
-        initTest( null, false );
+            throws Exception {
+        initTest(null, false);
     }
 
     @Test
     public void stateIsDisabledWhenModeIsNone()
-        throws Exception
-    {
-        initTest( none, false );
+            throws Exception {
+        initTest(none, false);
     }
 
     @Test
     public void stateIsEnabledWhenModeIsOn()
-        throws Exception
-    {
-        initTest( on, true );
+            throws Exception {
+        initTest(on, true);
     }
 
     @Test
     public void stateIsEnabledWhenModeIsOff()
-        throws Exception
-    {
-        initTest( off, true );
+            throws Exception {
+        initTest(off, true);
     }
 
     @Test
     public void stateIsEnabledWhenModeIsDetect()
-        throws Exception
-    {
-        initTest( detect, true );
+            throws Exception {
+        initTest(detect, true);
     }
 
     @Test
     public void projectUnchangedWhenModeIsNone()
-        throws Exception
-    {
+            throws Exception {
         final Plugin plugin = new Plugin();
-        plugin.setGroupId( MAVEN_PLUGIN_GROUPID );
-        plugin.setArtifactId( MAVEN_DEPLOY_ARTIFACTID );
-        plugin.setConfiguration( simpleSkipConfig( true ) );
+        plugin.setGroupId(MAVEN_PLUGIN_GROUPID);
+        plugin.setArtifactId(MAVEN_DEPLOY_ARTIFACTID);
+        plugin.setConfiguration(simpleSkipConfig(true));
 
         final Build build = new Build();
-        build.addPlugin( plugin );
+        build.addPlugin(plugin);
 
         final Model model = new Model();
-        model.setModelVersion( "4.0.0" );
-        model.setGroupId( "org.foo" );
-        model.setArtifactId( "bar" );
-        model.setVersion( "1" );
+        model.setModelVersion("4.0.0");
+        model.setGroupId("org.foo");
+        model.setArtifactId("bar");
+        model.setVersion("1");
 
-        model.setBuild( build );
+        model.setBuild(build);
 
-        applyTest( none, model, null );
+        applyTest(none, model, null);
     }
 
     @Test
     public void projectDeploySkipTurnedOffWhenModeIsOff()
-        throws Exception
-    {
+            throws Exception {
         final Plugin plugin = new Plugin();
-        plugin.setGroupId( MAVEN_PLUGIN_GROUPID );
-        plugin.setArtifactId( MAVEN_DEPLOY_ARTIFACTID );
-        plugin.setConfiguration( simpleSkipConfig( true ) );
+        plugin.setGroupId(MAVEN_PLUGIN_GROUPID);
+        plugin.setArtifactId(MAVEN_DEPLOY_ARTIFACTID);
+        plugin.setConfiguration(simpleSkipConfig(true));
 
         final Build build = new Build();
-        build.addPlugin( plugin );
+        build.addPlugin(plugin);
 
         final Model model = new Model();
-        model.setModelVersion( "4.0.0" );
-        model.setGroupId( "org.foo" );
-        model.setArtifactId( "bar" );
-        model.setVersion( "1" );
+        model.setModelVersion("4.0.0");
+        model.setGroupId("org.foo");
+        model.setArtifactId("bar");
+        model.setVersion("1");
 
-        model.setBuild( build );
+        model.setBuild(build);
 
-        applyTest( off, model, model );
-        assertSkip( model, null );
+        applyTest(off, model, model);
+        assertSkip(model, null);
     }
 
     @Test
     public void projectDeploySkipTurnedOffWhenModeIsOff_ParsedPom()
-        throws Exception
-    {
-        final Model model = TestUtils.resolveModelResource( RESOURCE_BASE, "simple-deploy-skip.pom" );
+            throws Exception {
+        final Model model = TestUtils.resolveModelResource(RESOURCE_BASE, "simple-deploy-skip.pom");
 
-        applyTest( off, model, model );
-        assertSkip( model, null );
+        applyTest(off, model, model);
+        assertSkip(model, null);
     }
 
     @Test
     public void projectDeploySkipTurnedOffWhenNoModeIsDetected_ParsedPom()
-        throws Exception
-    {
-        final Model model = TestUtils.resolveModelResource( RESOURCE_BASE, "simple-deploy-skip.pom" );
+            throws Exception {
+        final Model model = TestUtils.resolveModelResource(RESOURCE_BASE, "simple-deploy-skip.pom");
 
-        applyTest( detect, model, model );
-        assertSkip( model, null );
+        applyTest(detect, model, model);
+        assertSkip(model, null);
     }
 
     @Test
     public void projectDeploySkipTurnedOffWhenOffModeIsDetected_ParsedPom()
-        throws Exception
-    {
-        final Model model = TestUtils.resolveModelResource( RESOURCE_BASE, "simple-detect-skip.pom" );
+            throws Exception {
+        final Model model = TestUtils.resolveModelResource(RESOURCE_BASE, "simple-detect-skip.pom");
 
-        applyTest( detect, model, model );
-        assertSkip( model, null );
+        applyTest(detect, model, model);
+        assertSkip(model, null);
     }
 
     @Test
     public void projectDeploySkipTurnedOffWhenOffModeIsDetected_InPluginExecution_ParsedPom()
-        throws Exception
-    {
-        final Model model = TestUtils.resolveModelResource( RESOURCE_BASE, "exec-detect-skip.pom" );
+            throws Exception {
+        final Model model = TestUtils.resolveModelResource(RESOURCE_BASE, "exec-detect-skip.pom");
 
-        applyTest( detect, model, model );
-        assertSkip( model, null );
+        applyTest(detect, model, model);
+        assertSkip(model, null);
     }
 
     @Test
     public void projectDeploySkipTurnedOff_InProfile_ModeIsOff_ParsedPom()
-        throws Exception
-    {
-        final Model model = TestUtils.resolveModelResource( RESOURCE_BASE, "profile-deploy-skip.pom" );
+            throws Exception {
+        final Model model = TestUtils.resolveModelResource(RESOURCE_BASE, "profile-deploy-skip.pom");
 
-        applyTest( off, model, model );
-        assertSkip( model, "test" );
+        applyTest(off, model, model);
+        assertSkip(model, "test");
     }
 
-    private void initTest( final EnforcingMode mode, final boolean enabled )
-        throws Exception
-    {
-        setModeProperty( mode );
+    private void initTest(final EnforcingMode mode, final boolean enabled)
+            throws Exception {
+        setModeProperty(mode);
         setMavenSession();
 
-        manipulator.init( session );
+        manipulator.init(session);
 
-        final DistributionEnforcingState state = session.getState( DistributionEnforcingState.class );
-        assertThat( state.isEnabled(), equalTo( enabled ) );
+        final DistributionEnforcingState state = session.getState(DistributionEnforcingState.class);
+        assertThat(state.isEnabled(), equalTo(enabled));
     }
 
-    private void setModeProperty( final EnforcingMode mode )
-    {
-        if ( mode != null )
-        {
-            userCliProperties.setProperty( ENFORCE_SYSPROP, mode.name() );
+    private void setModeProperty(final EnforcingMode mode) {
+        if (mode != null) {
+            userCliProperties.setProperty(ENFORCE_SYSPROP, mode.name());
         }
     }
 
-    private Object simpleSkipConfig( final boolean enabled )
-        throws Exception
-    {
-        return Xpp3DomBuilder.build( new StringReader( "<configuration><skip>" + enabled + "</skip></configuration>" ) );
+    private Object simpleSkipConfig(final boolean enabled)
+            throws Exception {
+        return Xpp3DomBuilder.build(new StringReader("<configuration><skip>" + enabled + "</skip></configuration>"));
     }
 
     private void setMavenSession()
-        throws Exception
-    {
-        final MavenExecutionRequest req =
-            new DefaultMavenExecutionRequest().setUserProperties( userCliProperties )
-                                              .setRemoteRepositories( Collections.emptyList() );
+            throws Exception {
+        final MavenExecutionRequest req = new DefaultMavenExecutionRequest().setUserProperties(userCliProperties)
+                .setRemoteRepositories(Collections.emptyList());
 
         final PlexusContainer container = new DefaultPlexusContainer();
-        final MavenSession mavenSession = new MavenSession( container, null, req, new DefaultMavenExecutionResult() );
+        final MavenSession mavenSession = new MavenSession(container, null, req, new DefaultMavenExecutionResult());
 
-        session.setMavenSession( mavenSession );
+        session.setMavenSession(mavenSession);
 
     }
 
-    private void assertSkip( final Model model, final String profileId )
-    {
+    private void assertSkip(final Model model, final String profileId) {
         BuildBase build = null;
-        if ( profileId != null )
-        {
+        if (profileId != null) {
             final List<Profile> profiles = model.getProfiles();
-            if ( profiles != null )
-            {
-                for ( final Profile profile : profiles )
-                {
-                    if ( profileId.equals( profile.getId() ) )
-                    {
+            if (profiles != null) {
+                for (final Profile profile : profiles) {
+                    if (profileId.equals(profile.getId())) {
                         build = profile.getBuild();
                     }
                 }
             }
-        }
-        else
-        {
+        } else {
             build = model.getBuild();
         }
 
-        assertThat( build, notNullValue() );
+        assertThat(build, notNullValue());
 
-        final Plugin plugin =
-            build.getPluginsAsMap()
-                 .get( ga( MAVEN_PLUGIN_GROUPID, true ? MAVEN_DEPLOY_ARTIFACTID : MAVEN_INSTALL_ARTIFACTID ) );
+        final Plugin plugin = build.getPluginsAsMap()
+                .get(ga(MAVEN_PLUGIN_GROUPID, true ? MAVEN_DEPLOY_ARTIFACTID : MAVEN_INSTALL_ARTIFACTID));
 
-        assertThat( plugin, notNullValue() );
+        assertThat(plugin, notNullValue());
 
-        assertThat( plugin.getConfiguration()
-                          .toString()
-                          .contains( "<skip>" + Boolean.FALSE + "</skip>" ), equalTo( true ) );
+        assertThat(
+                plugin.getConfiguration()
+                        .toString()
+                        .contains("<skip>" + Boolean.FALSE + "</skip>"),
+                equalTo(true));
     }
 
-    private void applyTest( final EnforcingMode mode, final Model model, final Model expectChanged )
-        throws Exception
-    {
-        setModeProperty( mode );
+    private void applyTest(final EnforcingMode mode, final Model model, final Model expectChanged)
+            throws Exception {
+        setModeProperty(mode);
 
         setMavenSession();
 
-        manipulator.init( session );
+        manipulator.init(session);
 
-        final Project project = new Project( model );
+        final Project project = new Project(model);
         final List<Project> projects = new ArrayList<>();
-        projects.add( project );
+        projects.add(project);
 
-        final Set<Project> changed = manipulator.applyChanges( projects );
+        final Set<Project> changed = manipulator.applyChanges(projects);
 
-        if ( expectChanged != null )
-        {
-            assertThat( changed.isEmpty(), equalTo( false ) );
-            assertThat( changed.contains( new Project( expectChanged ) ), equalTo( true ) );
-        }
-        else
-        {
-            assertThat( changed.isEmpty(), equalTo( true ) );
+        if (expectChanged != null) {
+            assertThat(changed.isEmpty(), equalTo(false));
+            assertThat(changed.contains(new Project(expectChanged)), equalTo(true));
+        } else {
+            assertThat(changed.isEmpty(), equalTo(true));
         }
     }
 
-    @SuppressWarnings( "unused" )
-    private void applyTest( final Set<Model> models, final Set<Model> expectChanged )
-        throws Exception
-    {
+    @SuppressWarnings("unused")
+    private void applyTest(final Set<Model> models, final Set<Model> expectChanged)
+            throws Exception {
         final List<Project> projects = new ArrayList<>();
         final Map<String, Model> manipulatedModels = new HashMap<>();
-        for ( final Model model : models )
-        {
-            final Project project = new Project( model );
-            projects.add( project );
-            manipulatedModels.put( project.getKey().asProjectRef().toString(), model );
+        for (final Model model : models) {
+            final Project project = new Project(model);
+            projects.add(project);
+            manipulatedModels.put(project.getKey().asProjectRef().toString(), model);
         }
 
-        final Set<Project> changed = manipulator.applyChanges( projects );
+        final Set<Project> changed = manipulator.applyChanges(projects);
 
-        if ( expectChanged != null && !expectChanged.isEmpty() )
-        {
-            assertThat( changed.isEmpty(), equalTo( false ) );
-            for ( final Model model : expectChanged )
-            {
-                assertThat( changed.contains( new Project( model ) ), equalTo( true ) );
+        if (expectChanged != null && !expectChanged.isEmpty()) {
+            assertThat(changed.isEmpty(), equalTo(false));
+            for (final Model model : expectChanged) {
+                assertThat(changed.contains(new Project(model)), equalTo(true));
             }
-        }
-        else
-        {
-            assertThat( changed.isEmpty(), equalTo( true ) );
+        } else {
+            assertThat(changed.isEmpty(), equalTo(true));
         }
     }
 
@@ -339,17 +304,16 @@ public class DistributionEnforcingManipulatorTest
 
     @Before
     public void before()
-        throws Exception
-    {
+            throws Exception {
         userCliProperties = new Properties();
-        userCliProperties.setProperty( ProfileUtils.PROFILE_SCANNING, "false");
+        userCliProperties.setProperty(ProfileUtils.PROFILE_SCANNING, "false");
         session = new ManipulationSession();
 
-        final GalleyInfrastructure galleyInfra =
-            new GalleyInfrastructure( session, null).init( null, null, temp.newFolder( "cache-dir" ) );
+        final GalleyInfrastructure galleyInfra = new GalleyInfrastructure(session, null)
+                .init(null, null, temp.newFolder("cache-dir"));
 
-        final GalleyAPIWrapper wrapper = new GalleyAPIWrapper( galleyInfra );
+        final GalleyAPIWrapper wrapper = new GalleyAPIWrapper(galleyInfra);
 
-        manipulator = new DistributionEnforcingManipulator( wrapper );
+        manipulator = new DistributionEnforcingManipulator(wrapper);
     }
 }

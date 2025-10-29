@@ -15,40 +15,36 @@
  */
 package org.commonjava.maven.ext.manip;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import org.apache.maven.AbstractMavenLifecycleParticipant;
 import org.apache.maven.MavenExecutionException;
 import org.apache.maven.execution.MavenSession;
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.core.ManipulationSession;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 @Named
 @Singleton
 public class ManipulatingLifeCycleParticipant
-    extends AbstractMavenLifecycleParticipant
-{
+        extends AbstractMavenLifecycleParticipant {
     private ManipulationSession session;
 
     @Inject
-    public ManipulatingLifeCycleParticipant(ManipulationSession session)
-    {
+    public ManipulatingLifeCycleParticipant(ManipulationSession session) {
         this.session = session;
     }
 
     @Override
-    public void afterProjectsRead( final MavenSession mavenSession )
-        throws MavenExecutionException
-    {
+    public void afterProjectsRead(final MavenSession mavenSession)
+            throws MavenExecutionException {
         final ManipulationException error = session.getError();
-        if ( error != null )
-        {
-            throw new MavenExecutionException( "POM Manipulation failed: " + error.getMessage(), error );
+        if (error != null) {
+            throw new MavenExecutionException("POM Manipulation failed: " + error.getMessage(), error);
         }
 
-        super.afterProjectsRead( mavenSession );
+        super.afterProjectsRead(mavenSession);
     }
 
 }

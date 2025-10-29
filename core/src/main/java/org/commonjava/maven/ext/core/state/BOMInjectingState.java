@@ -15,16 +15,15 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import org.commonjava.maven.ext.annotation.ConfigValue;
-
 import java.util.Properties;
+
+import org.commonjava.maven.ext.annotation.ConfigValue;
 
 /**
  * Captures configuration parameters for use with {@link org.commonjava.maven.ext.core.impl.BOMBuilderManipulator}.
  */
 public class BOMInjectingState
-    implements State
-{
+        implements State {
     /** Set this property to true using <code>-DbomBuilder=true</code> to activate BOM Builder Plugin */
     @ConfigValue(docIndex = "dep-manip.html#bom-generation")
     public static final String BOM_BUILDER = "bomBuilder";
@@ -36,14 +35,12 @@ public class BOMInjectingState
      *
      * @param userProperties the properties for the manipulator
      */
-    public BOMInjectingState( final Properties userProperties )
-    {
-        initialise( userProperties );
+    public BOMInjectingState(final Properties userProperties) {
+        initialise(userProperties);
     }
 
-    public void initialise( Properties userProperties )
-    {
-        builderEnabled = Boolean.parseBoolean( userProperties.getProperty( BOM_BUILDER, "false" ) );
+    public void initialise(Properties userProperties) {
+        builderEnabled = Boolean.parseBoolean(userProperties.getProperty(BOM_BUILDER, "false"));
     }
 
     /**
@@ -52,8 +49,7 @@ public class BOMInjectingState
      * @return true if state is enabled.
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return builderEnabled;
     }
 

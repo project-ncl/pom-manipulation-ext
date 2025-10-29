@@ -22,6 +22,5 @@ import groovy.lang.Script;
  * Abstract class that is used as a marker and extended by the Gradle Manipulation Tooling.
  */
 public abstract class SBTBaseScript
-                extends Script implements CommonBaseScript
-{
+        extends Script implements CommonBaseScript {
 }

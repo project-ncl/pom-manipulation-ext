@@ -15,6 +15,15 @@
  */
 package org.commonjava.maven.ext.io;
 
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Map;
+import java.util.Properties;
+
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.junit.Before;
 import org.junit.Rule;
@@ -24,52 +33,38 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.representer.Representer;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Map;
-import java.util.Properties;
-
-import static org.junit.Assert.assertTrue;
-
-public class YamlTest
-{
+public class YamlTest {
     private File yamlFile;
 
     @Rule
-    public TemporaryFolder tf = new TemporaryFolder(  );
+    public TemporaryFolder tf = new TemporaryFolder();
 
     @Before
-    public void setup() throws IOException
-    {
-        URL yamlResource = this.getClass().getResource( "pme.yaml");
-        yamlFile = new File( yamlResource.getFile() );
+    public void setup() throws IOException {
+        URL yamlResource = this.getClass().getResource("pme.yaml");
+        yamlFile = new File(yamlResource.getFile());
     }
 
-
     @Test
-    public void readYamlViaMap ()
-                    throws ManipulationException, IOException
-    {
+    public void readYamlViaMap()
+            throws ManipulationException, IOException {
         Representer representer = new Representer(new DumperOptions());
         representer.getPropertyUtils().setSkipMissingProperties(true);
 
         Yaml y = new Yaml(representer);
 
-        Map config = (Map) y.load( new FileInputStream( yamlFile ));
-        Map usersConfig = (Map) config.get( "pme");
+        Map config = (Map) y.load(new FileInputStream(yamlFile));
+        Map usersConfig = (Map) config.get("pme");
 
-        assertTrue ( usersConfig.size() > 0);
+        assertTrue(usersConfig.size() > 0);
     }
 
     @Test
-    public void readYamlViaPojo ()
-                    throws ManipulationException, IOException
-    {
+    public void readYamlViaPojo()
+            throws ManipulationException, IOException {
 
-        Properties p = new ConfigIO().parse( yamlFile.getParentFile() );
+        Properties p = new ConfigIO().parse(yamlFile.getParentFile());
 
-        assertTrue (p.size() > 0);
+        assertTrue(p.size() > 0);
     }
 }

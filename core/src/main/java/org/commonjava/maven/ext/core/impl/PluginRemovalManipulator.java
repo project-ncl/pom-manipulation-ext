@@ -17,8 +17,10 @@ package org.commonjava.maven.ext.core.impl;
 
 import java.util.List;
 import java.util.Set;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
+
 import org.commonjava.maven.ext.common.model.Project;
 import org.commonjava.maven.ext.core.ManipulationSession;
 import org.commonjava.maven.ext.core.state.PluginRemovalState;
@@ -32,8 +34,7 @@ import org.commonjava.maven.ext.core.state.PluginState;
 @Named("plugin-removal-manipulator")
 @Singleton
 public class PluginRemovalManipulator extends BasePluginRemovalManipulator
-        implements Manipulator
-{
+        implements Manipulator {
     /**
      * Initialize the {@link PluginState} state holder in the {@link ManipulationSession}. This state holder detects
      * version-change configuration from the Maven user properties (-D properties from the CLI) and makes it available
@@ -42,10 +43,9 @@ public class PluginRemovalManipulator extends BasePluginRemovalManipulator
      * @param session the session
      */
     @Override
-    public void init( final ManipulationSession session )
-    {
+    public void init(final ManipulationSession session) {
         this.session = session;
-        session.setState( new PluginRemovalState( session.getUserProperties() ) );
+        session.setState(new PluginRemovalState(session.getUserProperties()));
     }
 
     /**
@@ -54,9 +54,8 @@ public class PluginRemovalManipulator extends BasePluginRemovalManipulator
      * @return the set of projects with changes
      */
     @Override
-    public Set<Project> applyChanges( final List<Project> projects )
-    {
-        return applyChanges( projects, session.getState( PluginRemovalState.class ) );
+    public Set<Project> applyChanges(final List<Project> projects) {
+        return applyChanges(projects, session.getState(PluginRemovalState.class));
     }
 
     /**
@@ -66,8 +65,7 @@ public class PluginRemovalManipulator extends BasePluginRemovalManipulator
      * @return the execution index for {@code PluginRemovalManipulator} which is 52
      */
     @Override
-    public int getExecutionIndex()
-    {
+    public int getExecutionIndex() {
         return 52;
     }
 }

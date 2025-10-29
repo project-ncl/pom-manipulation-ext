@@ -15,24 +15,25 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import org.commonjava.maven.ext.common.ManipulationException;
-import org.commonjava.maven.ext.core.impl.Manipulator;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import org.commonjava.maven.ext.common.ManipulationException;
+import org.commonjava.maven.ext.core.impl.Manipulator;
+
 /**
- * Basic list of methods that state collections related to different {@link Manipulator}'s should implement. This is also a marker interface to
+ * Basic list of methods that state collections related to different {@link Manipulator}'s should implement. This is
+ * also a marker interface to
  * help ensure the validity of content stored in the session.
  *
- * A State implementation can contain a mixture of configuration (parsed/configured from command-line properties or other sources) and storage output
+ * A State implementation can contain a mixture of configuration (parsed/configured from command-line properties or
+ * other sources) and storage output
  * from the Manipulators.
  *
  * @author jdcasey
  */
-public interface State
-{
+public interface State {
     /**
      * Contains list of manipulations that are active by default for checking in applyChanges.
      */
@@ -43,5 +44,5 @@ public interface State
      */
     boolean isEnabled();
 
-    void initialise( Properties userProperties ) throws ManipulationException;
+    void initialise(Properties userProperties) throws ManipulationException;
 }

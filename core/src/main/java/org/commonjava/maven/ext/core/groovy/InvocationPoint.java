@@ -24,8 +24,7 @@ import java.lang.annotation.Target;
  * Annotation to denote when the groovy script should be invoked.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.LOCAL_VARIABLE, ElementType.TYPE })
-public @interface InvocationPoint
-{
+@Target({ ElementType.LOCAL_VARIABLE, ElementType.TYPE })
+public @interface InvocationPoint {
     InvocationStage invocationPoint();
 }

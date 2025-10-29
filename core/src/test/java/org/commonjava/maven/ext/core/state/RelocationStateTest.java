@@ -15,108 +15,100 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import org.commonjava.maven.ext.common.ManipulationException;
-import org.junit.Test;
-
-import java.util.Properties;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class RelocationStateTest
-{
+import java.util.Properties;
+
+import org.commonjava.maven.ext.common.ManipulationException;
+import org.junit.Test;
+
+public class RelocationStateTest {
 
     @Test
     public void disabledByDefault()
-                    throws ManipulationException
-    {
-        final RelocationState state = new RelocationState( new Properties() );
+            throws ManipulationException {
+        final RelocationState state = new RelocationState(new Properties());
 
-        assertThat( state.isEnabled(), equalTo( false ) );
+        assertThat(state.isEnabled(), equalTo(false));
     }
 
-    @Test (expected = ManipulationException.class)
+    @Test(expected = ManipulationException.class)
     public void invalidDepRelocationConfig()
-                    throws ManipulationException
-    {
+            throws ManipulationException {
         final Properties p = new Properties();
-        p.setProperty( RelocationState.DEPENDENCY_RELOCATIONS + "oldGroupId", "" );
+        p.setProperty(RelocationState.DEPENDENCY_RELOCATIONS + "oldGroupId", "");
 
-        final RelocationState state = new RelocationState( p );
+        final RelocationState state = new RelocationState(p);
 
-        assertThat( state.isEnabled(), equalTo( true ) );
+        assertThat(state.isEnabled(), equalTo(true));
     }
 
-
-    @Test (expected = ManipulationException.class)
+    @Test(expected = ManipulationException.class)
     public void invalidDepRelocationConfigTwo()
-                    throws ManipulationException
-    {
+            throws ManipulationException {
         final Properties p = new Properties();
-        p.setProperty( RelocationState.DEPENDENCY_RELOCATIONS + "oldGroupId:newGroupId@", "" );
+        p.setProperty(RelocationState.DEPENDENCY_RELOCATIONS + "oldGroupId:newGroupId@", "");
 
-        final RelocationState state = new RelocationState( p );
+        final RelocationState state = new RelocationState(p);
 
-        assertThat( state.isEnabled(), equalTo( true ) );
+        assertThat(state.isEnabled(), equalTo(true));
     }
 
     @Test
     public void testRelocationsWithArtifact()
-                    throws ManipulationException
-    {
+            throws ManipulationException {
         final Properties p = new Properties();
-        p.setProperty( RelocationState.DEPENDENCY_RELOCATIONS + "oldGroupId:oldArtifactId@newGroupId:newArtifactId", "1.10" );
+        p.setProperty(
+                RelocationState.DEPENDENCY_RELOCATIONS + "oldGroupId:oldArtifactId@newGroupId:newArtifactId",
+                "1.10");
 
-        final RelocationState state = new RelocationState( p );
+        final RelocationState state = new RelocationState(p);
 
-        assertThat( state.isEnabled(), equalTo( true ) );
+        assertThat(state.isEnabled(), equalTo(true));
     }
 
     @Test
     public void testRelocationsWithWildcard()
-                    throws ManipulationException
-    {
+            throws ManipulationException {
         final Properties p = new Properties();
-        p.setProperty( RelocationState.DEPENDENCY_RELOCATIONS + "oldGroupId:@newGroupId:", "1.10" );
+        p.setProperty(RelocationState.DEPENDENCY_RELOCATIONS + "oldGroupId:@newGroupId:", "1.10");
 
-        final RelocationState state = new RelocationState( p );
+        final RelocationState state = new RelocationState(p);
 
-        assertThat( state.isEnabled(), equalTo( true ) );
+        assertThat(state.isEnabled(), equalTo(true));
     }
 
     @Test
     public void testRelocationsWithWildcardEmptyVersion()
-                    throws ManipulationException
-    {
+            throws ManipulationException {
         final Properties p = new Properties();
-        p.setProperty( RelocationState.DEPENDENCY_RELOCATIONS + "oldGroupId:@newGroupId:", "" );
+        p.setProperty(RelocationState.DEPENDENCY_RELOCATIONS + "oldGroupId:@newGroupId:", "");
 
-        final RelocationState state = new RelocationState( p );
+        final RelocationState state = new RelocationState(p);
 
-        assertThat( state.isEnabled(), equalTo( true ) );
+        assertThat(state.isEnabled(), equalTo(true));
     }
 
     @Test(expected = ManipulationException.class)
     public void testRelocationsWithArtifactInvalid()
-                    throws ManipulationException
-    {
+            throws ManipulationException {
         final Properties p = new Properties();
-        p.setProperty( RelocationState.DEPENDENCY_RELOCATIONS + "oldGroupId:@newGroupId:newA", "" );
+        p.setProperty(RelocationState.DEPENDENCY_RELOCATIONS + "oldGroupId:@newGroupId:newA", "");
 
-        final RelocationState state = new RelocationState( p );
+        final RelocationState state = new RelocationState(p);
 
-        assertThat( state.isEnabled(), equalTo( true ) );
+        assertThat(state.isEnabled(), equalTo(true));
     }
 
-    @Test (expected = ManipulationException.class)
+    @Test(expected = ManipulationException.class)
     public void testRelocationsWithGroupInvalid()
-                    throws ManipulationException
-    {
+            throws ManipulationException {
         final Properties p = new Properties();
-        p.setProperty( RelocationState.DEPENDENCY_RELOCATIONS + "oldGroupId:oldA@:newA", "" );
+        p.setProperty(RelocationState.DEPENDENCY_RELOCATIONS + "oldGroupId:oldA@:newA", "");
 
-        final RelocationState state = new RelocationState( p );
+        final RelocationState state = new RelocationState(p);
 
-        assertThat( state.isEnabled(), equalTo( true ) );
+        assertThat(state.isEnabled(), equalTo(true));
     }
 }

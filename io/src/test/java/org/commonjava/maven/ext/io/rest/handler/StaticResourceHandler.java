@@ -21,17 +21,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class StaticResourceHandler
-                extends ResourceHandler
-                implements Handler
-{
-    private final Logger logger = LoggerFactory.getLogger( StaticResourceHandler.class );
+        extends ResourceHandler
+        implements Handler {
+    private final Logger logger = LoggerFactory.getLogger(StaticResourceHandler.class);
 
-    public StaticResourceHandler( String target )
-    {
-        logger.info( "Handling: {}", target );
+    public StaticResourceHandler(String target) {
+        logger.info("Handling: {}", target);
 
         setDirectoriesListed(true);
-        setWelcomeFiles(new String[]{ target });
+        setWelcomeFiles(new String[] { target });
         setResourceBase(".");
     }
 }

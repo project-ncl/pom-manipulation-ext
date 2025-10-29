@@ -15,6 +15,21 @@
  */
 package org.commonjava.maven.ext.core.impl;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
+import java.io.File;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.common.model.Project;
 import org.commonjava.maven.ext.core.ManipulationSession;
@@ -26,21 +41,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.io.File;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-
 /**
  * {@link Manipulator} implementation that can modify XML files. Configuration
  * is stored in a {@link XMLState} instance, which is in turn stored in the {@link ManipulationSession}.
@@ -48,9 +48,8 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 @Named("xml-manipulator")
 @Singleton
 public class XMLManipulator
-    implements Manipulator
-{
-    private final Logger logger = LoggerFactory.getLogger( getClass() );
+        implements Manipulator {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final XPath xPath;
 
@@ -59,8 +58,7 @@ public class XMLManipulator
     private ManipulationSession session;
 
     @Inject
-    public XMLManipulator(XMLIO xmlIO)
-    {
+    public XMLManipulator(XMLIO xmlIO) {
         this.xmlIO = xmlIO;
         this.xPath = xmlIO.getXPath();
     }
@@ -71,23 +69,20 @@ public class XMLManipulator
      * later.
      */
     @Override
-    public void init( final ManipulationSession session )
-                    throws ManipulationException
-    {
+    public void init(final ManipulationSession session)
+            throws ManipulationException {
         this.session = session;
-        session.setState( new XMLState( session.getUserProperties() ) );
+        session.setState(new XMLState(session.getUserProperties()));
     }
 
     /**
      * Apply the xml changes to the specified file(s).
      */
     @Override
-    public Set<Project> applyChanges( final List<Project> projects )
-        throws ManipulationException
-    {
-        final XMLState state = session.getState( XMLState.class );
-        if ( !session.isEnabled() || !state.isEnabled() )
-        {
+    public Set<Project> applyChanges(final List<Project> projects)
+            throws ManipulationException {
+        final XMLState state = session.getState(XMLState.class);
+        if (!session.isEnabled() || !state.isEnabled()) {
             logger.debug("{}: Nothing to do!", getClass().getSimpleName());
             return Collections.emptySet();
         }
@@ -95,15 +90,12 @@ public class XMLManipulator
         final Set<Project> changed = new HashSet<>();
         final List<XMLState.XMLOperation> scripts = state.getXMLOperations();
 
-        for ( final Project project : projects )
-        {
-            if ( project.isExecutionRoot() )
-            {
-                for ( XMLState.XMLOperation operation : scripts )
-                {
-                    internalApplyChanges (project, operation);
+        for (final Project project : projects) {
+            if (project.isExecutionRoot()) {
+                for (XMLState.XMLOperation operation : scripts) {
+                    internalApplyChanges(project, operation);
 
-                    changed.add( project );
+                    changed.add(project);
                 }
 
                 break;
@@ -112,61 +104,54 @@ public class XMLManipulator
         return changed;
     }
 
-    void internalApplyChanges( Project project, XMLState.XMLOperation operation ) throws ManipulationException
-    {
-        File target = new File( project.getPom().getParentFile(), operation.getFile() );
+    void internalApplyChanges(Project project, XMLState.XMLOperation operation) throws ManipulationException {
+        File target = new File(project.getPom().getParentFile(), operation.getFile());
 
-        logger.info( "Attempting to start XML update to file {} with xpath {} and replacement {}",
-                     target, operation.getXPath(), operation.getUpdate() );
+        logger.info(
+                "Attempting to start XML update to file {} with xpath {} and replacement {}",
+                target,
+                operation.getXPath(),
+                operation.getUpdate());
 
-        Document doc = xmlIO.parseXML( target );
+        Document doc = xmlIO.parseXML(target);
 
-        try
-        {
-            NodeList nodeList = (NodeList) xPath.evaluate( operation.getXPath(), doc, XPathConstants.NODESET );
+        try {
+            NodeList nodeList = (NodeList) xPath.evaluate(operation.getXPath(), doc, XPathConstants.NODESET);
 
-            if ( nodeList.getLength() == 0 )
-            {
-                if ( project.isIncrementalPME() )
-                {
-                    logger.warn ("Did not locate XML using XPath {}", operation.getXPath() );
+            if (nodeList.getLength() == 0) {
+                if (project.isIncrementalPME()) {
+                    logger.warn("Did not locate XML using XPath {}", operation.getXPath());
                     return;
-                }
-                else
-                {
-                    logger.error( "XPath {} did not find any expressions within {}", operation.getXPath(), operation.getFile() );
-                    throw new ManipulationException( "Did not locate XML using XPath {}", operation.getXPath() );
+                } else {
+                    logger.error(
+                            "XPath {} did not find any expressions within {}",
+                            operation.getXPath(),
+                            operation.getFile());
+                    throw new ManipulationException("Did not locate XML using XPath {}", operation.getXPath());
                 }
             }
 
-            for ( int i = 0; i < nodeList.getLength(); i++ )
-            {
-                Node node = nodeList.item( i );
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
 
-                if ( isEmpty( operation.getUpdate() ) )
-                {
+                if (isEmpty(operation.getUpdate())) {
                     // Delete
-                    node.getParentNode().removeChild( node );
-                }
-                else
-                {
+                    node.getParentNode().removeChild(node);
+                } else {
                     // Update
-                    node.setTextContent( operation.getUpdate() );
+                    node.setTextContent(operation.getUpdate());
                 }
             }
 
-            xmlIO.writeXML( target, doc );
-        }
-        catch ( XPathExpressionException e )
-        {
-            logger.error( "Caught XML exception processing file {}, document context {}", target, doc, e );
-            throw new ManipulationException( "Caught XML exception processing file", e );
+            xmlIO.writeXML(target, doc);
+        } catch (XPathExpressionException e) {
+            logger.error("Caught XML exception processing file {}, document context {}", target, doc, e);
+            throw new ManipulationException("Caught XML exception processing file", e);
         }
     }
 
     @Override
-    public int getExecutionIndex()
-    {
+    public int getExecutionIndex() {
         return 91;
     }
 }

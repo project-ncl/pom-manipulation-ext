@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright (C) 2012 Red Hat, Inc.
@@ -43,7 +43,7 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
     </dependency>
-     <dependency>
+    <dependency>
       <groupId>com.github.olivergondza</groupId>
       <artifactId>maven-jdk-tools-wrapper</artifactId>
     </dependency>
@@ -94,10 +94,10 @@
         <executions>
           <execution>
             <id>attach-javadocs</id>
-              <!-- Standard configuration uses a custom doclet so revert all config to standard -->
-              <configuration combine.self="override">
-               <source>8</source>
-               <quiet>true</quiet>
+            <!-- Standard configuration uses a custom doclet so revert all config to standard -->
+            <configuration combine.self="override">
+              <source>8</source>
+              <quiet>true</quiet>
             </configuration>
           </execution>
         </executions>

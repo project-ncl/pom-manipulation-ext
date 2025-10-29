@@ -15,6 +15,12 @@
  */
 package org.commonjava.maven.ext.io.rest;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
 import org.jboss.byteman.contrib.bmunit.BMRule;
@@ -22,54 +28,42 @@ import org.jboss.byteman.contrib.bmunit.BMUnitRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 @RunWith(BMUnitRunner.class)
-public class HttpEndpointTest extends HttpHeaderHeaderTest
-{
-    static
-    {
-//        System.setProperty( "org.jboss.byteman.verbose", "true" );
-//        System.setProperty( "org.jboss.byteman.debug", "true" );
+public class HttpEndpointTest extends HttpHeaderHeaderTest {
+    static {
+        //        System.setProperty( "org.jboss.byteman.verbose", "true" );
+        //        System.setProperty( "org.jboss.byteman.debug", "true" );
     }
 
     @Test
-    @BMRule(name = "check-duplicate-endpoint",
-                    targetClass = "DefaultTranslator$Task",
-                    targetMethod = "executeTranslate()",
-                    targetLocation = "AT ENTRY",
-                    condition = "$this.endpointUrl.contains(\"lookup/gavs/reports/lookup/gavs\")",
-                    action = "throw new RuntimeException()"
-    )
-    public void testVerifyEndpoint()
-    {
+    @BMRule(
+            name = "check-duplicate-endpoint",
+            targetClass = "DefaultTranslator$Task",
+            targetMethod = "executeTranslate()",
+            targetLocation = "AT ENTRY",
+            condition = "$this.endpointUrl.contains(\"lookup/gavs/reports/lookup/gavs\")",
+            action = "throw new RuntimeException()")
+    public void testVerifyEndpoint() {
         testResponseStart = "<html><body><h1>504 Gateway Time-out</h1>\n" +
-            "The server didn't respond in time.\n" +
-            "</body></html>";
+                "The server didn't respond in time.\n" +
+                "</body></html>";
         testResponseEnd = null;
 
         List<ProjectVersionRef> gavs = Arrays.asList(
-             new SimpleProjectVersionRef( "com.example", "example", "1.0" ),
-             new SimpleProjectVersionRef( "com.example", "example-one", "1.1" ),
-             new SimpleProjectVersionRef( "com.example", "example-two", "1.0" ),
-             new SimpleProjectVersionRef( "com.example", "example-three", "1.1" ),
-             new SimpleProjectVersionRef( "com.example", "example-four", "1.0" ),
-             new SimpleProjectVersionRef( "com.example", "example-five", "1.1" ),
-             new SimpleProjectVersionRef( "com.example", "example-six", "1.0" ),
-             new SimpleProjectVersionRef( "com.example", "example-seven", "1.1" ));
+                new SimpleProjectVersionRef("com.example", "example", "1.0"),
+                new SimpleProjectVersionRef("com.example", "example-one", "1.1"),
+                new SimpleProjectVersionRef("com.example", "example-two", "1.0"),
+                new SimpleProjectVersionRef("com.example", "example-three", "1.1"),
+                new SimpleProjectVersionRef("com.example", "example-four", "1.0"),
+                new SimpleProjectVersionRef("com.example", "example-five", "1.1"),
+                new SimpleProjectVersionRef("com.example", "example-six", "1.0"),
+                new SimpleProjectVersionRef("com.example", "example-seven", "1.1"));
 
-        try
-        {
-            versionTranslator.lookupVersions( gavs );
-            fail( "Failed to throw RestException." );
-        }
-        catch ( RestException ex )
-        {
-            assertTrue( systemOutRule.getLog().contains( "504 Gateway Time-out The server didn't respond in time" ) );
+        try {
+            versionTranslator.lookupVersions(gavs);
+            fail("Failed to throw RestException.");
+        } catch (RestException ex) {
+            assertTrue(systemOutRule.getLog().contains("504 Gateway Time-out The server didn't respond in time"));
         }
     }
 }

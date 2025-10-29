@@ -15,11 +15,8 @@
  */
 package org.commonjava.maven.ext.core.util;
 
-import org.apache.commons.io.FileUtils;
-import org.commonjava.atlas.maven.ident.ref.InvalidRefException;
-import org.commonjava.maven.ext.common.ManipulationUncheckedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,19 +27,20 @@ import java.util.List;
 import java.util.UUID;
 import java.util.function.Function;
 
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import org.apache.commons.io.FileUtils;
+import org.commonjava.atlas.maven.ident.ref.InvalidRefException;
+import org.commonjava.maven.ext.common.ManipulationUncheckedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Convenience utility for parsing and fetching nested remote reference specs for strings containing
  * lists of GA, GAV, GATCV, etc. strings.
  */
-public final class RefParseUtils
-{
-    private static final Logger logger = LoggerFactory.getLogger( RefParseUtils.class );
+public final class RefParseUtils {
+    private static final Logger logger = LoggerFactory.getLogger(RefParseUtils.class);
 
-    private RefParseUtils()
-    {
+    private RefParseUtils() {
     }
 
     /**
@@ -56,43 +54,31 @@ public final class RefParseUtils
      *
      * @return a list of parsed {@code T} entries.
      */
-    public static <T> List<T> parseRefs( final String value, Function<String, T> parser )
-    {
-        if ( isEmpty( value ) )
-        {
+    public static <T> List<T> parseRefs(final String value, Function<String, T> parser) {
+        if (isEmpty(value)) {
             return null;
-        }
-        else
-        {
-            final String[] entries = value.split( "," );
+        } else {
+            final String[] entries = value.split(",");
             final List<T> refs = new ArrayList<>();
-            for ( final String entry : entries )
-            {
-                if (isNotEmpty( entry ))
-                {
-                    if ( entry.startsWith( "http://" ) || entry.startsWith( "https://") )
-                    {
-                        logger.debug( "Found remote file in {}", entry );
-                        try
-                        {
-                            File found = File.createTempFile( UUID.randomUUID().toString(), null );
-                            FileUtils.copyURLToFile( new URL( entry ), found );
-                            String potentialRefs =
-                                            FileUtils.readFileToString( found, Charset.defaultCharset() ).trim().replace( "\n", "," );
-                            List<T> readRefs = parseRefs( potentialRefs, parser );
-                            if ( readRefs != null )
-                            {
-                                refs.addAll( readRefs );
+            for (final String entry : entries) {
+                if (isNotEmpty(entry)) {
+                    if (entry.startsWith("http://") || entry.startsWith("https://")) {
+                        logger.debug("Found remote file in {}", entry);
+                        try {
+                            File found = File.createTempFile(UUID.randomUUID().toString(), null);
+                            FileUtils.copyURLToFile(new URL(entry), found);
+                            String potentialRefs = FileUtils.readFileToString(found, Charset.defaultCharset())
+                                    .trim()
+                                    .replace("\n", ",");
+                            List<T> readRefs = parseRefs(potentialRefs, parser);
+                            if (readRefs != null) {
+                                refs.addAll(readRefs);
                             }
+                        } catch (InvalidRefException | IOException e) {
+                            throw new ManipulationUncheckedException(e);
                         }
-                        catch ( InvalidRefException | IOException e )
-                        {
-                            throw new ManipulationUncheckedException( e );
-                        }
-                    }
-                    else
-                    {
-                        refs.add( parser.apply( entry ) );
+                    } else {
+                        refs.add(parser.apply(entry));
                     }
                 }
             }

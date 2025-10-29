@@ -15,6 +15,11 @@
  */
 package org.commonjava.maven.ext.core.impl;
 
+import static org.commonjava.maven.ext.core.fixture.TestUtils.createSession;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -30,11 +35,6 @@ import org.commonjava.maven.ext.common.model.Project;
 import org.commonjava.maven.ext.core.ManipulationSession;
 import org.junit.Test;
 
-import static org.commonjava.maven.ext.core.fixture.TestUtils.createSession;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThrows;
-
 public class DependencyInjectionManipulatorTest extends DependencyInjectionManipulator {
 
     private DependencyInjectionManipulator manipulator;
@@ -42,10 +42,10 @@ public class DependencyInjectionManipulatorTest extends DependencyInjectionManip
     private ManipulationSession session;
 
     void initialize(String dependencyInjection) throws ManipulationException {
-        sessionProperties = new Properties( );
+        sessionProperties = new Properties();
         sessionProperties.put("dependencyInjection", dependencyInjection);
 
-        session = createSession( sessionProperties );
+        session = createSession(sessionProperties);
 
         manipulator = new DependencyInjectionManipulator();
         manipulator.init(session);

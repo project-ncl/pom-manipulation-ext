@@ -15,27 +15,27 @@
  */
 package org.commonjava.maven.ext.io.resolver;
 
+import java.io.File;
+
 import org.apache.maven.execution.MavenSession;
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.galley.model.Location;
 import org.commonjava.maven.galley.spi.transport.Transport;
-
-import java.io.File;
 
 /**
  * Represents a piece of extension infrastructure that gets initialised when the {@link MavenSession} becomes available.
  * 
  * @author jdcasey
  */
-public interface ExtensionInfrastructure
-{
-    ExtensionInfrastructure init( ) throws ManipulationException;
+public interface ExtensionInfrastructure {
+    ExtensionInfrastructure init() throws ManipulationException;
 
     // Only used for tests
-    ExtensionInfrastructure init( final Location customLocation, final Transport customTransport, File cacheDir ) throws ManipulationException;
+    ExtensionInfrastructure init(final Location customLocation, final Transport customTransport, File cacheDir)
+            throws ManipulationException;
 
     // Only used for tests
-    ExtensionInfrastructure init( File cacheDir ) throws ManipulationException;
+    ExtensionInfrastructure init(File cacheDir) throws ManipulationException;
 
     void finish();
 }

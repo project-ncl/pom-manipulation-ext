@@ -19,23 +19,23 @@ package org.commonjava.maven.ext.common.json;
  * Created by JacksonGenerator on 23/07/2019.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import lombok.Getter;
+import lombok.Setter;
+
 @Setter
 @Getter
-@JsonPropertyOrder( {"executionRoot", "modules" } )
-public class PME
-{
+@JsonPropertyOrder({ "executionRoot", "modules" })
+public class PME {
     /**
      * Represents the root of the project and is used by Repour to calculate the project GAV change.
      */
-    @JsonProperty( "executionRoot" )
+    @JsonProperty("executionRoot")
     private GAV gav = new GAV();
 
     /**

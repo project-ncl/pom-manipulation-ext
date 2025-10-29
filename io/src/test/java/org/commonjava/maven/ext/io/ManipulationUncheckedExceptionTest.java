@@ -15,54 +15,42 @@
  */
 package org.commonjava.maven.ext.io;
 
-import org.commonjava.maven.ext.common.ManipulationUncheckedException;
-import org.junit.Test;
-
-import java.util.UUID;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
-public class ManipulationUncheckedExceptionTest
-{
+import java.util.UUID;
+
+import org.commonjava.maven.ext.common.ManipulationUncheckedException;
+import org.junit.Test;
+
+public class ManipulationUncheckedExceptionTest {
     private UUID uuid = UUID.randomUUID();
-    private IndexOutOfBoundsException exception = new IndexOutOfBoundsException(  );
+    private IndexOutOfBoundsException exception = new IndexOutOfBoundsException();
 
     @Test
-    public void testManipulationExceptionNoParams ()
-    {
-        try
-        {
-            throw new ManipulationUncheckedException( exception );
-        }
-        catch ( ManipulationUncheckedException e )
-        {
-            assertSame( e.getCause(), exception );
-            assertEquals( "java.lang.IndexOutOfBoundsException", e.getMessage() );
+    public void testManipulationExceptionNoParams() {
+        try {
+            throw new ManipulationUncheckedException(exception);
+        } catch (ManipulationUncheckedException e) {
+            assertSame(e.getCause(), exception);
+            assertEquals("java.lang.IndexOutOfBoundsException", e.getMessage());
         }
     }
 
     @Test
-    public void testManipulationExceptionParams ()
-    {
-        try
-        {
-            throw new ManipulationUncheckedException( "TEST {} WITH {} PARAM", 1, uuid, exception );
+    public void testManipulationExceptionParams() {
+        try {
+            throw new ManipulationUncheckedException("TEST {} WITH {} PARAM", 1, uuid, exception);
+        } catch (ManipulationUncheckedException e) {
+            assertSame(e.getCause(), exception);
+            assertEquals(e.getMessage(), "TEST 1 WITH " + uuid + " PARAM");
         }
-        catch (ManipulationUncheckedException e)
-        {
-            assertSame( e.getCause(), exception );
-            assertEquals( e.getMessage(), "TEST 1 WITH " + uuid + " PARAM");
-        }
-        try
-        {
-            throw new ManipulationUncheckedException( "TEST {} WITH {} PARAM", 1, uuid );
-        }
-        catch (ManipulationUncheckedException e)
-        {
-            assertNull( e.getCause() );
-            assertEquals( e.getMessage(), "TEST 1 WITH " + uuid + " PARAM" );
+        try {
+            throw new ManipulationUncheckedException("TEST {} WITH {} PARAM", 1, uuid);
+        } catch (ManipulationUncheckedException e) {
+            assertNull(e.getCause());
+            assertEquals(e.getMessage(), "TEST 1 WITH " + uuid + " PARAM");
         }
     }
 

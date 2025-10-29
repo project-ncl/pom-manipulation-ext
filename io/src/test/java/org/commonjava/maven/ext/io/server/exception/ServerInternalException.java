@@ -18,7 +18,7 @@ package org.commonjava.maven.ext.io.server.exception;
 /**
  * @author vdedik@redhat.com
  */
-public class ServerInternalException  extends RuntimeException {
+public class ServerInternalException extends RuntimeException {
     public ServerInternalException(String message) {
         super(message);
     }

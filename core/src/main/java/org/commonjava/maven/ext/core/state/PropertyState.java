@@ -15,42 +15,40 @@
  */
 package org.commonjava.maven.ext.core.state;
 
+import java.util.List;
+import java.util.Properties;
+
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.maven.ext.annotation.ConfigValue;
 import org.commonjava.maven.ext.core.impl.PropertyManipulator;
 import org.commonjava.maven.ext.core.util.IdUtils;
-
-import java.util.List;
-import java.util.Properties;
 
 /**
  * Captures configuration relating to property injection from the POMs. Used by {@link PropertyManipulator}.
  *
  */
 public class PropertyState
-    implements State
-{
+        implements State {
 
     /**
      * Suffix to enable this modder. The name of the property which contains the GAV of the remote pom from
      * which to retrieve property mapping information.
+     * 
      * <pre>
      * <code>-DpropertyManagement:org.foo:bar-property-mgmt:1.0</code>
      * </pre>
      */
-    @ConfigValue( docIndex = "misc.html#property-override")
+    @ConfigValue(docIndex = "misc.html#property-override")
     private static final String PROPERTY_MANAGEMENT_POM_PROPERTY = "propertyManagement";
 
     private List<ProjectVersionRef> propertyMgmt;
 
-    public PropertyState( final Properties userProps )
-    {
-        initialise( userProps );
+    public PropertyState(final Properties userProps) {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps )
-    {
-        propertyMgmt = IdUtils.parseGAVs( userProps.getProperty( PROPERTY_MANAGEMENT_POM_PROPERTY ) );
+    public void initialise(Properties userProps) {
+        propertyMgmt = IdUtils.parseGAVs(userProps.getProperty(PROPERTY_MANAGEMENT_POM_PROPERTY));
     }
 
     /**
@@ -59,13 +57,11 @@ public class PropertyState
      * @see org.commonjava.maven.ext.core.state.State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return propertyMgmt != null && !propertyMgmt.isEmpty();
     }
 
-    public List<ProjectVersionRef> getRemotePropertyMgmt()
-    {
+    public List<ProjectVersionRef> getRemotePropertyMgmt() {
         return propertyMgmt;
     }
 }

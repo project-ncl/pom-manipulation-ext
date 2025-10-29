@@ -15,6 +15,16 @@
  */
 package org.commonjava.maven.ext.core.util;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
+
+import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.execution.DefaultMavenExecutionRequest;
 import org.apache.maven.execution.DefaultMavenExecutionResult;
@@ -42,229 +52,239 @@ import org.junit.rules.TemporaryFolder;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MessageFormatter;
 
-import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
-
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertFalse;
-
-public class ProjectComparatorTest
-{
+public class ProjectComparatorTest {
     private static final String RESOURCE_BASE = "properties/";
 
     @Rule
-    public final TemporaryFolder temporaryFolder = new TemporaryFolder(  );
+    public final TemporaryFolder temporaryFolder = new TemporaryFolder();
 
     private final WildcardMap<ProjectVersionRef> map = new WildcardMap<>();
 
     @Test
-    public void testCompareNoChanges() throws Exception
-    {
+    public void testCompareNoChanges() throws Exception {
         ManipulationSession session = createUpdateSession();
 
         // Locate the PME project pom file. Use that to verify inheritance tracking.
-        final File projectroot = new File (TestUtils.resolveFileResource( RESOURCE_BASE, "" )
-                                          .getParentFile()
-                                          .getParentFile()
-                                          .getParentFile()
-                                          .getParentFile(), "pom.xml" );
+        final File projectroot = new File(
+                TestUtils.resolveFileResource(RESOURCE_BASE, "")
+                        .getParentFile()
+                        .getParentFile()
+                        .getParentFile()
+                        .getParentFile(),
+                "pom.xml");
         PomIO pomIO = new PomIO();
-        List<Project> projectOriginal = pomIO.parseProject( projectroot );
-        List<Project> projectNew = pomIO.parseProject( projectroot );
+        List<Project> projectOriginal = pomIO.parseProject(projectroot);
+        List<Project> projectNew = pomIO.parseProject(projectroot);
 
-        String result = ProjectComparator.compareProjects( session, new PME(), map,
-                                           projectOriginal, projectNew );
+        String result = ProjectComparator.compareProjects(
+                session,
+                new PME(),
+                map,
+                projectOriginal,
+                projectNew);
 
-        assertFalse( result.contains( "-->" ) );
+        assertFalse(result.contains("-->"));
     }
 
     @Test
-    public void testCompareChanges() throws Exception
-    {
+    public void testCompareChanges() throws Exception {
         ManipulationSession session = createUpdateSession();
-        session.getUserProperties().put( RelocationState.DEPENDENCY_RELOCATIONS + "ch.qos.logback:@org.foobar.logback:", "" );
-        RelocationState relocationState = new RelocationState( session.getUserProperties() );
-        session.setState( relocationState );
+        session.getUserProperties()
+                .put(RelocationState.DEPENDENCY_RELOCATIONS + "ch.qos.logback:@org.foobar.logback:", "");
+        RelocationState relocationState = new RelocationState(session.getUserProperties());
+        session.setState(relocationState);
 
         // Locate the PME project pom file. Use that to verify inheritance tracking.
-        final File projectroot = new File (TestUtils.resolveFileResource( RESOURCE_BASE, "" )
-                                                    .getParentFile()
-                                                    .getParentFile()
-                                                    .getParentFile()
-                                                    .getParentFile(), "pom.xml" );
+        final File projectroot = new File(
+                TestUtils.resolveFileResource(RESOURCE_BASE, "")
+                        .getParentFile()
+                        .getParentFile()
+                        .getParentFile()
+                        .getParentFile(),
+                "pom.xml");
         PomIO pomIO = new PomIO();
 
-        List<Project> projectOriginal = pomIO.parseProject( projectroot );
-        List<Project> projectNew = pomIO.parseProject( projectroot );
+        List<Project> projectOriginal = pomIO.parseProject(projectroot);
+        List<Project> projectNew = pomIO.parseProject(projectroot);
 
-        projectNew.forEach( project -> project.getModel().setVersion( project.getVersion() + "-redhat-1" ) );
-        projectNew.forEach( project -> {
-            if ( project.getModel().getDependencyManagement() != null )
-            {
-                project.getModel().getDependencyManagement().getDependencies().forEach( dependency -> dependency.setVersion( dependency.getVersion() + "-redhat-1" ) );
+        projectNew.forEach(project -> project.getModel().setVersion(project.getVersion() + "-redhat-1"));
+        projectNew.forEach(project -> {
+            if (project.getModel().getDependencyManagement() != null) {
+                project.getModel()
+                        .getDependencyManagement()
+                        .getDependencies()
+                        .forEach(dependency -> dependency.setVersion(dependency.getVersion() + "-redhat-1"));
             }
-        } );
-        projectNew.forEach( project -> project.getModel().getDependencies().forEach( dependency -> {
-            if ( dependency.getGroupId().equals( "ch.qos.logback" ))
-            {
-                dependency.setGroupId( "org.foobar.logback" );
+        });
+        projectNew.forEach(project -> project.getModel().getDependencies().forEach(dependency -> {
+            if (dependency.getGroupId().equals("ch.qos.logback")) {
+                dependency.setGroupId("org.foobar.logback");
             }
-        } ) );
+        }));
 
         PME json = new PME();
 
-        String result = ProjectComparator.compareProjects( session, json, relocationState.getDependencyRelocations(),
-                                           projectOriginal, projectNew );
-        assertTrue( result.contains( "Managed dependencies :" ) );
-        assertTrue( result.contains( "Project version :" ) );
-        assertTrue( result.contains( "-redhat-1" ) );
-        assertTrue( result.contains( "-->" ) );
-        assertTrue( result.contains( "Unversioned relocation" ) );
-        assertTrue( result.contains( "org.foobar" ) );
-        assertFalse( result.contains( "Non-Aligned Managed dependencies" ) );
-        assertFalse( result.contains( "Non-Aligned Managed plugins" ) );
+        String result = ProjectComparator.compareProjects(
+                session,
+                json,
+                relocationState.getDependencyRelocations(),
+                projectOriginal,
+                projectNew);
+        assertTrue(result.contains("Managed dependencies :"));
+        assertTrue(result.contains("Project version :"));
+        assertTrue(result.contains("-redhat-1"));
+        assertTrue(result.contains("-->"));
+        assertTrue(result.contains("Unversioned relocation"));
+        assertTrue(result.contains("org.foobar"));
+        assertFalse(result.contains("Non-Aligned Managed dependencies"));
+        assertFalse(result.contains("Non-Aligned Managed plugins"));
 
         String jsonString = JSONUtils.jsonToString(json);
-        assertTrue( jsonString.contains( "org.commonjava.maven.galley:galley-maven:1.21\" : {" ) );
-        assertTrue( jsonString.contains( "\"version\" : \"1.21-redhat-1\"" ) );
+        assertTrue(jsonString.contains("org.commonjava.maven.galley:galley-maven:1.21\" : {"));
+        assertTrue(jsonString.contains("\"version\" : \"1.21-redhat-1\""));
     }
 
     @Test
-    public void testCompareChangesWithNonAligned() throws Exception
-    {
+    public void testCompareChangesWithNonAligned() throws Exception {
         ManipulationSession session = createUpdateSession();
-        session.getUserProperties().put( ProjectComparator.REPORT_NON_ALIGNED,  "true");
-        RelocationState relocationState = new RelocationState( session.getUserProperties() );
-        session.setState( relocationState );
+        session.getUserProperties().put(ProjectComparator.REPORT_NON_ALIGNED, "true");
+        RelocationState relocationState = new RelocationState(session.getUserProperties());
+        session.setState(relocationState);
 
         // Locate the PME project pom file. Use that to verify inheritance tracking.
-        final File projectroot = new File (TestUtils.resolveFileResource( RESOURCE_BASE, "" )
-                                                    .getParentFile()
-                                                    .getParentFile()
-                                                    .getParentFile()
-                                                    .getParentFile(), "pom.xml" );
+        final File projectroot = new File(
+                TestUtils.resolveFileResource(RESOURCE_BASE, "")
+                        .getParentFile()
+                        .getParentFile()
+                        .getParentFile()
+                        .getParentFile(),
+                "pom.xml");
         PomIO pomIO = new PomIO();
 
-        List<Project> projectOriginal = pomIO.parseProject( projectroot );
-        List<Project> projectNew = pomIO.parseProject( projectroot );
+        List<Project> projectOriginal = pomIO.parseProject(projectroot);
+        List<Project> projectNew = pomIO.parseProject(projectroot);
 
-        projectNew.forEach( project -> project.getModel().setVersion( project.getVersion() + "-redhat-1" ) );
-        projectNew.forEach( project -> {
-            if ( project.getModel().getDependencyManagement() != null )
-            {
-                project.getModel().getDependencyManagement().getDependencies().forEach( dependency -> {
-                    if ( dependency.getGroupId().startsWith( "org" ) )
-                    {
-                        dependency.setVersion( dependency.getVersion() + "-redhat-1" );
+        projectNew.forEach(project -> project.getModel().setVersion(project.getVersion() + "-redhat-1"));
+        projectNew.forEach(project -> {
+            if (project.getModel().getDependencyManagement() != null) {
+                project.getModel().getDependencyManagement().getDependencies().forEach(dependency -> {
+                    if (dependency.getGroupId().startsWith("org")) {
+                        dependency.setVersion(dependency.getVersion() + "-redhat-1");
                     }
-                } );
+                });
             }
-        } );
+        });
 
-        String result = ProjectComparator.compareProjects( session, new PME(), relocationState.getDependencyRelocations(),
-                                           projectOriginal, projectNew );
+        String result = ProjectComparator.compareProjects(
+                session,
+                new PME(),
+                relocationState.getDependencyRelocations(),
+                projectOriginal,
+                projectNew);
 
-        assertTrue( result.contains( "Managed dependencies :" ) );
-        assertTrue( result.contains( "Project version :" ) );
-        assertTrue( result.contains( "-redhat-1" ) );
-        assertTrue( result.contains( "-->" ) );
-        assertFalse( result.contains( "org.foobar" ) );
-        assertTrue( result.contains( "Non-Aligned Managed dependencies : com.fasterxml.jackson.core:jackson-annotations:jar:2." ) );
-        assertTrue( result.contains( "Non-Aligned Managed plugins : org.codehaus.mojo:animal-sniffer-maven-plugin:1.2" ) );
+        assertTrue(result.contains("Managed dependencies :"));
+        assertTrue(result.contains("Project version :"));
+        assertTrue(result.contains("-redhat-1"));
+        assertTrue(result.contains("-->"));
+        assertFalse(result.contains("org.foobar"));
+        assertTrue(
+                result.contains(
+                        "Non-Aligned Managed dependencies : com.fasterxml.jackson.core:jackson-annotations:jar:2."));
+        assertTrue(result.contains("Non-Aligned Managed plugins : org.codehaus.mojo:animal-sniffer-maven-plugin:1.2"));
     }
 
     @Test
-    public void testCompareChangesWithFile() throws Exception
-    {
+    public void testCompareChangesWithFile() throws Exception {
         File resultFile = temporaryFolder.newFile();
 
         ManipulationSession session = createUpdateSession();
-        session.getUserProperties().put( RelocationState.DEPENDENCY_RELOCATIONS + "ch.qos.logback:@org.foobar.logback:", "" );
-        session.getUserProperties().put( ManipulationManager.REPORT_TXT_OUTPUT_FILE, resultFile.getCanonicalPath());
+        session.getUserProperties()
+                .put(RelocationState.DEPENDENCY_RELOCATIONS + "ch.qos.logback:@org.foobar.logback:", "");
+        session.getUserProperties().put(ManipulationManager.REPORT_TXT_OUTPUT_FILE, resultFile.getCanonicalPath());
 
-        RelocationState relocationState = new RelocationState( session.getUserProperties() );
-        session.setState( relocationState );
+        RelocationState relocationState = new RelocationState(session.getUserProperties());
+        session.setState(relocationState);
 
         // Locate the PME project pom file. Use that to verify inheritance tracking.
-        final File projectroot = new File (TestUtils.resolveFileResource( RESOURCE_BASE, "" )
-                                                    .getParentFile()
-                                                    .getParentFile()
-                                                    .getParentFile()
-                                                    .getParentFile(), "pom.xml" );
+        final File projectroot = new File(
+                TestUtils.resolveFileResource(RESOURCE_BASE, "")
+                        .getParentFile()
+                        .getParentFile()
+                        .getParentFile()
+                        .getParentFile(),
+                "pom.xml");
         PomIO pomIO = new PomIO();
 
-        List<Project> projectOriginal = pomIO.parseProject( projectroot );
-        List<Project> projectNew = pomIO.parseProject( projectroot );
+        List<Project> projectOriginal = pomIO.parseProject(projectroot);
+        List<Project> projectNew = pomIO.parseProject(projectroot);
 
-        projectNew.forEach( project -> project.getModel().setVersion( project.getVersion() + "-redhat-1" ) );
-        projectNew.forEach( project -> {
-            if ( project.getModel().getDependencyManagement() != null )
-            {
-                project.getModel().getDependencyManagement().getDependencies().forEach( dependency -> dependency.setVersion( dependency.getVersion() + "-redhat-1" ) );
+        projectNew.forEach(project -> project.getModel().setVersion(project.getVersion() + "-redhat-1"));
+        projectNew.forEach(project -> {
+            if (project.getModel().getDependencyManagement() != null) {
+                project.getModel()
+                        .getDependencyManagement()
+                        .getDependencies()
+                        .forEach(dependency -> dependency.setVersion(dependency.getVersion() + "-redhat-1"));
             }
-        } );
-        projectNew.forEach( project -> project.getModel().getDependencies().forEach( dependency -> {
-            if ( dependency.getGroupId().equals( "ch.qos.logback" ))
-            {
-                dependency.setGroupId( "org.foobar.logback" );
+        });
+        projectNew.forEach(project -> project.getModel().getDependencies().forEach(dependency -> {
+            if (dependency.getGroupId().equals("ch.qos.logback")) {
+                dependency.setGroupId("org.foobar.logback");
             }
-        } ) );
+        }));
 
-        String result = ProjectComparator.compareProjects( session, new PME(), relocationState.getDependencyRelocations(),
-                                           projectOriginal, projectNew );
-        FileUtils.writeStringToFile( resultFile, result, StandardCharsets.UTF_8 );
+        String result = ProjectComparator.compareProjects(
+                session,
+                new PME(),
+                relocationState.getDependencyRelocations(),
+                projectOriginal,
+                projectNew);
+        FileUtils.writeStringToFile(resultFile, result, StandardCharsets.UTF_8);
 
-        assertTrue( result.contains( "Managed dependencies :" ) );
-        assertTrue( result.contains( "Project version :" ) );
-        assertTrue( result.contains( "-redhat-1" ) );
-        assertTrue( result.contains( "-->" ) );
-        assertTrue( result.contains( "Unversioned relocation" ) );
-        assertTrue( result.contains( "org.foobar" ) );
+        assertTrue(result.contains("Managed dependencies :"));
+        assertTrue(result.contains("Project version :"));
+        assertTrue(result.contains("-redhat-1"));
+        assertTrue(result.contains("-->"));
+        assertTrue(result.contains("Unversioned relocation"));
+        assertTrue(result.contains("org.foobar"));
 
-        assertTrue( resultFile.exists() );
-        String contents = FileUtils.readFileToString( resultFile, StandardCharsets.UTF_8 );
+        assertTrue(resultFile.exists());
+        String contents = FileUtils.readFileToString(resultFile, StandardCharsets.UTF_8);
 
-        assertTrue( contents.contains( "Managed dependencies :" ) );
-        assertTrue( contents.contains( "Project version :" ) );
-        assertTrue( contents.contains( "-redhat-1" ) );
-        assertTrue( contents.contains( "-->" ) );
-        assertTrue( contents.contains( "Unversioned relocation" ) );
-        assertTrue( contents.contains( "org.foobar" ) );
+        assertTrue(contents.contains("Managed dependencies :"));
+        assertTrue(contents.contains("Project version :"));
+        assertTrue(contents.contains("-redhat-1"));
+        assertTrue(contents.contains("-->"));
+        assertTrue(contents.contains("Unversioned relocation"));
+        assertTrue(contents.contains("org.foobar"));
     }
-
 
     @Test
-    public void messageFormatterTest()
-    {
-        FormattingTuple tuple = MessageFormatter.format( "this is a test {} and {}", "test", "foobar" );
-        assertEquals( "this is a test test and foobar", tuple.getMessage() );
+    public void messageFormatterTest() {
+        FormattingTuple tuple = MessageFormatter.format("this is a test {} and {}", "test", "foobar");
+        assertEquals("this is a test test and foobar", tuple.getMessage());
     }
 
-    @SuppressWarnings( "deprecation" )
-    private ManipulationSession createUpdateSession() throws Exception
-    {
+    @SuppressWarnings("deprecation")
+    private ManipulationSession createUpdateSession() throws Exception {
         ManipulationSession session = new ManipulationSession();
 
         final Properties p = new Properties();
-        p.setProperty( "strictAlignment", "true" );
-        p.setProperty( "strictViolationFails", "true" );
-        p.setProperty( "versionSuffix", "redhat-1" );
-        p.setProperty( "scanActiveProfiles", "true" );
-        session.setState( new DependencyState( p ) );
-        session.setState( new VersioningState( p ) );
-        session.setState( new CommonState( p ) );
+        p.setProperty("strictAlignment", "true");
+        p.setProperty("strictViolationFails", "true");
+        p.setProperty("versionSuffix", "redhat-1");
+        p.setProperty("scanActiveProfiles", "true");
+        session.setState(new DependencyState(p));
+        session.setState(new VersioningState(p));
+        session.setState(new CommonState(p));
 
-        final MavenExecutionRequest req =
-                        new DefaultMavenExecutionRequest().setUserProperties( p ).setRemoteRepositories( Collections.emptyList() );
+        final MavenExecutionRequest req = new DefaultMavenExecutionRequest().setUserProperties(p)
+                .setRemoteRepositories(Collections.emptyList());
 
         final PlexusContainer container = new DefaultPlexusContainer();
-        final MavenSession mavenSession = new MavenSession( container, null, req, new DefaultMavenExecutionResult() );
+        final MavenSession mavenSession = new MavenSession(container, null, req, new DefaultMavenExecutionResult());
 
-        session.setMavenSession( mavenSession );
+        session.setMavenSession(mavenSession);
 
         return session;
     }

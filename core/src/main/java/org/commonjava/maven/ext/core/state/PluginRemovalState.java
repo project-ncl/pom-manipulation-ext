@@ -15,41 +15,40 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import lombok.NoArgsConstructor;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
+
 import org.commonjava.atlas.maven.ident.ref.ProjectRef;
 import org.commonjava.maven.ext.annotation.ConfigValue;
 import org.commonjava.maven.ext.core.util.IdUtils;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
+import lombok.NoArgsConstructor;
 
 /**
  * Captures configuration relating to plugin removal from the POMs.
  */
 @NoArgsConstructor
 public class PluginRemovalState
-    implements State
-{
+        implements State {
     /**
      * The name of the property which contains a comma separated list of plugins to remove.
+     * 
      * <pre>
      * <code>-DpluginRemoval=org.foo:bar-plugin,....</code>
      * </pre>
      */
-    @ConfigValue( docIndex = "plugin-manip.html#plugin-removal")
+    @ConfigValue(docIndex = "plugin-manip.html#plugin-removal")
     private static final String PLUGIN_REMOVAL_PROPERTY = "pluginRemoval";
 
     private List<ProjectRef> pluginRemoval;
 
-    public PluginRemovalState( Properties userProps )
-    {
-        initialise( userProps );
+    public PluginRemovalState(Properties userProps) {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps )
-    {
-        pluginRemoval = IdUtils.parseGAs( userProps.getProperty( PLUGIN_REMOVAL_PROPERTY ) );
+    public void initialise(Properties userProps) {
+        pluginRemoval = IdUtils.parseGAs(userProps.getProperty(PLUGIN_REMOVAL_PROPERTY));
     }
 
     /**
@@ -58,13 +57,11 @@ public class PluginRemovalState
      * @see State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return pluginRemoval != null && !pluginRemoval.isEmpty();
     }
 
-    public List<ProjectRef> getPluginRemoval()
-    {
-        return Collections.unmodifiableList( pluginRemoval );
+    public List<ProjectRef> getPluginRemoval() {
+        return Collections.unmodifiableList(pluginRemoval);
     }
 }

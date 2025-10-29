@@ -15,6 +15,13 @@
  */
 package org.commonjava.maven.ext.core.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Map;
+import java.util.Properties;
+
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.commonjava.atlas.maven.ident.ref.ArtifactRef;
@@ -26,73 +33,63 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.util.Map;
-import java.util.Properties;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-public class PropertyInterpolatorTest
-{
+public class PropertyInterpolatorTest {
     private static final String RESOURCE_BASE = "properties/";
 
     @Rule
     public TemporaryFolder temp = new TemporaryFolder();
 
     @Test
-    public void testInteropolateProperties() throws Exception
-    {
-        final Model model = TestUtils.resolveModelResource( RESOURCE_BASE, "infinispan-bom-8.2.0.Final.pom" );
+    public void testInteropolateProperties() throws Exception {
+        final Model model = TestUtils.resolveModelResource(RESOURCE_BASE, "infinispan-bom-8.2.0.Final.pom");
 
-        Project p = new Project( model );
+        Project p = new Project(model);
 
         Properties props = p.getModel().getProperties();
         boolean containsProperty = false;
-        for ( Object o : props.values() )
-        {
-            if ( ( (String) o ).contains( "${" ) )
-            {
+        for (Object o : props.values()) {
+            if (((String) o).contains("${")) {
                 containsProperty = true;
                 break;
             }
         }
-        assertTrue( containsProperty );
-        PropertyInterpolator pi = new PropertyInterpolator( props, p );
-        assertEquals( "5.0.4.Final", pi.interp( "${version.hibernate.osgi}" ) );
+        assertTrue(containsProperty);
+        PropertyInterpolator pi = new PropertyInterpolator(props, p);
+        assertEquals("5.0.4.Final", pi.interp("${version.hibernate.osgi}"));
     }
 
     @Test
-    public void testInteropolateDependencies() throws Exception
-    {
-        final Model model = TestUtils.resolveModelResource( RESOURCE_BASE, "infinispan-bom-8.2.0.Final.pom" );
+    public void testInteropolateDependencies() throws Exception {
+        final Model model = TestUtils.resolveModelResource(RESOURCE_BASE, "infinispan-bom-8.2.0.Final.pom");
 
-        Project project = new Project( model );
-        PropertyInterpolator pi = new PropertyInterpolator( project.getModel().getProperties(), project );
+        Project project = new Project(model);
+        PropertyInterpolator pi = new PropertyInterpolator(project.getModel().getProperties(), project);
 
         String nonInterp = "", interp = "";
         // Explicitly calling the non-resolved model dependencies...
-        for ( Dependency d : project.getModel().getDependencyManagement().getDependencies() )
-        {
-            nonInterp += ( d.getGroupId().equals( "${project.groupId}" ) ? project.getGroupId() : d.getGroupId() ) + ":"
-                            + ( d.getArtifactId().equals( "${project.artifactId}" ) ? project.getArtifactId() : d.getArtifactId() ) + System.lineSeparator();
+        for (Dependency d : project.getModel().getDependencyManagement().getDependencies()) {
+            nonInterp += (d.getGroupId().equals("${project.groupId}") ? project.getGroupId() : d.getGroupId()) + ":"
+                    + (d.getArtifactId().equals("${project.artifactId}") ? project.getArtifactId() : d.getArtifactId())
+                    + System.lineSeparator();
 
-            interp += pi.interp( d.getGroupId().equals( "${project.groupId}" ) ? project.getGroupId() : d.getGroupId() ) + ":" + pi.interp(
-                            d.getArtifactId().equals( "${project.artifactId}" ) ? project.getArtifactId() : d.getArtifactId() ) + System.lineSeparator();
+            interp += pi.interp(d.getGroupId().equals("${project.groupId}") ? project.getGroupId() : d.getGroupId())
+                    + ":" + pi.interp(
+                            d.getArtifactId().equals("${project.artifactId}") ? project.getArtifactId()
+                                    : d.getArtifactId())
+                    + System.lineSeparator();
 
         }
-        assertTrue( nonInterp.contains( "${" ) );
-        assertFalse( interp.contains( "${" ) );
+        assertTrue(nonInterp.contains("${"));
+        assertFalse(interp.contains("${"));
     }
 
     @Test
-    public void testResolveProjectDependencies() throws Exception
-    {
-        final Model model = TestUtils.resolveModelResource( RESOURCE_BASE, "infinispan-bom-8.2.0.Final.pom" );
-        final Project project = new Project( model );
+    public void testResolveProjectDependencies() throws Exception {
+        final Model model = TestUtils.resolveModelResource(RESOURCE_BASE, "infinispan-bom-8.2.0.Final.pom");
+        final Project project = new Project(model);
 
-        Map<ArtifactRef, Dependency> deps = project.getResolvedManagedDependencies( new ManipulationSession() );
+        Map<ArtifactRef, Dependency> deps = project.getResolvedManagedDependencies(new ManipulationSession());
 
-        assertEquals( 66, deps.size() );
+        assertEquals(66, deps.size());
     }
 }

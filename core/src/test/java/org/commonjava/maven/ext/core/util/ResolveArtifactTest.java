@@ -15,6 +15,12 @@
  */
 package org.commonjava.maven.ext.core.util;
 
+import static org.junit.Assert.assertEquals;
+
+import java.io.File;
+import java.util.List;
+import java.util.Set;
+
 import org.commonjava.atlas.maven.ident.ref.ArtifactRef;
 import org.commonjava.maven.ext.common.model.Project;
 import org.commonjava.maven.ext.core.ManipulationSession;
@@ -23,27 +29,19 @@ import org.commonjava.maven.ext.core.impl.RESTCollector;
 import org.commonjava.maven.ext.io.PomIO;
 import org.junit.Test;
 
-import java.io.File;
-import java.util.List;
-import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
-
-public class ResolveArtifactTest
-{
+public class ResolveArtifactTest {
     private static final String RESOURCE_BASE = "properties/";
 
     @Test
-    public void testResolveArtifacts() throws Exception
-    {
+    public void testResolveArtifacts() throws Exception {
         final ManipulationSession session = new ManipulationSession();
 
-        final File projectroot = TestUtils.resolveFileResource( RESOURCE_BASE, "infinispan-bom-8.2.0.Final.pom" );
+        final File projectroot = TestUtils.resolveFileResource(RESOURCE_BASE, "infinispan-bom-8.2.0.Final.pom");
         PomIO pomIO = new PomIO();
-        List<Project> projects = pomIO.parseProject( projectroot );
+        List<Project> projects = pomIO.parseProject(projectroot);
 
-        Set<ArtifactRef> artifacts = RESTCollector.establishAllDependencies( session, projects, null );
-        System.out.println ("### artifact count is " + artifacts.size());
-        assertEquals( 67, artifacts.size() );
+        Set<ArtifactRef> artifacts = RESTCollector.establishAllDependencies(session, projects, null);
+        System.out.println("### artifact count is " + artifacts.size());
+        assertEquals(67, artifacts.size());
     }
 }

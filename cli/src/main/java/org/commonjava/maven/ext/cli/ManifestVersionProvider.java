@@ -34,18 +34,18 @@ package org.commonjava.maven.ext.cli;
 
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.common.util.ManifestUtils;
+
 import picocli.CommandLine;
 
 public class ManifestVersionProvider
-                implements CommandLine.IVersionProvider {
+        implements CommandLine.IVersionProvider {
     /**
      * Returns version information for a command.
      *
      * @return version information (each string in the array is displayed on a separate line)
      */
     @Override
-    public String[] getVersion() throws ManipulationException
-    {
+    public String[] getVersion() throws ManipulationException {
         return new String[] { "PME CLI " + ManifestUtils.getManifestInformation(ManifestVersionProvider.class) };
     }
 }

@@ -15,6 +15,15 @@
  */
 package org.commonjava.maven.ext.core.impl;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.Properties;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.commonjava.maven.ext.common.ManipulationException;
@@ -28,84 +37,77 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Properties;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-public class JSONManipulatorTest
-{
+public class JSONManipulatorTest {
     private JSONManipulator jsonManipulator = new JSONManipulator(new JSONIO());
     private File npmFile;
     private File pluginFile;
 
     @Rule
-    public TemporaryFolder tf = new TemporaryFolder(  );
+    public TemporaryFolder tf = new TemporaryFolder();
 
     @Before
-    public void setup() throws IOException, IllegalAccessException
-    {
+    public void setup() throws IOException, IllegalAccessException {
         FieldUtils.writeField(jsonManipulator, "jsonIO", new JSONIO(), true);
 
-        URL resource = JSONIOTest.class.getResource( "npm-shrinkwrap.json");
+        URL resource = JSONIOTest.class.getResource("npm-shrinkwrap.json");
         npmFile = tf.newFile();
         pluginFile = tf.newFile();
 
-        FileUtils.copyURLToFile( resource, npmFile );
+        FileUtils.copyURLToFile(resource, npmFile);
 
-        URL resource2 = JSONIOTest.class.getResource( "amg-plugin-registry.json");
-        FileUtils.copyURLToFile( resource2, pluginFile );
+        URL resource2 = JSONIOTest.class.getResource("amg-plugin-registry.json");
+        FileUtils.copyURLToFile(resource2, pluginFile);
     }
 
     @Test(expected = ManipulationException.class)
     public void testNotFound()
-        throws Exception
-    {
+            throws Exception {
         String modifyPath = "$.I.really.do.not.exist.repository.url";
 
         File target = tf.newFile();
-        FileUtils.copyFile( npmFile, target );
-        Project project = new Project( target, TestUtils.getDummyModel() );
+        FileUtils.copyFile(npmFile, target);
+        Project project = new Project(target, TestUtils.getDummyModel());
 
-        jsonManipulator.internalApplyChanges( project, new JSONState.JSONOperation( target.getName(), modifyPath, null) );
+        jsonManipulator.internalApplyChanges(project, new JSONState.JSONOperation(target.getName(), modifyPath, null));
     }
 
     @Test
-    public void updateURL () throws ManipulationException, IOException
-    {
+    public void updateURL() throws ManipulationException, IOException {
         String modifyPath = "$.repository.url";
 
         File target = tf.newFile();
-        FileUtils.copyFile( pluginFile, target );
-        Project project = new Project( target, TestUtils.getDummyModel() );
+        FileUtils.copyFile(pluginFile, target);
+        Project project = new Project(target, TestUtils.getDummyModel());
 
-        jsonManipulator.internalApplyChanges( project, new JSONState.JSONOperation( target.getName(), modifyPath,
-                                                                                            "https://maven.repository.redhat.com/ga/" ) );
-        assertTrue( FileUtils.readFileToString( target, StandardCharsets.UTF_8 ).contains( "https://maven.repository.redhat.com/ga/" ) );
-        assertFalse( FileUtils.contentEquals( pluginFile, target ) );
+        jsonManipulator.internalApplyChanges(
+                project,
+                new JSONState.JSONOperation(
+                        target.getName(),
+                        modifyPath,
+                        "https://maven.repository.redhat.com/ga/"));
+        assertTrue(
+                FileUtils.readFileToString(target, StandardCharsets.UTF_8)
+                        .contains("https://maven.repository.redhat.com/ga/"));
+        assertFalse(FileUtils.contentEquals(pluginFile, target));
     }
 
     @Test(expected = ManipulationException.class)
-    public void testStateConstructionNoEscape() throws ManipulationException
-    {
+    public void testStateConstructionNoEscape() throws ManipulationException {
         Properties p = new Properties();
-        p.put ("jsonUpdate",
-               "amg-plugin-registry.json:$..plugins[0].description:CORS,and:controlling");
+        p.put(
+                "jsonUpdate",
+                "amg-plugin-registry.json:$..plugins[0].description:CORS,and:controlling");
 
-        new JSONState( p );
+        new JSONState(p);
     }
 
     @Test
-    public void testStateConstructionEscaping() throws ManipulationException
-    {
+    public void testStateConstructionEscaping() throws ManipulationException {
         Properties p = new Properties();
-        p.put ("jsonUpdate",
-               "amg-plugin-registry.json:$xpath-with\\:and\\,:replace with space and \\,\\:controlling\\:access_to_resources_outside_of_an_originating_domain\\,and_to_this_domain.");
+        p.put(
+                "jsonUpdate",
+                "amg-plugin-registry.json:$xpath-with\\:and\\,:replace with space and \\,\\:controlling\\:access_to_resources_outside_of_an_originating_domain\\,and_to_this_domain.");
 
-        new JSONState( p );
+        new JSONState(p);
     }
 }

@@ -15,77 +15,71 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.Test;
 
-public class SuffixStateTest
-{
+public class SuffixStateTest {
     @Test
-    public void defaultSuffixIsSet()
-    {
+    public void defaultSuffixIsSet() {
         Properties p = new Properties();
-        p.setProperty( SuffixState.SUFFIX_STRIP_PROPERTY, "" );
-        SuffixState s = new SuffixState( p );
+        p.setProperty(SuffixState.SUFFIX_STRIP_PROPERTY, "");
+        SuffixState s = new SuffixState(p);
 
-        assertTrue( StringUtils.isNotEmpty( s.getSuffixStrip() ) );
-        assertTrue( s.isEnabled() );
+        assertTrue(StringUtils.isNotEmpty(s.getSuffixStrip()));
+        assertTrue(s.isEnabled());
     }
 
     @Test
-    public void disabledSuffixIsSet()
-    {
+    public void disabledSuffixIsSet() {
         Properties p = new Properties();
-        p.setProperty( SuffixState.SUFFIX_STRIP_PROPERTY, "NONE" );
-        SuffixState s = new SuffixState( p );
+        p.setProperty(SuffixState.SUFFIX_STRIP_PROPERTY, "NONE");
+        SuffixState s = new SuffixState(p);
 
-        assertTrue( StringUtils.isEmpty( s.getSuffixStrip() ) );
-        assertFalse( s.isEnabled() );
-    }
-
-
-    @Test
-    public void testDefaultSuffix()
-    {
-        Properties props = new Properties();
-        props.setProperty( SuffixState.SUFFIX_STRIP_PROPERTY, "" );
-        SuffixState s = new SuffixState( props );
-
-        Pattern p = Pattern.compile( s.getSuffixStrip() );
-
-        Matcher m = p.matcher( "1.0.jbossorg-101909" );
-        assertTrue( m.matches() );
-        assertEquals( "1.0", m.group( 1 ) );
-        assertEquals( ".jbossorg-101909", m.group( 2 ) );
-
-        m = p.matcher( "1.0.Final-jbossorg-1" );
-        assertTrue( m.matches() );
-        assertEquals( "1.0.Final", m.group( 1 ) );
-        assertEquals( "-jbossorg-1", m.group( 2 ) );
+        assertTrue(StringUtils.isEmpty(s.getSuffixStrip()));
+        assertFalse(s.isEnabled());
     }
 
     @Test
-    public void testCustomSuffix()
-    {
+    public void testDefaultSuffix() {
         Properties props = new Properties();
-        props.setProperty( SuffixState.SUFFIX_STRIP_PROPERTY, "(.*)(.MYSUFFIX)$" );
-        SuffixState s = new SuffixState( props );
+        props.setProperty(SuffixState.SUFFIX_STRIP_PROPERTY, "");
+        SuffixState s = new SuffixState(props);
 
-        Pattern p = Pattern.compile( s.getSuffixStrip() );
+        Pattern p = Pattern.compile(s.getSuffixStrip());
 
-        Matcher m = p.matcher( "1.0.jbossorg-101909" );
-        assertFalse( m.matches() );
+        Matcher m = p.matcher("1.0.jbossorg-101909");
+        assertTrue(m.matches());
+        assertEquals("1.0", m.group(1));
+        assertEquals(".jbossorg-101909", m.group(2));
 
-        m = p.matcher( "1.0.MYSUFFIX" );
-        assertTrue( m.matches() );
-        assertEquals( "1.0", m.group( 1 ) );
-        assertEquals( ".MYSUFFIX", m.group( 2 ) );
+        m = p.matcher("1.0.Final-jbossorg-1");
+        assertTrue(m.matches());
+        assertEquals("1.0.Final", m.group(1));
+        assertEquals("-jbossorg-1", m.group(2));
+    }
+
+    @Test
+    public void testCustomSuffix() {
+        Properties props = new Properties();
+        props.setProperty(SuffixState.SUFFIX_STRIP_PROPERTY, "(.*)(.MYSUFFIX)$");
+        SuffixState s = new SuffixState(props);
+
+        Pattern p = Pattern.compile(s.getSuffixStrip());
+
+        Matcher m = p.matcher("1.0.jbossorg-101909");
+        assertFalse(m.matches());
+
+        m = p.matcher("1.0.MYSUFFIX");
+        assertTrue(m.matches());
+        assertEquals("1.0", m.group(1));
+        assertEquals(".MYSUFFIX", m.group(2));
     }
 }

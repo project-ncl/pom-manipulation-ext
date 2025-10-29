@@ -15,23 +15,22 @@
  */
 package org.commonjava.maven.ext.common.json;
 
+import org.goots.hiderdoclet.doclet.JavadocExclude;
+
 import lombok.Getter;
 import lombok.Setter;
-import org.goots.hiderdoclet.doclet.JavadocExclude;
 
 @Setter
 @Getter
 @JavadocExclude
-public class ErrorMessage
-{
+public class ErrorMessage {
     private String errorType;
 
     private String errorMessage;
 
     private String details;
 
-    public String toString()
-    {
+    public String toString() {
         return errorType + " " + errorMessage + " " + details;
     }
 }

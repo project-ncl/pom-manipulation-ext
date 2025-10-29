@@ -15,41 +15,38 @@
  */
 package org.commonjava.maven.ext.core.state;
 
+import java.util.Properties;
+
 import org.commonjava.maven.ext.annotation.ConfigValue;
 import org.commonjava.maven.ext.common.ManipulationException;
-
-import java.util.Properties;
 
 /**
  * Captures configuration relating to groovy script execution.
  */
 public class GroovyState
-    implements State
-{
+        implements State {
     /**
      * The name of the property which contains a comma separated list of remote groovy scripts to load.
+     * 
      * <pre>
      * <code>-DgroovyScripts=org.foo:bar-script,....</code>
      * </pre>
      */
-    @ConfigValue( docIndex = "groovy.html")
+    @ConfigValue(docIndex = "groovy.html")
     private static final String GROOVY_SCRIPT = "groovyScripts";
 
     private String groovyScripts;
 
-    public GroovyState( final Properties userProps ) throws ManipulationException
-    {
-        initialise( userProps );
+    public GroovyState(final Properties userProps) throws ManipulationException {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps ) throws ManipulationException
-    {
-        groovyScripts = userProps.getProperty( GROOVY_SCRIPT );
+    public void initialise(Properties userProps) throws ManipulationException {
+        groovyScripts = userProps.getProperty(GROOVY_SCRIPT);
 
         // Catch old style groovy configuration. Not doc'ed as config value.
-        if ( userProps.getProperty( "groovyManipulatorPrecedence" ) != null )
-        {
-            throw new ManipulationException( "groovyManipulatorPrecedence is no longer valid" );
+        if (userProps.getProperty("groovyManipulatorPrecedence") != null) {
+            throw new ManipulationException("groovyManipulatorPrecedence is no longer valid");
         }
     }
 
@@ -59,13 +56,11 @@ public class GroovyState
      * @see State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return groovyScripts != null && !groovyScripts.isEmpty();
     }
 
-    public String getGroovyScripts()
-    {
+    public String getGroovyScripts() {
         return groovyScripts;
     }
 }

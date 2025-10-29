@@ -15,6 +15,16 @@
  */
 package org.commonjava.maven.ext.io.resolver;
 
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import org.commonjava.atlas.maven.ident.ref.ArtifactRef;
 import org.commonjava.atlas.maven.ident.ref.ProjectRef;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
@@ -31,29 +41,19 @@ import org.commonjava.maven.galley.model.Transfer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
- * Wraps the galley-maven APIs with the plumbing necessary to resolve using the repositories defined for the maven build.
+ * Wraps the galley-maven APIs with the plumbing necessary to resolve using the repositories defined for the maven
+ * build.
  *
  * @author jdcasey
  */
 @Named
 @Singleton
-public class GalleyAPIWrapper
-{
+public class GalleyAPIWrapper {
 
-    private static final List<Location> MAVEN_REPOS = new ArrayList<Location>()
-    {
+    private static final List<Location> MAVEN_REPOS = new ArrayList<Location>() {
         {
-            add( MavenLocationExpander.EXPANSION_TARGET );
+            add(MavenLocationExpander.EXPANSION_TARGET);
         }
 
         private static final long serialVersionUID = 1L;
@@ -62,53 +62,46 @@ public class GalleyAPIWrapper
     private GalleyInfrastructure infra;
 
     @Inject
-    public GalleyAPIWrapper(@Named("galley") GalleyInfrastructure infra)
-    {
+    public GalleyAPIWrapper(@Named("galley") GalleyInfrastructure infra) {
         this.infra = infra;
     }
 
-    public Document parseXml( final String xml )
-        throws GalleyMavenXMLException
-    {
+    public Document parseXml(final String xml)
+            throws GalleyMavenXMLException {
         return infra.getXml()
-                    .parseDocument( xml, new ByteArrayInputStream( xml.getBytes(StandardCharsets.UTF_8) ) );
+                .parseDocument(xml, new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
     }
 
-    public MavenXmlView<ProjectRef> parseXmlView( final String xml )
-        throws GalleyMavenXMLException
-    {
+    public MavenXmlView<ProjectRef> parseXmlView(final String xml)
+            throws GalleyMavenXMLException {
         final Document document = infra.getXml()
-                                       .parseDocument( xml, new ByteArrayInputStream( xml.getBytes(StandardCharsets.UTF_8) ) );
+                .parseDocument(xml, new ByteArrayInputStream(xml.getBytes(StandardCharsets.UTF_8)));
 
-        final DocRef<ProjectRef> ref = new DocRef<>( new SimpleProjectRef( "unknown", "unknown" ), xml, document );
-        return new MavenXmlView<>( Collections.singletonList( ref ), infra.getXPath(), infra.getXml() );
+        final DocRef<ProjectRef> ref = new DocRef<>(new SimpleProjectRef("unknown", "unknown"), xml, document);
+        return new MavenXmlView<>(Collections.singletonList(ref), infra.getXPath(), infra.getXml());
     }
 
-    public MavenPomView readPomView( final ProjectVersionRef ref )
-        throws GalleyMavenException
-    {
+    public MavenPomView readPomView(final ProjectVersionRef ref)
+            throws GalleyMavenException {
         return infra.getPomReader()
-                    .read( ref, MAVEN_REPOS );
+                .read(ref, MAVEN_REPOS);
     }
 
-    public MavenMetadataView readMetadataView( final ProjectRef ref )
-        throws GalleyMavenException
-    {
+    public MavenMetadataView readMetadataView(final ProjectRef ref)
+            throws GalleyMavenException {
         return infra.getMetadataReader()
-                    .getMetadata( ref, MAVEN_REPOS );
+                .getMetadata(ref, MAVEN_REPOS);
     }
 
-    public Transfer resolveArtifact( final ArtifactRef asPomArtifact )
-        throws TransferException
-    {
+    public Transfer resolveArtifact(final ArtifactRef asPomArtifact)
+            throws TransferException {
         return infra.getArtifactManager()
-                    .retrieveFirst( MAVEN_REPOS, asPomArtifact );
+                .retrieveFirst(MAVEN_REPOS, asPomArtifact);
     }
 
-    public String toXML( final Node config, final boolean includeXmlDeclaration )
-    {
+    public String toXML(final Node config, final boolean includeXmlDeclaration) {
         return infra.getXml()
-                    .toXML( config, includeXmlDeclaration );
+                .toXML(config, includeXmlDeclaration);
     }
 
 }

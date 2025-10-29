@@ -19,23 +19,25 @@ package org.commonjava.maven.ext.common.json;
  * Created by JacksonGenerator on 23/07/2019.
  */
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.Getter;
-import lombok.Setter;
-import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
-import org.commonjava.maven.ext.common.util.JSONUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
+import org.commonjava.maven.ext.common.util.JSONUtils;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import lombok.Getter;
+import lombok.Setter;
+
 @Getter
 @Setter
-public class ManagedDependenciesItem
-{
+public class ManagedDependenciesItem {
     /**
      * A collection of dependencies. Each dependency is rendered as
+     * 
      * <pre>
      *     original-GAV : {
      *         groupId
@@ -44,8 +46,8 @@ public class ManagedDependenciesItem
      *     }
      * </pre>
      */
-    @JsonProperty( "dependencies" )
-    @JsonDeserialize( contentUsing = JSONUtils.ProjectVersionRefDeserializer.class )
-    @JsonSerialize( contentUsing = JSONUtils.ProjectVersionRefSerializer.class )
+    @JsonProperty("dependencies")
+    @JsonDeserialize(contentUsing = JSONUtils.ProjectVersionRefDeserializer.class)
+    @JsonSerialize(contentUsing = JSONUtils.ProjectVersionRefSerializer.class)
     private Map<String, ProjectVersionRef> dependencies = new HashMap<>();
 }

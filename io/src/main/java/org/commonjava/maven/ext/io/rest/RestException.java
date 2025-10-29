@@ -20,21 +20,17 @@ import org.commonjava.maven.ext.common.ManipulationException;
 /**
  * @author vdedik@redhat.com
  */
-public class RestException extends ManipulationException
-{
-    public RestException( String msg )
-    {
-        super( msg );
+public class RestException extends ManipulationException {
+    public RestException(String msg) {
+        super(msg);
     }
 
-    public RestException( final String string, final Object... params )
-    {
+    public RestException(final String string, final Object... params) {
         // Note we don't extract any potential Throwable here ; we rely on the superclass to do that.
-        super( string, params );
+        super(string, params);
     }
 
-    public RestException( String message, Throwable e )
-    {
-        super( message, e );
+    public RestException(String message, Throwable e) {
+        super(message, e);
     }
 }

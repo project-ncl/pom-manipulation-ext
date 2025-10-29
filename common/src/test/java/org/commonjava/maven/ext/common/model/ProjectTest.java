@@ -15,61 +15,57 @@
  */
 package org.commonjava.maven.ext.common.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 import org.apache.maven.model.Model;
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-
-public class ProjectTest
-{
-    @Test (expected = ManipulationException.class )
-    public void verifyProjectValidation() throws ManipulationException
-    {
+public class ProjectTest {
+    @Test(expected = ManipulationException.class)
+    public void verifyProjectValidation() throws ManipulationException {
         final Model m = new Model();
-        m.setGroupId( "org.foo" );
-        m.setArtifactId( "bar" );
-        new Project( m );
+        m.setGroupId("org.foo");
+        m.setArtifactId("bar");
+        new Project(m);
     }
 
-    @Test (expected = ManipulationException.class )
-    public void createProjectWithNullModel() throws ManipulationException
-    {
-        new Project( null, null );
+    @Test(expected = ManipulationException.class)
+    public void createProjectWithNullModel() throws ManipulationException {
+        new Project(null, null);
     }
 
     @Test
-    public void verifyProjectComparison() throws ManipulationException
-    {
+    public void verifyProjectComparison() throws ManipulationException {
         Model m1 = new Model();
-        m1.setGroupId( "org.foo" );
-        m1.setArtifactId( "bar" );
-        m1.setVersion( "1.0" );
-        Project one = new Project( m1 );
+        m1.setGroupId("org.foo");
+        m1.setArtifactId("bar");
+        m1.setVersion("1.0");
+        Project one = new Project(m1);
 
         Model m2 = new Model();
-        m2.setGroupId( "org.foo" );
-        m2.setArtifactId( "bar" );
-        m2.setVersion( "1.0" );
-        Project two = new Project( m2 );
+        m2.setGroupId("org.foo");
+        m2.setArtifactId("bar");
+        m2.setVersion("1.0");
+        Project two = new Project(m2);
 
-        assertEquals( one, two );
+        assertEquals(one, two);
 
         m2 = new Model();
-        m2.setGroupId( "org.foo" );
-        m2.setArtifactId( "bar" );
-        m2.setVersion( "1.0.0" );
-        two = new Project( m2 );
+        m2.setGroupId("org.foo");
+        m2.setArtifactId("bar");
+        m2.setVersion("1.0.0");
+        two = new Project(m2);
 
-        assertEquals( one, two );
+        assertEquals(one, two);
 
         Model m3 = new Model();
-        m3.setGroupId( "org.foo" );
-        m3.setArtifactId( "bar" );
-        m3.setVersion( "1.0.rebuild-1" );
-        Project three = new Project( m3 );
+        m3.setGroupId("org.foo");
+        m3.setArtifactId("bar");
+        m3.setVersion("1.0.rebuild-1");
+        Project three = new Project(m3);
 
-        assertNotEquals( one, three );
+        assertNotEquals(one, three);
     }
 }

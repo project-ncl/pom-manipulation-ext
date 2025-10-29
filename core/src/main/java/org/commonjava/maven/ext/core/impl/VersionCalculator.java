@@ -15,6 +15,21 @@
  */
 package org.commonjava.maven.ext.core.impl;
 
+import static org.commonjava.maven.ext.core.impl.Version.findHighestMatchingBuildNumber;
+import static org.commonjava.maven.ext.core.util.IdUtils.gav;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import org.apache.commons.lang3.StringUtils;
 import org.commonjava.atlas.maven.ident.ref.ProjectRef;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
@@ -30,20 +45,6 @@ import org.commonjava.maven.galley.maven.model.view.meta.MavenMetadataView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static org.commonjava.maven.ext.core.impl.Version.findHighestMatchingBuildNumber;
-import static org.commonjava.maven.ext.core.util.IdUtils.gav;
-
 /**
  * Component that calculates project version modifications, based on configuration stored in {@link VersioningState}.
  * Snapshots may/may not be preserved, and either a static or incremental (calculated) version qualifier may / may not
@@ -56,15 +57,13 @@ import static org.commonjava.maven.ext.core.util.IdUtils.gav;
 @Named
 @Singleton
 @SuppressWarnings("WeakerAccess") // Public API.
-public class VersionCalculator
-{
-    private final Logger logger = LoggerFactory.getLogger( getClass() );
+public class VersionCalculator {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private final GalleyAPIWrapper readerWrapper;
 
     @Inject
-    public VersionCalculator( final GalleyAPIWrapper readerWrapper )
-    {
+    public VersionCalculator(final GalleyAPIWrapper readerWrapper) {
         this.readerWrapper = readerWrapper;
     }
 
@@ -77,73 +76,76 @@ public class VersionCalculator
      * @return a collection of GAV : new Version
      * @throws ManipulationException if an error occurs.
      */
-    public Map<ProjectVersionRef, String> calculateVersioningChanges( final List<Project> projects,
-                                                                      final ManipulationSession session )
-        throws ManipulationException
-    {
-        final VersioningState state = session.getState( VersioningState.class );
+    public Map<ProjectVersionRef, String> calculateVersioningChanges(
+            final List<Project> projects,
+            final ManipulationSession session)
+            throws ManipulationException {
+        final VersioningState state = session.getState(VersioningState.class);
         final Map<ProjectVersionRef, String> versionsByGAV = new HashMap<>();
         final Set<String> versionsWithBuildNums = new HashSet<>();
 
-        if (logger.isDebugEnabled())
-        {
-            logger.debug( "Got the following version suffixes:{}  Static: {}{}  Incremental: {}", System.lineSeparator(),
-                          state.getSuffix(), System.lineSeparator(), state.getIncrementalSerialSuffix() );
-            logger.debug( "Got the following version override: {}", state.getOverride() );
+        if (logger.isDebugEnabled()) {
+            logger.debug(
+                    "Got the following version suffixes:{}  Static: {}{}  Incremental: {}",
+                    System.lineSeparator(),
+                    state.getSuffix(),
+                    System.lineSeparator(),
+                    state.getIncrementalSerialSuffix());
+            logger.debug("Got the following version override: {}", state.getOverride());
         }
 
-        for ( final Project project : projects )
-        {
-            String originalVersion = PropertyResolver.resolveInheritedProperties( session, project, project.getVersion() );
-            String modifiedVersion = calculate( project.getGroupId(), project.getArtifactId(), originalVersion, session );
+        for (final Project project : projects) {
+            String originalVersion = PropertyResolver
+                    .resolveInheritedProperties(session, project, project.getVersion());
+            String modifiedVersion = calculate(project.getGroupId(), project.getArtifactId(), originalVersion, session);
 
-            logger.debug ("Caching version against project {} with parent {} and modified version {}",
-                          project.getKey(), project.getModelParent(), modifiedVersion);
+            logger.debug(
+                    "Caching version against project {} with parent {} and modified version {}",
+                    project.getKey(),
+                    project.getModelParent(),
+                    modifiedVersion);
 
-            versionsByGAV.put( project.getKey(), modifiedVersion );
+            versionsByGAV.put(project.getKey(), modifiedVersion);
 
-            if ( Version.hasBuildNumber( modifiedVersion ) )
-            {
-                versionsWithBuildNums.add( modifiedVersion );
+            if (Version.hasBuildNumber(modifiedVersion)) {
+                versionsWithBuildNums.add(modifiedVersion);
             }
         }
 
         // Have to loop through the versions a second time to make sure that the versions are in sync
         // between projects in the reactor.
-        logger.debug ("Syncing projects within reactor...");
-        for ( final Project project : projects )
-        {
+        logger.debug("Syncing projects within reactor...");
+        for (final Project project : projects) {
             final String originalVersion = project.getVersion();
 
-            String modifiedVersion = versionsByGAV.get( project.getKey() );
+            String modifiedVersion = versionsByGAV.get(project.getKey());
 
             // If there is only a single version there is no real need to try and find the highest matching.
             // This also fixes the problem where there is a single version and leading zeros.
-            int buildNumber = findHighestMatchingBuildNumber( modifiedVersion, versionsWithBuildNums );
+            int buildNumber = findHighestMatchingBuildNumber(modifiedVersion, versionsWithBuildNums);
 
             // If the buildNumber is greater than zero, it means we found a match and have to
             // set the build number to avoid version conflicts.
-            if ( buildNumber > 0 )
-            {
+            if (buildNumber > 0) {
                 // We ONLY pass the incrementalSerialSuffixPadding if we are using incrementalSuffix (i.e. not static suffix).
                 // This keeps it consistent with the 'calculate' method..
                 String paddedBuildNum = StringUtils.leftPad(
-                                Integer.toString( buildNumber ), Version.getBuildNumberPadding(
-                                                ( state.getSuffix() == null ? state.getIncrementalSerialSuffixPadding() : 0 ), versionsWithBuildNums ), '0' );
-                modifiedVersion = Version.setBuildNumber( modifiedVersion, paddedBuildNum );
+                        Integer.toString(buildNumber),
+                        Version.getBuildNumberPadding(
+                                (state.getSuffix() == null ? state.getIncrementalSerialSuffixPadding() : 0),
+                                versionsWithBuildNums),
+                        '0');
+                modifiedVersion = Version.setBuildNumber(modifiedVersion, paddedBuildNum);
             }
 
-            versionsWithBuildNums.add( modifiedVersion );
+            versionsWithBuildNums.add(modifiedVersion);
 
-            if (logger.isDebugEnabled())
-            {
-                logger.debug("{} has updated version: {}. Marking for rewrite.", gav( project ), modifiedVersion );
+            if (logger.isDebugEnabled()) {
+                logger.debug("{} has updated version: {}. Marking for rewrite.", gav(project), modifiedVersion);
             }
 
-
-            if ( !originalVersion.equals( modifiedVersion ) )
-            {
-                versionsByGAV.put( project.getKey(), modifiedVersion );
+            if (!originalVersion.equals(modifiedVersion)) {
+                versionsByGAV.put(project.getKey(), modifiedVersion);
             }
         }
 
@@ -160,11 +162,13 @@ public class VersionCalculator
      * @return the new version string
      * @throws ManipulationException if an error occurs.
      */
-    protected String calculate( final String groupId, final String artifactId, final String version,
-                                 final ManipulationSession session )
-        throws ManipulationException
-    {
-        return calculate( groupId, artifactId, version, session.getState( VersioningState.class ) );
+    protected String calculate(
+            final String groupId,
+            final String artifactId,
+            final String version,
+            final ManipulationSession session)
+            throws ManipulationException {
+        return calculate(groupId, artifactId, version, session.getState(VersioningState.class));
     }
 
     /**
@@ -178,61 +182,57 @@ public class VersionCalculator
      * @return the new version string
      * @throws ManipulationException if an error occurs.
      */
-    public String calculate( final String groupId, final String artifactId, final String version,
-                                final VersioningState state )
-                    throws ManipulationException
-    {
+    public String calculate(
+            final String groupId,
+            final String artifactId,
+            final String version,
+            final VersioningState state)
+            throws ManipulationException {
         final String incrementalSuffix = state.getIncrementalSerialSuffix();
         final String staticSuffix = state.getSuffix();
         final String override = state.getOverride();
 
-
-        if (logger.isDebugEnabled())
-        {
-            logger.debug( "Got the following original version: {} for groupId:artifactId {}:{}", version, groupId,
-                    artifactId );
+        if (logger.isDebugEnabled()) {
+            logger.debug(
+                    "Got the following original version: {} for groupId:artifactId {}:{}",
+                    version,
+                    groupId,
+                    artifactId);
         }
-
 
         String newVersion = version;
 
-        if ( state.getSuffixAlternatives().size() > 0 )
-        {
-            logger.debug( "Got alternate suffixes of {}", state.getSuffixAlternatives() );
-            newVersion = handleAlternate( state, version );
-            logger.debug( "Resetting version {} to {}", version, newVersion);
+        if (state.getSuffixAlternatives().size() > 0) {
+            logger.debug("Got alternate suffixes of {}", state.getSuffixAlternatives());
+            newVersion = handleAlternate(state, version);
+            logger.debug("Resetting version {} to {}", version, newVersion);
         }
 
-        if ( override != null )
-        {
+        if (override != null) {
             newVersion = override;
         }
 
-        if ( staticSuffix != null )
-        {
-            newVersion = Version.appendQualifierSuffix( newVersion, staticSuffix );
-        }
-        else if ( incrementalSuffix != null )
-        {
+        if (staticSuffix != null) {
+            newVersion = Version.appendQualifierSuffix(newVersion, staticSuffix);
+        } else if (incrementalSuffix != null) {
             final Set<String> versionCandidates = getVersionCandidates(state, groupId, artifactId);
 
-            newVersion = Version.appendQualifierSuffix( newVersion, incrementalSuffix );
-            int highestRemoteBuildNumPlusOne = findHighestMatchingBuildNumber( newVersion, versionCandidates ) + 1;
+            newVersion = Version.appendQualifierSuffix(newVersion, incrementalSuffix);
+            int highestRemoteBuildNumPlusOne = findHighestMatchingBuildNumber(newVersion, versionCandidates) + 1;
 
-            if ( highestRemoteBuildNumPlusOne > Version.getIntegerBuildNumber( newVersion ) )
-            {
-                String paddedBuildNumber = StringUtils.leftPad( Integer.toString( highestRemoteBuildNumPlusOne ),
-                                     Version.getBuildNumberPadding( state.getIncrementalSerialSuffixPadding(), versionCandidates ), '0' );
-                newVersion = Version.setBuildNumber( newVersion, paddedBuildNumber );
+            if (highestRemoteBuildNumPlusOne > Version.getIntegerBuildNumber(newVersion)) {
+                String paddedBuildNumber = StringUtils.leftPad(
+                        Integer.toString(highestRemoteBuildNumPlusOne),
+                        Version.getBuildNumberPadding(state.getIncrementalSerialSuffixPadding(), versionCandidates),
+                        '0');
+                newVersion = Version.setBuildNumber(newVersion, paddedBuildNumber);
             }
         }
-        if ( !state.isPreserveSnapshot() )
-        {
-            newVersion = Version.removeSnapshot( newVersion );
+        if (!state.isPreserveSnapshot()) {
+            newVersion = Version.removeSnapshot(newVersion);
         }
-        if ( state.isOsgi() )
-        {
-            newVersion = Version.getOsgiVersion( newVersion );
+        if (state.isOsgi()) {
+            newVersion = Version.getOsgiVersion(newVersion);
         }
 
         return newVersion;
@@ -249,27 +249,21 @@ public class VersionCalculator
      * @throws ManipulationException if an error occurs.
      */
     protected Set<String> getVersionCandidates(VersioningState state, String groupId, String artifactId)
-            throws ManipulationException
-    {
+            throws ManipulationException {
         final Set<String> versionCandidates = new HashSet<>();
 
         Map<ProjectRef, Set<String>> rm = state.getRESTMetadata();
-        if ( rm != null)
-        {
+        if (rm != null) {
             // If the REST Client has prepopulated incremental data use that instead of the examining the repository.
-            if (!rm.isEmpty())
-            {
+            if (!rm.isEmpty()) {
                 // Use preloaded metadata from remote repository, loaded via a REST Call.
-                if (rm.get( new SimpleProjectRef( groupId, artifactId ) ) != null)
-                {
-                    versionCandidates.addAll( rm.get( new SimpleProjectRef( groupId, artifactId ) ) );
+                if (rm.get(new SimpleProjectRef(groupId, artifactId)) != null) {
+                    versionCandidates.addAll(rm.get(new SimpleProjectRef(groupId, artifactId)));
                 }
             }
-        }
-        else
-        {
+        } else {
             // Load metadata from local repository
-            versionCandidates.addAll( getMetadataVersions( groupId, artifactId ) );
+            versionCandidates.addAll(getMetadataVersions(groupId, artifactId));
         }
         return versionCandidates;
 
@@ -277,30 +271,28 @@ public class VersionCalculator
 
     /**
      * Accumulate all available versions for a given GAV from all available repositories.
+     * 
      * @param groupId the groupId to search for
      * @param artifactId the artifactId to search for
      * @return Collection of versions for the specified group:artifact
      * @throws ManipulationException if an error occurs.
      */
-    private Set<String> getMetadataVersions( final String groupId, final String artifactId )
-        throws ManipulationException
-    {
-        logger.debug( "Reading available versions from repository metadata for: {}:{}", groupId, artifactId );
+    private Set<String> getMetadataVersions(final String groupId, final String artifactId)
+            throws ManipulationException {
+        logger.debug("Reading available versions from repository metadata for: {}:{}", groupId, artifactId);
 
         Set<String> versions = new HashSet<>();
-        try
-        {
-            if ( readerWrapper != null )
-            {
-                final MavenMetadataView metadataView =
-                                readerWrapper.readMetadataView( new SimpleProjectRef( groupId, artifactId ) );
+        try {
+            if (readerWrapper != null) {
+                final MavenMetadataView metadataView = readerWrapper
+                        .readMetadataView(new SimpleProjectRef(groupId, artifactId));
 
-                versions.addAll( metadataView.resolveXPathToAggregatedStringList( "/metadata/versioning/versions/version", true, -1 ) );
+                versions.addAll(
+                        metadataView
+                                .resolveXPathToAggregatedStringList("/metadata/versioning/versions/version", true, -1));
             }
-        }
-        catch ( final GalleyMavenException e )
-        {
-            throw new ManipulationException( "Failed to resolve metadata for: {}:{}", groupId, artifactId, e );
+        } catch (final GalleyMavenException e) {
+            throw new ManipulationException("Failed to resolve metadata for: {}:{}", groupId, artifactId, e);
         }
         return versions;
     }
@@ -315,17 +307,14 @@ public class VersionCalculator
      * @param version the current version
      * @return a processed version
      */
-    protected static String handleAlternate( VersioningState state, String version )
-    {
-        for ( String suffix : state.getSuffixAlternatives() )
-        {
+    protected static String handleAlternate(VersioningState state, String version) {
+        for (String suffix : state.getSuffixAlternatives()) {
             final String suffixStripRegExp = "(.*)([.|-])(" + suffix + "-\\d+)";
-            final Pattern suffixStripPattern = Pattern.compile( suffixStripRegExp );
-            final Matcher suffixMatcher = suffixStripPattern.matcher( version );
+            final Pattern suffixStripPattern = Pattern.compile(suffixStripRegExp);
+            final Matcher suffixMatcher = suffixStripPattern.matcher(version);
 
-            if ( suffixMatcher.matches() && !version.contains( state.getRebuildSuffix() ) )
-            {
-                return suffixMatcher.group( 1 );
+            if (suffixMatcher.matches() && !version.contains(state.getRebuildSuffix())) {
+                return suffixMatcher.group(1);
             }
         }
         return version;

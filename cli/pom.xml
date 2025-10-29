@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright (C) 2012 Red Hat, Inc.
@@ -168,12 +168,11 @@
     </dependency>
   </dependencies>
 
-
   <build>
     <testResources>
       <testResource>
-        <directory>src/test/resources</directory>
         <filtering>true</filtering>
+        <directory>src/test/resources</directory>
       </testResource>
     </testResources>
     <plugins>
@@ -181,10 +180,10 @@
         <artifactId>maven-jar-plugin</artifactId>
         <executions>
           <execution>
-            <phase>package</phase>
             <goals>
               <goal>jar</goal>
             </goals>
+            <phase>package</phase>
             <configuration>
               <classifier>minimal</classifier>
             </configuration>
@@ -210,10 +209,10 @@
         <executions>
           <execution>
             <id>make-assembly</id>
-            <phase>package</phase>
             <goals>
               <goal>single</goal>
             </goals>
+            <phase>package</phase>
           </execution>
         </executions>
       </plugin>
@@ -227,10 +226,10 @@
           </execution>
           <execution>
             <id>index-dependencies</id>
-            <phase>prepare-package</phase>
             <goals>
               <goal>index</goal>
             </goals>
+            <phase>prepare-package</phase>
           </execution>
         </executions>
       </plugin>

@@ -15,7 +15,21 @@
  */
 package org.commonjava.maven.ext.io.rest;
 
-import kong.unirest.Unirest;
+import static org.commonjava.maven.ext.io.rest.Translator.DEFAULT_CONNECTION_TIMEOUT_SEC;
+import static org.commonjava.maven.ext.io.rest.Translator.DEFAULT_SOCKET_TIMEOUT_SEC;
+import static org.commonjava.maven.ext.io.rest.Translator.RETRY_DURATION_SEC;
+import static org.commonjava.maven.ext.io.rest.VersionTranslatorTest.loadALotOfGAVs;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.maven.ext.io.rest.handler.SpyFailJettyHandler;
 import org.commonjava.maven.ext.io.rest.rule.MockServer;
@@ -27,28 +41,15 @@ import org.junit.rules.TestName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import static org.commonjava.maven.ext.io.rest.Translator.DEFAULT_CONNECTION_TIMEOUT_SEC;
-import static org.commonjava.maven.ext.io.rest.Translator.DEFAULT_SOCKET_TIMEOUT_SEC;
-import static org.commonjava.maven.ext.io.rest.Translator.RETRY_DURATION_SEC;
-import static org.commonjava.maven.ext.io.rest.VersionTranslatorTest.loadALotOfGAVs;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import kong.unirest.Unirest;
 
 /**
  * @author Otavio Piske <opiske@redhat.com>
  */
-public class AutoSplitTest
-{
+public class AutoSplitTest {
     private static List<ProjectVersionRef> aLotOfGavs;
 
-    private final Logger logger = LoggerFactory.getLogger( AutoSplitTest.class );
+    private final Logger logger = LoggerFactory.getLogger(AutoSplitTest.class);
 
     private final SpyFailJettyHandler handler = new SpyFailJettyHandler();
 
@@ -56,63 +57,59 @@ public class AutoSplitTest
     public TestName testName = new TestName();
 
     @Rule
-    public MockServer mockServer = new MockServer( handler );
+    public MockServer mockServer = new MockServer(handler);
 
     @BeforeClass
-    public static void startUp() throws IOException
-    {
+    public static void startUp() throws IOException {
         aLotOfGavs = loadALotOfGAVs();
-        assertTrue( aLotOfGavs.size() >= 37 );
+        assertTrue(aLotOfGavs.size() >= 37);
     }
 
     @Before
-    public void before()
-    {
-        logger.info( "Executing test " + testName.getMethodName() );
+    public void before() {
+        logger.info("Executing test " + testName.getMethodName());
 
-        handler.setStatusCode( HttpServletResponse.SC_OK );
+        handler.setStatusCode(HttpServletResponse.SC_OK);
     }
 
     @Test
-    public void testConnection()
-    {
-        try
-        {
-            Unirest.post( mockServer.getUrl() ).asString();
-        }
-        catch ( Exception e )
-        {
-            fail( "Failed to connect to server, exception message: " + e.getMessage() );
+    public void testConnection() {
+        try {
+            Unirest.post(mockServer.getUrl()).asString();
+        } catch (Exception e) {
+            fail("Failed to connect to server, exception message: " + e.getMessage());
         }
     }
 
     private List<List<Map<String, Object>>> translate(int size) {
         final DefaultTranslator versionTranslator = new DefaultTranslator(
-                        mockServer.getUrl(), -1, 0, false, "", Collections.emptyMap(),
-                        DEFAULT_CONNECTION_TIMEOUT_SEC, DEFAULT_SOCKET_TIMEOUT_SEC, RETRY_DURATION_SEC);
+                mockServer.getUrl(),
+                -1,
+                0,
+                false,
+                "",
+                Collections.emptyMap(),
+                DEFAULT_CONNECTION_TIMEOUT_SEC,
+                DEFAULT_SOCKET_TIMEOUT_SEC,
+                RETRY_DURATION_SEC);
 
-        List<ProjectVersionRef> data = aLotOfGavs.subList( 0, size );
+        List<ProjectVersionRef> data = aLotOfGavs.subList(0, size);
         handler.getRequestData().clear();
-        try
-        {
-            versionTranslator.lookupVersions( data );
-        }
-        catch ( RestException exception )
-        {
+        try {
+            versionTranslator.lookupVersions(data);
+        } catch (RestException exception) {
             fail();
         }
         return handler.getRequestData();
     }
 
-    private void testTranslateVersionsAutoSplit(int payload, int chunkCount, int chunkSize, int remaining)
-    {
+    private void testTranslateVersionsAutoSplit(int payload, int chunkCount, int chunkSize, int remaining) {
         List<List<Map<String, Object>>> requestData = translate(payload);
 
-        logger.debug( requestData.toString() );
-        assertEquals( chunkCount, requestData.size() );
+        logger.debug(requestData.toString());
+        assertEquals(chunkCount, requestData.size());
         int i = 0;
-        for (List<Map<String, Object>> partition : requestData)
-        {
+        for (List<Map<String, Object>> partition : requestData) {
             int expected = chunkSize;
 
             // The last one will contain only 24 for this request size
@@ -120,27 +117,23 @@ public class AutoSplitTest
                 expected = remaining;
             }
 
-            assertEquals( expected, partition.size() );
+            assertEquals(expected, partition.size());
             i++;
         }
     }
 
-
     @Test
-    public void testTranslateVersionsAutoSplitLarge()
-    {
+    public void testTranslateVersionsAutoSplitLarge() {
         testTranslateVersionsAutoSplit(2200, 69, 32, 24);
     }
 
     @Test
-    public void testTranslateVersionsAutoSplitMedium()
-    {
+    public void testTranslateVersionsAutoSplitMedium() {
         testTranslateVersionsAutoSplit(800, 13, 64, 32);
     }
 
     @Test
-    public void testTranslateVersionsAutoSplitSmall()
-    {
+    public void testTranslateVersionsAutoSplitSmall() {
         testTranslateVersionsAutoSplit(400, 4, 128, 16);
     }
 }

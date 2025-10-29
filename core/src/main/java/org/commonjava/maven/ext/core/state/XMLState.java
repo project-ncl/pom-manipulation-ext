@@ -15,25 +15,24 @@
  */
 package org.commonjava.maven.ext.core.state;
 
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
 import org.commonjava.maven.ext.annotation.ConfigValue;
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.core.impl.XMLManipulator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-
 /**
  * Captures configuration relating to XML manipulation. Used by {@link XMLManipulator}.
  */
 public class XMLState
-    implements State
-{
-    private final Logger logger = LoggerFactory.getLogger( getClass() );
+        implements State {
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * Property on the command line that handles modifying XML files. The format is
@@ -44,7 +43,7 @@ public class XMLState
      * 2. Multiple operations may be fed in via comma separator.
      *
      */
-    @ConfigValue( docIndex = "xml.html" )
+    @ConfigValue(docIndex = "xml.html")
     private static final String XML_PROPERTY = "xmlUpdate";
 
     /**
@@ -52,37 +51,34 @@ public class XMLState
      */
     private final List<XMLOperation> xmlOperations = new ArrayList<>();
 
-    public XMLState( final Properties userProps )
-                    throws ManipulationException
-    {
-        initialise( userProps );
+    public XMLState(final Properties userProps)
+            throws ManipulationException {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps ) throws ManipulationException
-    {
-        String property = userProps.getProperty( XML_PROPERTY );
+    public void initialise(Properties userProps) throws ManipulationException {
+        String property = userProps.getProperty(XML_PROPERTY);
 
-        if ( isNotEmpty( property ) )
-        {
-            final String[] ops = property.split( "(?<!\\\\)," );
-            for ( int i=0; i<ops.length; i++)
-            {
-                ops[i] = ops[i].replaceAll( "\\\\,", "," );
+        if (isNotEmpty(property)) {
+            final String[] ops = property.split("(?<!\\\\),");
+            for (int i = 0; i < ops.length; i++) {
+                ops[i] = ops[i].replaceAll("\\\\,", ",");
             }
 
-            for ( String operation : ops)
-            {
-                String []components = operation.split( "(?<!\\\\):", 3 );
-                for ( int i=0; i<components.length; i++)
-                {
-                    components[i] = components[i].replaceAll( "\\\\:", ":" );
+            for (String operation : ops) {
+                String[] components = operation.split("(?<!\\\\):", 3);
+                for (int i = 0; i < components.length; i++) {
+                    components[i] = components[i].replaceAll("\\\\:", ":");
                 }
-                if ( components.length != 3 )
-                {
-                    throw new ManipulationException( "Unable to parse command {} from property {}", operation, property );
+                if (components.length != 3) {
+                    throw new ManipulationException("Unable to parse command {} from property {}", operation, property);
                 }
-                logger.debug ("Adding XMLOperation with file {}, xpath {} and update {}", components[0], components[1], components[2] );
-                xmlOperations.add( new XMLOperation( components[0], components[1], components[2] ) );
+                logger.debug(
+                        "Adding XMLOperation with file {}, xpath {} and update {}",
+                        components[0],
+                        components[1],
+                        components[2]);
+                xmlOperations.add(new XMLOperation(components[0], components[1], components[2]));
             }
         }
     }
@@ -93,48 +89,39 @@ public class XMLState
      * @see State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return !xmlOperations.isEmpty();
     }
 
-    public List<XMLOperation> getXMLOperations()
-    {
+    public List<XMLOperation> getXMLOperations() {
         return xmlOperations;
     }
 
-
-    public final static class XMLOperation
-    {
+    public final static class XMLOperation {
         private final String file;
         private final String xpath;
         private final String update;
 
-        public XMLOperation ( String file, String xpath, String update)
-        {
+        public XMLOperation(String file, String xpath, String update) {
             this.file = file;
             this.xpath = xpath;
             this.update = update;
         }
 
-        public String getFile()
-        {
+        public String getFile() {
             return file;
         }
 
-        public String getXPath()
-        {
+        public String getXPath() {
             return xpath;
         }
 
-        public String getUpdate()
-        {
+        public String getUpdate() {
             return update;
         }
 
         @Override
-        public String toString ()
-        {
+        public String toString() {
             return "File " + file + " xpath '" + xpath + "' update " + update;
         }
     }

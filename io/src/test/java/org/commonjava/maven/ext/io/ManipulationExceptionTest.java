@@ -15,70 +15,53 @@
  */
 package org.commonjava.maven.ext.io;
 
-import org.commonjava.maven.ext.common.ManipulationException;
-import org.commonjava.maven.ext.io.rest.RestException;
-import org.junit.Test;
-
-import java.util.UUID;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 
-public class ManipulationExceptionTest
-{
+import java.util.UUID;
+
+import org.commonjava.maven.ext.common.ManipulationException;
+import org.commonjava.maven.ext.io.rest.RestException;
+import org.junit.Test;
+
+public class ManipulationExceptionTest {
     private UUID uuid = UUID.randomUUID();
-    private IndexOutOfBoundsException exception = new IndexOutOfBoundsException(  );
+    private IndexOutOfBoundsException exception = new IndexOutOfBoundsException();
 
     @Test
-    public void testManipulationExceptionParams ()
-    {
-        try
-        {
-            throw new ManipulationException( "TEST {} WITH {} PARAM", 1, uuid, exception );
+    public void testManipulationExceptionParams() {
+        try {
+            throw new ManipulationException("TEST {} WITH {} PARAM", 1, uuid, exception);
+        } catch (ManipulationException e) {
+            assertSame(e.getCause(), exception);
+            assertEquals(e.getMessage(), "TEST 1 WITH " + uuid + " PARAM");
         }
-        catch (ManipulationException e)
-        {
-            assertSame( e.getCause(), exception );
-            assertEquals( e.getMessage(), "TEST 1 WITH " + uuid + " PARAM");
-        }
-        try
-        {
-            throw new ManipulationException( "TEST {} WITH {} PARAM", 1, uuid );
-        }
-        catch (ManipulationException e)
-        {
-            assertNull( e.getCause() );
-            assertEquals( e.getMessage(), "TEST 1 WITH " + uuid + " PARAM" );
+        try {
+            throw new ManipulationException("TEST {} WITH {} PARAM", 1, uuid);
+        } catch (ManipulationException e) {
+            assertNull(e.getCause());
+            assertEquals(e.getMessage(), "TEST 1 WITH " + uuid + " PARAM");
         }
     }
 
     @Test
-    public void testRestExceptionParams ()
-    {
-        try
-        {
-            throw new RestException( "TEST {} WITH {} PARAM", 1, uuid, exception );
-        }
-        catch (ManipulationException e)
-        {
-            assertSame( e.getCause(), exception );
-            assertEquals( e.getMessage(), "TEST 1 WITH " + uuid + " PARAM" );
+    public void testRestExceptionParams() {
+        try {
+            throw new RestException("TEST {} WITH {} PARAM", 1, uuid, exception);
+        } catch (ManipulationException e) {
+            assertSame(e.getCause(), exception);
+            assertEquals(e.getMessage(), "TEST 1 WITH " + uuid + " PARAM");
         }
     }
 
-
     @Test
-    public void testRestException ()
-    {
-        try
-        {
-            throw new RestException( "TEST PARAM", exception );
-        }
-        catch (ManipulationException e)
-        {
-            assertSame( e.getCause(), exception );
-            assertEquals( "TEST PARAM", e.getMessage() );
+    public void testRestException() {
+        try {
+            throw new RestException("TEST PARAM", exception);
+        } catch (ManipulationException e) {
+            assertSame(e.getCause(), exception);
+            assertEquals("TEST PARAM", e.getMessage());
         }
     }
 }

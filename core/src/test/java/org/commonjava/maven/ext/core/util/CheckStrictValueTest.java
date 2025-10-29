@@ -15,6 +15,12 @@
  */
 package org.commonjava.maven.ext.core.util;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Properties;
+
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.core.ManipulationSession;
 import org.commonjava.maven.ext.core.state.CommonState;
@@ -24,34 +30,25 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Properties;
-
-import static org.junit.Assert.assertEquals;
-
 @RunWith(Parameterized.class)
-public class CheckStrictValueTest
-{
+public class CheckStrictValueTest {
     @Before
-    public void beforeTest() throws ManipulationException
-    {
+    public void beforeTest() throws ManipulationException {
         Properties user = new Properties();
-        user.setProperty( VersioningState.VERSION_SUFFIX_SYSPROP, "redhat-5" );
-        final VersioningState vs = new VersioningState( user );
-        session.setState( vs );
-        if ( ! strictIgnoreSuffix)
-        {
-            user.setProperty( CommonState.STRICT_ALIGNMENT_IGNORE_SUFFIX, "false" );
+        user.setProperty(VersioningState.VERSION_SUFFIX_SYSPROP, "redhat-5");
+        final VersioningState vs = new VersioningState(user);
+        session.setState(vs);
+        if (!strictIgnoreSuffix) {
+            user.setProperty(CommonState.STRICT_ALIGNMENT_IGNORE_SUFFIX, "false");
         }
-        final CommonState cs = new CommonState( user );
-        session.setState( cs );
+        final CommonState cs = new CommonState(user);
+        session.setState(cs);
     }
 
-    @Parameterized.Parameters( name = "{0} --> {1}" )
-    public static Collection<Object[]> data()
-    {
-        return Arrays.asList(new Object[][] {
+    @Parameterized.Parameters(name = "{0} --> {1}")
+    public static Collection<Object[]> data() {
+        return Arrays.asList(
+                new Object[][] {
                         // Format : Source -> Target :: Result :: AlignmentSuffix
                         { "2.6", "2.6.0.redhat-9", true, false },
                         { "2.6", "2.6.0", true, false },
@@ -83,7 +80,7 @@ public class CheckStrictValueTest
                         { "3.2.0.temporary-redhat-4", "3.2.0.temporary-redhat-5", true, true },
                         { "6.2.0.Final-temporary-redhat-2", "6.2.0.Final-redhat-1", false, true }
 
-        });
+                });
     }
 
     private final String source;
@@ -92,9 +89,7 @@ public class CheckStrictValueTest
     private final boolean strictIgnoreSuffix;
     private final ManipulationSession session = new ManipulationSession();
 
-
-    public CheckStrictValueTest( String source, String target, boolean result, boolean strictIgnoreSuffix)
-    {
+    public CheckStrictValueTest(String source, String target, boolean result, boolean strictIgnoreSuffix) {
         this.source = source;
         this.target = target;
         this.result = result;
@@ -102,8 +97,7 @@ public class CheckStrictValueTest
     }
 
     @Test
-    public void testCheckStrictValue()
-    {
-        assertEquals( result, PropertiesUtils.checkStrictValue( session, source, target ) );
+    public void testCheckStrictValue() {
+        assertEquals(result, PropertiesUtils.checkStrictValue(session, source, target));
     }
 }

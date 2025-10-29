@@ -15,42 +15,47 @@
  */
 package org.commonjava.maven.ext.common.model;
 
-import org.commonjava.atlas.maven.ident.ref.ArtifactRef;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
+import org.commonjava.atlas.maven.ident.ref.ArtifactRef;
+import org.junit.Test;
 
-public class SetAndSimpleScopeTest
-{
+public class SetAndSimpleScopeTest {
     @Test
-    public void testVerifyArtifactRef()
-    {
-        SimpleScopedArtifactRef commonslang = SimpleScopedArtifactRef.parse( "commons-lang:commons-lang:jar:1.0" );
-        SimpleScopedArtifactRef commonslangsources = SimpleScopedArtifactRef.parse( "commons-lang:commons-lang:jar:1.0:sources" );
+    public void testVerifyArtifactRef() {
+        SimpleScopedArtifactRef commonslang = SimpleScopedArtifactRef.parse("commons-lang:commons-lang:jar:1.0");
+        SimpleScopedArtifactRef commonslangsources = SimpleScopedArtifactRef
+                .parse("commons-lang:commons-lang:jar:1.0:sources");
 
-        Set<ArtifactRef> s = new HashSet<>(  );
-        s.add( commonslang );
-        s.add( commonslangsources );
+        Set<ArtifactRef> s = new HashSet<>();
+        s.add(commonslang);
+        s.add(commonslangsources);
 
-        assertEquals( 2, s.size() );
+        assertEquals(2, s.size());
     }
 
     @Test
-    public void testVerifyScopedArtifactRef()
-    {
-        SimpleScopedArtifactRef commonslang = SimpleScopedArtifactRef.parse( "commons-lang:commons-lang:jar:1.0" );
-        SimpleScopedArtifactRef commonslangsources = SimpleScopedArtifactRef.parse( "commons-lang:commons-lang:jar:1.0:sources" );
+    public void testVerifyScopedArtifactRef() {
+        SimpleScopedArtifactRef commonslang = SimpleScopedArtifactRef.parse("commons-lang:commons-lang:jar:1.0");
+        SimpleScopedArtifactRef commonslangsources = SimpleScopedArtifactRef
+                .parse("commons-lang:commons-lang:jar:1.0:sources");
 
-        SimpleScopedArtifactRef commonsscoped = new SimpleScopedArtifactRef( commonslang.asProjectVersionRef(), commonslang.getTypeAndClassifier(), "compile" );
-        SimpleScopedArtifactRef commonsscopedtest = new SimpleScopedArtifactRef( commonslangsources.asProjectVersionRef(), commonslangsources.getTypeAndClassifier(), "test" );
+        SimpleScopedArtifactRef commonsscoped = new SimpleScopedArtifactRef(
+                commonslang.asProjectVersionRef(),
+                commonslang.getTypeAndClassifier(),
+                "compile");
+        SimpleScopedArtifactRef commonsscopedtest = new SimpleScopedArtifactRef(
+                commonslangsources.asProjectVersionRef(),
+                commonslangsources.getTypeAndClassifier(),
+                "test");
 
-        Set<ArtifactRef> s = new HashSet<>(  );
-        s.add( commonsscoped );
-        s.add( commonsscopedtest );
+        Set<ArtifactRef> s = new HashSet<>();
+        s.add(commonsscoped);
+        s.add(commonsscopedtest);
 
-        assertEquals( 2, s.size() );
+        assertEquals(2, s.size());
     }
 }

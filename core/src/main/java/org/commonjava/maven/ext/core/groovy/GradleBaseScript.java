@@ -21,8 +21,7 @@ import groovy.lang.Script;
  * Common API for developers wishing to implement groovy scripts for GME.
  * Abstract class that is used as a marker and extended by the Gradle Manipulation Tooling.
  */
-public abstract class GradleBaseScript extends Script implements CommonBaseScript
-{
+public abstract class GradleBaseScript extends Script implements CommonBaseScript {
     /**
      * Return the current Project
      *

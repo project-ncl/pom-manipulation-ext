@@ -31,22 +31,20 @@ import java.util.Map;
  *    ....
  * }
  * </pre>
+ * 
  * All PME key/value commands should be the equivalent to the Java property -D&lt;key&gt;=&lt;value&gt;
  * <p>
  * Note that any other configuration values are ignoring by PME when reading the yaml file.
  * </p>
  */
-public class YamlFile implements Serializable
-{
-    private Map<String,String> pme;
+public class YamlFile implements Serializable {
+    private Map<String, String> pme;
 
-    public Map<String, String> getPme()
-    {
+    public Map<String, String> getPme() {
         return pme;
     }
 
-    public void setPme( Map<String, String> pme )
-    {
+    public void setPme(Map<String, String> pme) {
         this.pme = pme;
     }
 }

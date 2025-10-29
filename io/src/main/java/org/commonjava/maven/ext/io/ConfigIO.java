@@ -15,8 +15,17 @@
  */
 package org.commonjava.maven.ext.io;
 
-import com.jayway.jsonpath.JsonPath;
-import com.jayway.jsonpath.JsonPathException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import org.commonjava.maven.ext.annotation.ConfigValue;
 import org.commonjava.maven.ext.common.ManipulationException;
 import org.commonjava.maven.ext.common.model.YamlFile;
@@ -26,117 +35,83 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.representer.Representer;
 
-import javax.inject.Named;
-import javax.inject.Singleton;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Map;
-import java.util.Properties;
+import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.JsonPathException;
 
 @Named
 @Singleton
-public class ConfigIO
-{
-    private final Logger logger = LoggerFactory.getLogger( ConfigIO.class );
+public class ConfigIO {
+    private final Logger logger = LoggerFactory.getLogger(ConfigIO.class);
 
     private final static String propertyFileString = "pme.properties";
     private final static String yamlPMEFileString = "pme.yaml";
     private final static String yamlPNCFileString = "pnc.yaml";
     private final static String jsonPNCFileString = "pnc.json";
 
-    @ConfigValue( docIndex = "configuration.html#overview")
+    @ConfigValue(docIndex = "configuration.html#overview")
     public static final String CONFIG_FILE_PRECEDENCE = "allowConfigFilePrecedence";
 
-    public Properties parse ( final String workingDir) throws ManipulationException
-    {
-        return parse ( new File ( workingDir ) );
+    public Properties parse(final String workingDir) throws ManipulationException {
+        return parse(new File(workingDir));
     }
 
-    public Properties parse ( final File workingDir) throws ManipulationException
-    {
+    public Properties parse(final File workingDir) throws ManipulationException {
         Properties result = new Properties();
-        File propertyFile = new File( workingDir, propertyFileString );
-        File yamlPMEFile = new File( workingDir, yamlPMEFileString );
-        File yamlPNCFile = new File( workingDir, yamlPNCFileString );
-        File jsonPNCFile = new File( workingDir, jsonPNCFileString );
+        File propertyFile = new File(workingDir, propertyFileString);
+        File yamlPMEFile = new File(workingDir, yamlPMEFileString);
+        File yamlPNCFile = new File(workingDir, yamlPNCFileString);
+        File jsonPNCFile = new File(workingDir, jsonPNCFileString);
 
-        if ( propertyFile.exists() && ( yamlPMEFile.exists() || yamlPNCFile.exists() || jsonPNCFile.exists() ) )
-        {
-            throw new ManipulationException( "Cannot have both yaml, json and property configuration files." );
+        if (propertyFile.exists() && (yamlPMEFile.exists() || yamlPNCFile.exists() || jsonPNCFile.exists())) {
+            throw new ManipulationException("Cannot have both yaml, json and property configuration files.");
+        } else if (yamlPMEFile.exists() && yamlPNCFile.exists()) {
+            throw new ManipulationException("Cannot have both yaml configuration file formats.");
+        } else if ((yamlPMEFile.exists() || yamlPNCFile.exists()) && jsonPNCFile.exists()) {
+            throw new ManipulationException("Cannot have yaml and json configuration file formats.");
         }
-        else if ( yamlPMEFile.exists() && yamlPNCFile.exists() )
-        {
-            throw new ManipulationException( "Cannot have both yaml configuration file formats." );
-        }
-        else if ( ( yamlPMEFile.exists() || yamlPNCFile.exists() ) && jsonPNCFile.exists() )
-        {
-            throw new ManipulationException( "Cannot have yaml and json configuration file formats." );
-        }
-        if ( yamlPMEFile.exists() )
-        {
-            result = loadYamlFile( yamlPMEFile );
-            logger.debug( "Read yaml file containing {}.", result );
-        }
-        else if ( yamlPNCFile.exists() )
-        {
-            result = loadYamlFile( yamlPNCFile );
-            logger.debug( "Read yaml file containing {}.", result );
-        }
-        else if ( jsonPNCFile.exists() )
-        {
-            try
-            {
-                result.putAll( JsonPath.parse( jsonPNCFile ).read ( "$.pme", Map.class ) );
+        if (yamlPMEFile.exists()) {
+            result = loadYamlFile(yamlPMEFile);
+            logger.debug("Read yaml file containing {}.", result);
+        } else if (yamlPNCFile.exists()) {
+            result = loadYamlFile(yamlPNCFile);
+            logger.debug("Read yaml file containing {}.", result);
+        } else if (jsonPNCFile.exists()) {
+            try {
+                result.putAll(JsonPath.parse(jsonPNCFile).read("$.pme", Map.class));
+            } catch (IOException | JsonPathException e) {
+                throw new ManipulationException("Caught exception processing JSON file.", e);
             }
-            catch ( IOException | JsonPathException e)
-            {
-                throw new ManipulationException( "Caught exception processing JSON file.", e );
-            }
-            logger.debug( "Read json file containing {}.", result );
-        }
-        else if ( propertyFile.exists() )
-        {
-            result = loadPropertiesFile( propertyFile );
-            logger.debug( "Read properties file containing {}.", result );
+            logger.debug("Read json file containing {}.", result);
+        } else if (propertyFile.exists()) {
+            result = loadPropertiesFile(propertyFile);
+            logger.debug("Read properties file containing {}.", result);
         }
         return result;
     }
 
-
-    private Properties loadYamlFile ( final File configFile ) throws ManipulationException
-    {
-        Properties result = new Properties( );
+    private Properties loadYamlFile(final File configFile) throws ManipulationException {
+        Properties result = new Properties();
         Representer representer = new Representer(new DumperOptions());
 
         representer.getPropertyUtils().setSkipMissingProperties(true);
-        Yaml yaml = new Yaml( representer);
+        Yaml yaml = new Yaml(representer);
 
-        try
-        {
-            YamlFile yf = yaml.loadAs( new FileInputStream( configFile ), YamlFile.class);
-            result.putAll( yf.getPme() );
-        }
-        catch ( FileNotFoundException e )
-        {
-            throw new ManipulationException( "Unable to load yaml file.", e);
+        try {
+            YamlFile yf = yaml.loadAs(new FileInputStream(configFile), YamlFile.class);
+            result.putAll(yf.getPme());
+        } catch (FileNotFoundException e) {
+            throw new ManipulationException("Unable to load yaml file.", e);
         }
         return result;
     }
 
-    private Properties loadPropertiesFile( final File configFile ) throws ManipulationException
-    {
-        Properties result = new Properties( );
+    private Properties loadPropertiesFile(final File configFile) throws ManipulationException {
+        Properties result = new Properties();
 
-        try (InputStream input = new FileInputStream( configFile ) )
-        {
-            result.load( input );
-        }
-        catch ( IOException e )
-        {
-            throw new ManipulationException( "Unable to load properties file.", e);
+        try (InputStream input = new FileInputStream(configFile)) {
+            result.load(input);
+        } catch (IOException e) {
+            throw new ManipulationException("Unable to load properties file.", e);
         }
         return result;
     }

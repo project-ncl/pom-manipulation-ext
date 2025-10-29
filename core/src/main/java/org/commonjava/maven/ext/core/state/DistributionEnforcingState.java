@@ -15,28 +15,29 @@
  */
 package org.commonjava.maven.ext.core.state;
 
-import org.commonjava.maven.ext.annotation.ConfigValue;
-import org.commonjava.maven.ext.core.impl.DistributionEnforcingManipulator;
+import static org.commonjava.maven.ext.core.util.PropertiesUtils.getPropertiesByPrefix;
 
 import java.util.Map;
 import java.util.Properties;
 
-import static org.commonjava.maven.ext.core.util.PropertiesUtils.getPropertiesByPrefix;
+import org.commonjava.maven.ext.annotation.ConfigValue;
+import org.commonjava.maven.ext.core.impl.DistributionEnforcingManipulator;
 
 /**
- * Captures configuration relating to enforcing distribution (install/deploy) configurations within the POM(s). Used by {@link DistributionEnforcingManipulator}.
+ * Captures configuration relating to enforcing distribution (install/deploy) configurations within the POM(s). Used by
+ * {@link DistributionEnforcingManipulator}.
  */
 public class DistributionEnforcingState
-    implements State
-{
+        implements State {
     /**
      * Property used to set the enforcement mode.
      */
-    @ConfigValue( docIndex = "plugin.html#install-and-deploy-skip-flag-alignment")
+    @ConfigValue(docIndex = "plugin.html#install-and-deploy-skip-flag-alignment")
     public static final String ENFORCE_SYSPROP = "enforceSkip";
 
     /**
-     * Property prefix used to exclude certain projects in the current build (specified as g:a) from install/deploy plugin skip-flag enforcement.
+     * Property prefix used to exclude certain projects in the current build (specified as g:a) from install/deploy
+     * plugin skip-flag enforcement.
      */
     private static final String PROJECT_EXCLUSION_PREFIX = ENFORCE_SYSPROP + '.';
 
@@ -44,39 +45,35 @@ public class DistributionEnforcingState
 
     private Map<String, String> excludedProjects;
 
-    public DistributionEnforcingState( final Properties userProps )
-    {
-        initialise( userProps );
+    public DistributionEnforcingState(final Properties userProps) {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps )
-    {
-        final String value = userProps.getProperty(ENFORCE_SYSPROP );
+    public void initialise(Properties userProps) {
+        final String value = userProps.getProperty(ENFORCE_SYSPROP);
 
-        excludedProjects = getPropertiesByPrefix( userProps, DistributionEnforcingState.PROJECT_EXCLUSION_PREFIX );
-        mode = EnforcingMode.getMode( value );
+        excludedProjects = getPropertiesByPrefix(userProps, DistributionEnforcingState.PROJECT_EXCLUSION_PREFIX);
+        mode = EnforcingMode.getMode(value);
     }
 
-    public EnforcingMode getEnforcingMode()
-    {
+    public EnforcingMode getEnforcingMode() {
         return mode;
     }
 
     /**
-     * Enabled ONLY if enforce-skip is provided in the user properties / CLI -D options, AND that mode is != <code>none</code>.
+     * Enabled ONLY if enforce-skip is provided in the user properties / CLI -D options, AND that mode is !=
+     * <code>none</code>.
      *
      * @see #ENFORCE_SYSPROP
      * @see org.commonjava.maven.ext.core.state.State#isEnabled()
      * @see EnforcingMode
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return mode != EnforcingMode.none;
     }
 
-    public Map<String, String> getExcludedProjects()
-    {
+    public Map<String, String> getExcludedProjects() {
         return excludedProjects;
     }
 }

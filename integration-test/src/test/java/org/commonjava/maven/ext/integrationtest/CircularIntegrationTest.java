@@ -15,6 +15,13 @@
  */
 package org.commonjava.maven.ext.integrationtest;
 
+import static org.commonjava.maven.ext.integrationtest.ITestUtils.DEFAULT_MVN_PARAMS;
+import static org.commonjava.maven.ext.integrationtest.ITestUtils.getDefaultTestLocation;
+import static org.commonjava.maven.ext.integrationtest.ITestUtils.runLikeInvoker;
+import static org.commonjava.maven.ext.integrationtest.ITestUtils.runMaven;
+
+import java.io.File;
+
 import org.commonjava.maven.ext.io.rest.handler.AddSuffixJettyHandler;
 import org.commonjava.maven.ext.io.rest.rule.MockServer;
 import org.junit.Before;
@@ -22,37 +29,29 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.io.File;
-
-import static org.commonjava.maven.ext.integrationtest.ITestUtils.DEFAULT_MVN_PARAMS;
-import static org.commonjava.maven.ext.integrationtest.ITestUtils.getDefaultTestLocation;
-import static org.commonjava.maven.ext.integrationtest.ITestUtils.runLikeInvoker;
-import static org.commonjava.maven.ext.integrationtest.ITestUtils.runMaven;
-
-public class CircularIntegrationTest
-{
-    private final AddSuffixJettyHandler handler = new AddSuffixJettyHandler( "/", null );
+public class CircularIntegrationTest {
+    private final AddSuffixJettyHandler handler = new AddSuffixJettyHandler("/", null);
 
     @Rule
-    public MockServer mockServer = new MockServer( handler );
+    public MockServer mockServer = new MockServer(handler);
 
     @BeforeClass
     public static void setUp()
-        throws Exception
-    {
-        runMaven( "install", DEFAULT_MVN_PARAMS, ITestUtils.IT_LOCATION + File.separator + "circular-dependencies-test-parent" );
+            throws Exception {
+        runMaven(
+                "install",
+                DEFAULT_MVN_PARAMS,
+                ITestUtils.IT_LOCATION + File.separator + "circular-dependencies-test-parent");
     }
 
     @Before
-    public void before()
-    {
-        handler.setSuffix (AddSuffixJettyHandler.DEFAULT_SUFFIX);
+    public void before() {
+        handler.setSuffix(AddSuffixJettyHandler.DEFAULT_SUFFIX);
     }
 
     @Test
-    public void testCircular() throws Exception
-    {
-        String test = getDefaultTestLocation( "circular-dependencies-test-second" );
-        runLikeInvoker( test, mockServer.getUrl() );
+    public void testCircular() throws Exception {
+        String test = getDefaultTestLocation("circular-dependencies-test-second");
+        runLikeInvoker(test, mockServer.getUrl());
     }
 }

@@ -15,6 +15,8 @@
  */
 package org.commonjava.maven.ext.core.state;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 import java.util.List;
 import java.util.Properties;
 
@@ -23,16 +25,13 @@ import org.commonjava.atlas.maven.ident.ref.InvalidRefException;
 import org.commonjava.maven.ext.annotation.ConfigValue;
 import org.commonjava.maven.ext.core.util.RefParseUtils;
 
-import static org.apache.commons.lang3.StringUtils.isEmpty;
-
 import lombok.Getter;
 
 /**
  * Captures configuration relating to dependency injection from the POMs.
  */
 public class DependencyInjectionState
-    implements State
-{
+        implements State {
     /**
      * The name of the property which contains a comma separated list of dependencies to inject. Each
      * dependency may be specified in one of the following formats. In all cases, the {@code groupId},
@@ -50,21 +49,22 @@ public class DependencyInjectionState
      * <code>-DdependencyInjection=org.foo:bar:1.0,org.baz:bar:pom::2.0:import,....</code>
      * </pre>
      */
-    @ConfigValue( docIndex = "dep-manip.html#dependency-injection")
+    @ConfigValue(docIndex = "dep-manip.html#dependency-injection")
     private static final String DEPENDENCY_INJECTION_PROPERTY = "dependencyInjection";
 
     /**
      * This will update the
-     * <a href="https://maven.apache.org/plugins/maven-dependency-plugin/analyze-mojo.html#dependency-analyze">maven-dependency-plugin</a>
+     * <a href=
+     * "https://maven.apache.org/plugins/maven-dependency-plugin/analyze-mojo.html#dependency-analyze">maven-dependency-plugin</a>
      * plugin so that a section with ignoredUnusedDeclaredDependencies is added for each dependency if the
      * maven-dependency-plugin is declared in the root pom.
      */
-    @ConfigValue( docIndex = "dep-manip.html#dependency-injection-assembly")
+    @ConfigValue(docIndex = "dep-manip.html#dependency-injection-assembly")
     private static final String DEPENDENCY_INJECTION_ANALYZE_PLUGIN_PROPERTY = "dependencyInjectionAnalyzeIgnoreUnused";
 
     /**
      * @return the dependencies we wish to inject into the POM's {@code dependencyManagement}
-     * section.
+     *         section.
      */
     @Getter
     private List<Dependency> dependencyInjection;
@@ -72,17 +72,16 @@ public class DependencyInjectionState
     @Getter
     private boolean addIgnoreUnusedAnalzyePlugin;
 
-    public DependencyInjectionState( final Properties userProps)
-    {
-        initialise( userProps );
+    public DependencyInjectionState(final Properties userProps) {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps )
-    {
-        dependencyInjection = parseDependencies( userProps.getProperty( DEPENDENCY_INJECTION_PROPERTY ) );
-        addIgnoreUnusedAnalzyePlugin =
-                        Boolean.parseBoolean( userProps.getProperty( DEPENDENCY_INJECTION_ANALYZE_PLUGIN_PROPERTY,
-                                                                     "false" ) );
+    public void initialise(Properties userProps) {
+        dependencyInjection = parseDependencies(userProps.getProperty(DEPENDENCY_INJECTION_PROPERTY));
+        addIgnoreUnusedAnalzyePlugin = Boolean.parseBoolean(
+                userProps.getProperty(
+                        DEPENDENCY_INJECTION_ANALYZE_PLUGIN_PROPERTY,
+                        "false"));
     }
 
     /**
@@ -92,24 +91,22 @@ public class DependencyInjectionState
      * @param value a comma separated list of dependencies to parse
      * @return a list of parsed Dependency instances.
      */
-    private static List<Dependency> parseDependencies( final String value )
-    {
-        return RefParseUtils.parseRefs( value, DependencyInjectionState::parseDependency );
+    private static List<Dependency> parseDependencies(final String value) {
+        return RefParseUtils.parseRefs(value, DependencyInjectionState::parseDependency);
     }
 
     private static Dependency parseDependency(String dependencySpec) {
-        final String[] parts = dependencySpec.split( ":" );
+        final String[] parts = dependencySpec.split(":");
         final Dependency d = new Dependency();
 
-        if ( parts.length < 3 )
-        {
+        if (parts.length < 3) {
             throw invalidRefException();
         }
 
         d.setGroupId(nullIfEmpty(parts[0]));
         d.setArtifactId(nullIfEmpty(parts[1]));
 
-        switch ( parts.length ) {
+        switch (parts.length) {
             case 3:
                 d.setVersion(nullIfEmpty(parts[2]));
                 break;
@@ -132,9 +129,8 @@ public class DependencyInjectionState
                 throw invalidRefException();
         }
 
-        if ( isEmpty( d.getGroupId() ) || isEmpty( d.getArtifactId() ) || isEmpty( d.getVersion() ) )
-        {
-            throw new InvalidRefException( "dependency groupId, artifactId, and version are required" );
+        if (isEmpty(d.getGroupId()) || isEmpty(d.getArtifactId()) || isEmpty(d.getVersion())) {
+            throw new InvalidRefException("dependency groupId, artifactId, and version are required");
         }
 
         return d;
@@ -145,11 +141,12 @@ public class DependencyInjectionState
     }
 
     static InvalidRefException invalidRefException() {
-        return new InvalidRefException( "dependency must be formatted as one of: "
-                + "groupId:artifactId:version, "
-                + "groupId:artifactId:type:version, "
-                + "groupId:artifactId:type:classifier:version, or"
-                + "groupId:artifactId:type:classifier:version:scope" );
+        return new InvalidRefException(
+                "dependency must be formatted as one of: "
+                        + "groupId:artifactId:version, "
+                        + "groupId:artifactId:type:version, "
+                        + "groupId:artifactId:type:classifier:version, or"
+                        + "groupId:artifactId:type:classifier:version:scope");
     }
 
     /**
@@ -158,8 +155,7 @@ public class DependencyInjectionState
      * @see State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return dependencyInjection != null && !dependencyInjection.isEmpty();
     }
 }

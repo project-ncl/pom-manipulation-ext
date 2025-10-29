@@ -15,38 +15,36 @@
  */
 package org.commonjava.maven.ext.core.state;
 
+import java.util.List;
+import java.util.Properties;
+
 import org.commonjava.atlas.maven.ident.ref.ProjectRef;
 import org.commonjava.maven.ext.annotation.ConfigValue;
 import org.commonjava.maven.ext.core.util.IdUtils;
-
-import java.util.List;
-import java.util.Properties;
 
 /**
  * Captures configuration relating to dependency removal from the POMs.
  */
 public class DependencyRemovalState
-    implements State
-{
+        implements State {
     /**
      * The name of the property which contains a comma separated list of dependencies to remove.
+     * 
      * <pre>
      * <code>-DdependencyRemoval=org.foo:bar,....</code>
      * </pre>
      */
-    @ConfigValue( docIndex = "dep-manip.html#dependency-removal")
+    @ConfigValue(docIndex = "dep-manip.html#dependency-removal")
     private static final String DEPENDENCY_REMOVAL_PROPERTY = "dependencyRemoval";
 
     private List<ProjectRef> dependencyRemoval;
 
-    public DependencyRemovalState(final Properties userProps)
-    {
-        initialise( userProps );
+    public DependencyRemovalState(final Properties userProps) {
+        initialise(userProps);
     }
 
-    public void initialise( Properties userProps )
-    {
-        dependencyRemoval = IdUtils.parseGAs( userProps.getProperty( DEPENDENCY_REMOVAL_PROPERTY ) );
+    public void initialise(Properties userProps) {
+        dependencyRemoval = IdUtils.parseGAs(userProps.getProperty(DEPENDENCY_REMOVAL_PROPERTY));
     }
 
     /**
@@ -55,16 +53,14 @@ public class DependencyRemovalState
      * @see State#isEnabled()
      */
     @Override
-    public boolean isEnabled()
-    {
+    public boolean isEnabled() {
         return dependencyRemoval != null && !dependencyRemoval.isEmpty();
     }
 
     /**
      * @return the dependencies we wish to remove.
      */
-    public List<ProjectRef> getDependencyRemoval()
-    {
+    public List<ProjectRef> getDependencyRemoval() {
         return dependencyRemoval;
     }
 }

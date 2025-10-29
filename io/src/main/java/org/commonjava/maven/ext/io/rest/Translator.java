@@ -15,17 +15,15 @@
  */
 package org.commonjava.maven.ext.io.rest;
 
-
-import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
-
 import java.util.List;
 import java.util.Map;
+
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 
 /**
  * @author vdedik@redhat.com
  */
-public interface Translator
-{
+public interface Translator {
     int CHUNK_SPLIT_COUNT = 4;
 
     int DEFAULT_CONNECTION_TIMEOUT_SEC = 30;
@@ -41,10 +39,11 @@ public interface Translator
      * @return Map of ProjectVersionRef objects as keys and translated versions as values
      * @throws RestException if an error occurs.
      */
-    Map<ProjectVersionRef, String> lookupVersions( List<ProjectVersionRef> projects ) throws RestException;
+    Map<ProjectVersionRef, String> lookupVersions(List<ProjectVersionRef> projects) throws RestException;
 
     /**
-     * Executes HTTP request to a REST service that translates versions. While similar to {@link Translator#lookupVersions(List)}
+     * Executes HTTP request to a REST service that translates versions. While similar to
+     * {@link Translator#lookupVersions(List)}
      * for this version, the DependencyAnalyser will ignore suffix priority and return the latest version for the
      * configured suffix mode. This is typically used for project version lookups.
      *
@@ -52,5 +51,5 @@ public interface Translator
      * @return Map of ProjectVersionRef objects as keys and translated versions as values
      * @throws RestException if an error occurs.
      */
-    Map<ProjectVersionRef, String>  lookupProjectVersions( List<ProjectVersionRef> projects ) throws RestException;
+    Map<ProjectVersionRef, String> lookupProjectVersions(List<ProjectVersionRef> projects) throws RestException;
 }

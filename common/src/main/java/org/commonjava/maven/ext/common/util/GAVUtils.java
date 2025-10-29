@@ -15,29 +15,29 @@
  */
 package org.commonjava.maven.ext.common.util;
 
-import lombok.experimental.UtilityClass;
-import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
-import org.jboss.da.model.rest.GAV;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
+import org.jboss.da.model.rest.GAV;
+
+import lombok.experimental.UtilityClass;
 
 /**
  * Commonly used manipulations from project profiles.
  */
 @UtilityClass
-public final class GAVUtils
-{
-    public static Set<GAV> generateGAVs( List<ProjectVersionRef> dep) {
+public final class GAVUtils {
+    public static Set<GAV> generateGAVs(List<ProjectVersionRef> dep) {
         Set<GAV> result = new HashSet<>();
 
-        dep.forEach( d -> result.add( generateGAVs( d ) ) );
+        dep.forEach(d -> result.add(generateGAVs(d)));
 
         return result;
     }
 
-    public static GAV generateGAVs( ProjectVersionRef dep) {
+    public static GAV generateGAVs(ProjectVersionRef dep) {
         return new GAV(dep.getGroupId(), dep.getArtifactId(), dep.getVersionString());
     }
 }

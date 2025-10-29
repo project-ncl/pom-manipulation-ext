@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.Profile;
@@ -32,13 +33,11 @@ import org.commonjava.maven.ext.core.state.PluginRemovalState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * {@link Manipulator} implementation that can remove specified plugins from a project's pom file.
  */
-public abstract class BasePluginRemovalManipulator
-{
-    protected final Logger logger = LoggerFactory.getLogger( getClass() );
+public abstract class BasePluginRemovalManipulator {
+    protected final Logger logger = LoggerFactory.getLogger(getClass());
 
     protected ManipulationSession session;
 
@@ -49,62 +48,50 @@ public abstract class BasePluginRemovalManipulator
      * @param state the state
      * @return the set of projects with changes
      */
-    protected Set<Project> applyChanges( final List<Project> projects, final PluginRemovalState state )
-    {
-        if ( !session.isEnabled() || !state.isEnabled() )
-        {
-            logger.debug( "{}: Nothing to do!", getClass().getSimpleName() );
+    protected Set<Project> applyChanges(final List<Project> projects, final PluginRemovalState state) {
+        if (!session.isEnabled() || !state.isEnabled()) {
+            logger.debug("{}: Nothing to do!", getClass().getSimpleName());
             return Collections.emptySet();
         }
 
         final Set<Project> changed = new HashSet<>();
 
-        for ( final Project project : projects )
-        {
+        for (final Project project : projects) {
             final Model model = project.getModel();
 
-            if ( apply( project, model, state ) )
-            {
-                changed.add( project );
+            if (apply(project, model, state)) {
+                changed.add(project);
             }
         }
 
         return changed;
     }
 
-    protected boolean apply( final Project project, final Model model, final PluginRemovalState state )
-    {
-        logger.debug( "Applying plugin changes to: {}:{}", project.getGroupId(), project.getArtifactId() );
+    protected boolean apply(final Project project, final Model model, final PluginRemovalState state) {
+        logger.debug("Applying plugin changes to: {}:{}", project.getGroupId(), project.getArtifactId());
 
         boolean result = false;
         List<ProjectRef> pluginsToRemove = state.getPluginRemoval();
-        if ( model.getBuild() != null )
-        {
-            result = scanPlugins( pluginsToRemove, model.getBuild().getPlugins() );
+        if (model.getBuild() != null) {
+            result = scanPlugins(pluginsToRemove, model.getBuild().getPlugins());
         }
 
-        for ( final Profile profile : ProfileUtils.getProfiles( session, model) )
-        {
-            if ( profile.getBuild() != null && scanPlugins( pluginsToRemove, profile.getBuild().getPlugins() ) )
-            {
+        for (final Profile profile : ProfileUtils.getProfiles(session, model)) {
+            if (profile.getBuild() != null && scanPlugins(pluginsToRemove, profile.getBuild().getPlugins())) {
                 result = true;
             }
         }
         return result;
     }
 
-    private boolean scanPlugins( List<ProjectRef> pluginsToRemove, List<Plugin> plugins )
-    {
+    private boolean scanPlugins(List<ProjectRef> pluginsToRemove, List<Plugin> plugins) {
         boolean result = false;
-        if ( plugins != null )
-        {
+        if (plugins != null) {
             Iterator<Plugin> it = plugins.iterator();
-            while ( it.hasNext() )
-            {
+            while (it.hasNext()) {
                 Plugin p = it.next();
-                if ( pluginsToRemove.contains( SimpleProjectRef.parse( p.getKey() ) ) )
-                {
-                    logger.debug( "Removing {}", p );
+                if (pluginsToRemove.contains(SimpleProjectRef.parse(p.getKey()))) {
+                    logger.debug("Removing {}", p);
                     it.remove();
                     result = true;
                 }

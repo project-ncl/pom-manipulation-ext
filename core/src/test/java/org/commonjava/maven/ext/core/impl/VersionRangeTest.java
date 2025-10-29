@@ -15,93 +15,87 @@
  */
 package org.commonjava.maven.ext.core.impl;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
+import static org.junit.Assert.assertFalse;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.maven.artifact.versioning.ArtifactVersion;
 import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.apache.maven.artifact.versioning.VersionRange;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.assertFalse;
-
-public class VersionRangeTest
-{
+public class VersionRangeTest {
     @Test
-    public void testRange1() throws Exception
-    {
+    public void testRange1() throws Exception {
         String range = "1.0.0.Final";
-        VersionRange s = VersionRange.createFromVersionSpec( range );
+        VersionRange s = VersionRange.createFromVersionSpec(range);
 
-        assertFalse( s.hasRestrictions() );
+        assertFalse(s.hasRestrictions());
 
         range = "[1.0.0.Final,)";
-        s = VersionRange.createFromVersionSpec( range );
-        assertTrue( s.hasRestrictions() );
+        s = VersionRange.createFromVersionSpec(range);
+        assertTrue(s.hasRestrictions());
     }
 
     @Test
-    public void testRange2() throws Exception
-    {
+    public void testRange2() throws Exception {
         List<ArtifactVersion> testList = new ArrayList<>();
-        ArtifactVersion av = new DefaultArtifactVersion( "1.9" );
-        testList.add( av );
-        av = new DefaultArtifactVersion( "1.0.1" );
-        testList.add( av );
-        av = new DefaultArtifactVersion( "1.10" );
-        testList.add( av );
+        ArtifactVersion av = new DefaultArtifactVersion("1.9");
+        testList.add(av);
+        av = new DefaultArtifactVersion("1.0.1");
+        testList.add(av);
+        av = new DefaultArtifactVersion("1.10");
+        testList.add(av);
 
         String range = "[1.0,1.10)";
-        VersionRange s = VersionRange.createFromVersionSpec( range );
+        VersionRange s = VersionRange.createFromVersionSpec(range);
 
-        assertTrue ( s.hasRestrictions() );
-        assertEquals( "1.9", s.matchVersion( testList ).toString() );
+        assertTrue(s.hasRestrictions());
+        assertEquals("1.9", s.matchVersion(testList).toString());
     }
 
     @Test
-    public void testRange3() throws Exception
-    {
+    public void testRange3() throws Exception {
         List<ArtifactVersion> testList = new ArrayList<>();
-        ArtifactVersion av = new DefaultArtifactVersion( "1.9" );
-        testList.add( av );
-        av = new DefaultArtifactVersion( "1.0.1" );
-        testList.add( av );
-        av = new DefaultArtifactVersion( "1.10.0.Final" );
-        testList.add( av );
+        ArtifactVersion av = new DefaultArtifactVersion("1.9");
+        testList.add(av);
+        av = new DefaultArtifactVersion("1.0.1");
+        testList.add(av);
+        av = new DefaultArtifactVersion("1.10.0.Final");
+        testList.add(av);
 
         String range = "[1.0,1.10)";
-        VersionRange s = VersionRange.createFromVersionSpec( range );
+        VersionRange s = VersionRange.createFromVersionSpec(range);
 
-        assertTrue ( s.hasRestrictions() );
-        assertEquals( "1.9", s.matchVersion( testList ).toString() );
+        assertTrue(s.hasRestrictions());
+        assertEquals("1.9", s.matchVersion(testList).toString());
     }
 
     @Test
-    public void testRange4() throws Exception
-    {
+    public void testRange4() throws Exception {
         List<ArtifactVersion> testList = new ArrayList<>();
-        ArtifactVersion av = new DefaultArtifactVersion( "1.9" );
-        testList.add( av );
-        av = new DefaultArtifactVersion( "1.0.1" );
-        testList.add( av );
-        av = new DefaultArtifactVersion( "1.10.0.Final" );
-        testList.add( av );
+        ArtifactVersion av = new DefaultArtifactVersion("1.9");
+        testList.add(av);
+        av = new DefaultArtifactVersion("1.0.1");
+        testList.add(av);
+        av = new DefaultArtifactVersion("1.10.0.Final");
+        testList.add(av);
 
         String range = "[1.0,)";
-        VersionRange s = VersionRange.createFromVersionSpec( range );
+        VersionRange s = VersionRange.createFromVersionSpec(range);
 
-        assertTrue ( s.hasRestrictions() );
-        assertEquals( "1.10.0.Final", s.matchVersion( testList ).toString() );
+        assertTrue(s.hasRestrictions());
+        assertEquals("1.10.0.Final", s.matchVersion(testList).toString());
     }
 
     @Test
-    public void testRange5() throws Exception
-    {
+    public void testRange5() throws Exception {
         String range = "(,1.0],[1.2,)";
-        VersionRange s = VersionRange.createFromVersionSpec( range );
+        VersionRange s = VersionRange.createFromVersionSpec(range);
 
-        assertTrue ( s.hasRestrictions() );
+        assertTrue(s.hasRestrictions());
     }
 }
