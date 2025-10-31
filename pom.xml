@@ -282,7 +282,7 @@
       <dependency>
         <groupId>com.redhat.resilience.otel</groupId>
         <artifactId>opentelemetry-ext-cli-java</artifactId>
-        <version>1.2.0</version>
+        <version>1.4.0</version>
       </dependency>
 
       <dependency>

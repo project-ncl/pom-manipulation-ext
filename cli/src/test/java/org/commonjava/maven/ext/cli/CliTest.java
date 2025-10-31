@@ -343,7 +343,7 @@ public class CliTest {
                                 + "com.konghq:unirest-java:3.[.\\d+]+\\s+                                          jar                                     compile             \n"
                                 + "com.konghq:unirest-objectmapper-jackson:3.[.\\d+]+\\s+                          jar                                     compile             \n"
                                 + "com.redhat.rcm:redhat-releng-tools:12\\s+                                       pom                                     compile             \n"
-                                + "com.redhat.resilience.otel:opentelemetry-ext-cli-java:1.2.0                     jar                                     compile             \n"
+                                + "com.redhat.resilience.otel:opentelemetry-ext-cli-java:1.[.\\d+]+\\s+            jar                                     compile             \n"
                                 + "com.soebes.maven.plugins:iterator-maven-plugin:0.[.\\d+]+\\s+                   maven-plugin                                                \n"
                                 + "com.squareup:javapoet:1.[.\\d+]+\\s+                                            jar                                     compile             \n"
                                 + "commons-codec:commons-codec:1.[.\\d+]+\\s+                                      jar                                     compile             \n"
