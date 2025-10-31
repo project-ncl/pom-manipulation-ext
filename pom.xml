@@ -83,7 +83,7 @@
 
     <groovyVersion>3.0.25</groovyVersion>
     <unirestVersion>3.14.2</unirestVersion>
-    <jsonPathVersion>2.9.0</jsonPathVersion>
+    <jsonPathVersion>2.10.0</jsonPathVersion>
     <slf4jVersion>2.0.17</slf4jVersion>
     <logbackVersion>1.5.20</logbackVersion>
     <docletVersion>1.1</docletVersion>
@@ -415,12 +415,6 @@
         <groupId>com.jayway.jsonpath</groupId>
         <artifactId>json-path</artifactId>
         <version>${jsonPathVersion}</version>
-      </dependency>
-      <!-- Manage the version of json-smart from json-path to avoid CVE -->
-      <dependency>
-        <groupId>net.minidev</groupId>
-        <artifactId>json-smart</artifactId>
-        <version>2.5.2</version>
       </dependency>
 
       <dependency>

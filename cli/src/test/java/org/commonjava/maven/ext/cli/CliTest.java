@@ -325,7 +325,7 @@ public class CliTest {
                 .replaceAll("org.commonjava.maven.ext:pom-manipulation-.*\\n", "");
         System.out.println(cliOutput);
 
-        assertTrue(cliOutput.contains("Found 86"));
+        assertTrue(cliOutput.contains("Found 85"));
         assertTrue(
                 cliOutput.matches(
                         "(?s).*"
@@ -352,7 +352,6 @@ public class CliTest {
                                 + "info.picocli:picocli:4.[.\\d+]+\\s+                                             jar                                     compile             \n"
                                 + "javax.inject:javax.inject:1                                                     jar                                     compile             \n"
                                 + "junit:junit:4[.\\d+]+\\s+                                                       jar                                     test                \n"
-                                + "net.minidev:json-smart:2.5.2                                                    jar                                     compile             \n"
                                 + "org.apache.commons:commons-lang3:3.[.\\d+]+\\s+                                 jar                                     compile             \n"
                                 + "org.apache.httpcomponents:httpclient:4.[.\\d+]+\\s+                             jar                                     compile             \n"
                                 + "org.apache.ivy:ivy:[.\\d+]+\\s+                                                 jar                                     compile             \n"

@@ -56,9 +56,8 @@ a HashMap of all properties ; this is used for validation input checking within 
 
 ## Style & Copyright
 
-Eclipse compatible `codestyle.xml` and `eclipse.importorder` files are supplied inside the `ide-config` directory which
-may also be imported into IntelliJ via the EclipseCodeFormatter. There is also an IntelliJ compatible copyright template
-suitable for use when the project is imported into IntelliJ.
+A built in spotless configuration using the format configurations from https://github.com/project-ncl/ide-config/ has been
+integrated.
 
 The `.idea` folder contains a copyright template suitable for use when the project is imported into IntelliJ.
 
