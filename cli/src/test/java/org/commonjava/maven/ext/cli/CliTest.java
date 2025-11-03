@@ -325,7 +325,7 @@ public class CliTest {
                 .replaceAll("org.commonjava.maven.ext:pom-manipulation-.*\\n", "");
         System.out.println(cliOutput);
 
-        assertTrue(cliOutput.contains("Found 85"));
+        assertTrue(cliOutput.contains("Found 84"));
         assertTrue(
                 cliOutput.matches(
                         "(?s).*"
@@ -348,7 +348,6 @@ public class CliTest {
                                 + "com.squareup:javapoet:1.[.\\d+]+\\s+                                            jar                                     compile             \n"
                                 + "commons-codec:commons-codec:1.[.\\d+]+\\s+                                      jar                                     compile             \n"
                                 + "commons-io:commons-io:[.\\d+]+\\s+                                              jar                                     compile             \n"
-                                + "commons-logging:commons-logging:1.2                                             jar                                     compile             \n"
                                 + "info.picocli:picocli:4.[.\\d+]+\\s+                                             jar                                     compile             \n"
                                 + "javax.inject:javax.inject:1                                                     jar                                     compile             \n"
                                 + "junit:junit:4[.\\d+]+\\s+                                                       jar                                     test                \n"
