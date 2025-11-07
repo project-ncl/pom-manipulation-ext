@@ -47,8 +47,7 @@ public class FileIOTest {
     public void before()
             throws Exception {
         File res = folder.newFolder();
-        GalleyInfrastructure galleyInfra = new GalleyInfrastructure(null, null).init(null, null, res);
-        fileIO = new FileIO(galleyInfra);
+        fileIO = new FileIO(res);
     }
 
     @Test

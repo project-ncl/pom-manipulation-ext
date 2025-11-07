@@ -48,7 +48,6 @@ import org.commonjava.maven.ext.core.impl.InitialGroovyManipulator;
 import org.commonjava.maven.ext.core.state.VersioningState;
 import org.commonjava.maven.ext.io.FileIO;
 import org.commonjava.maven.ext.io.PomIO;
-import org.commonjava.maven.ext.io.resolver.GalleyInfrastructure;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
@@ -128,7 +127,7 @@ public class BaseScriptTest {
                         .getParentFile(),
                 "pom.xml");
         PomIO pomIO = new PomIO();
-        FileIO fileIO = new FileIO(new GalleyInfrastructure(null, null).init(temporaryFolder.newFolder()));
+        FileIO fileIO = new FileIO(temporaryFolder.newFolder());
 
         List<Project> projects = pomIO.parseProject(projectroot);
         ManipulationSession ms = TestUtils.createSession(null, projectroot);
@@ -292,8 +291,7 @@ public class BaseScriptTest {
 
         final PlexusContainer container = new DefaultPlexusContainer(config);
         InitialGroovyManipulator gm = container.lookup(InitialGroovyManipulator.class);
-        FileIO fileIO = new FileIO(
-                new GalleyInfrastructure(session, null).init(null, null, temporaryFolder.newFolder("cache-dir")));
+        FileIO fileIO = new FileIO(temporaryFolder.newFolder("cache-dir"));
         // Update the groovy manipulator with fileIO with a temporary folder for the cache directory.
         FieldUtils.writeField(gm, "fileIO", fileIO, true);
 

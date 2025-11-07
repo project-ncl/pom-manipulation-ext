@@ -31,8 +31,8 @@ import javax.inject.Singleton;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.commonjava.maven.ext.common.ManipulationException;
+import org.commonjava.maven.ext.common.ManipulationUncheckedException;
 import org.commonjava.maven.ext.common.util.LineSeparator;
-import org.commonjava.maven.ext.io.resolver.GalleyInfrastructure;
 
 /**
  * Class to resolve Files from alternate locations
@@ -40,11 +40,21 @@ import org.commonjava.maven.ext.io.resolver.GalleyInfrastructure;
 @Named
 @Singleton
 public class FileIO {
-    private final GalleyInfrastructure infra;
+
+    private final File cacheDir;
 
     @Inject
-    public FileIO(@Named("galley") GalleyInfrastructure infra) {
-        this.infra = infra;
+    public FileIO() {
+        try {
+            cacheDir = Files.createTempDirectory("pme-cache-").toFile();
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> FileUtils.deleteQuietly(cacheDir)));
+        } catch (IOException e) {
+            throw new ManipulationUncheckedException(e);
+        }
+    }
+
+    public FileIO(File cacheDir) {
+        this.cacheDir = cacheDir;
     }
 
     /**
@@ -66,10 +76,7 @@ public class FileIO {
         }
         // If its a local file reference. just use the file itself rather than copying it.
         if (!"file".equals(ref.getProtocol())) {
-            File cache = infra.getCacheDir();
-
-            result = new File(cache, UUID.randomUUID().toString());
-
+            result = Files.createTempFile(cacheDir.toPath(), UUID.randomUUID().toString(), null).toFile();
             FileUtils.copyURLToFile(ref, result);
         } else {
             result = new File(ref.getPath());
