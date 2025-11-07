@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.commonjava.maven.ext</groupId>
+    <groupId>org.jboss.pnc.maven_manipulator</groupId>
     <artifactId>pom-manipulation-parent</artifactId>
     <version>4.23-SNAPSHOT</version>
   </parent>
@@ -31,15 +31,15 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
+      <groupId>org.jboss.pnc.maven_manipulator</groupId>
       <artifactId>pom-manipulation-annotation</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
+      <groupId>org.jboss.pnc.maven_manipulator</groupId>
       <artifactId>pom-manipulation-common</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
+      <groupId>org.jboss.pnc.maven_manipulator</groupId>
       <artifactId>pom-manipulation-io</artifactId>
     </dependency>
 
@@ -156,7 +156,7 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
+      <groupId>org.jboss.pnc.maven_manipulator</groupId>
       <artifactId>pom-manipulation-io</artifactId>
       <type>test-jar</type>
       <scope>test</scope>
@@ -227,12 +227,12 @@
         <configuration>
           <defaultOutputDirectory>${project.build.directory}/generated-sources</defaultOutputDirectory>
           <processors>
-            <processor>org.commonjava.maven.ext.annotation.ConfigValueProcessor</processor>
+            <processor>org.jboss.pnc.maven_manipulator.annotation.ConfigValueProcessor</processor>
           </processors>
           <optionMap>
             <rootDirectory>${session.executionRootDirectory}</rootDirectory>
             <generationDirectory>${project.build.directory}/generated-sources/</generationDirectory>
-            <packageName>org.commonjava.maven.ext.core</packageName>
+            <packageName>org.jboss.pnc.maven_manipulator.core</packageName>
           </optionMap>
           <additionalSourceDirectories>
             <additionalSourceDirectory>${project.basedir}/../common/src/main/java</additionalSourceDirectory>
@@ -241,7 +241,7 @@
         </configuration>
         <dependencies>
           <dependency>
-            <groupId>org.commonjava.maven.ext</groupId>
+            <groupId>org.jboss.pnc.maven_manipulator</groupId>
             <artifactId>pom-manipulation-annotation</artifactId>
             <version>4.23-SNAPSHOT</version>
             <classifier>processor</classifier>

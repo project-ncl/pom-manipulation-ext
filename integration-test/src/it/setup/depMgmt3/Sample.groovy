@@ -13,12 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.commonjava.maven.ext.depMgmt3
+package org.jboss.pnc.maven_manipulator.depMgmt3
 
-import org.commonjava.maven.ext.core.groovy.BaseScript
-import org.commonjava.maven.ext.core.groovy.InvocationStage
-import org.commonjava.maven.ext.core.groovy.PMEBaseScript
-import org.commonjava.maven.ext.core.groovy.InvocationPoint
+// TODO: TESTING - ensure both imports
+// import org.commonjava.maven.ext.core.groovy.BaseScript
+// import org.commonjava.maven.ext.core.groovy.InvocationPoint
+// import org.commonjava.maven.ext.core.groovy.InvocationStage
+// import org.commonjava.maven.ext.core.groovy.PMEBaseScript
+import org.jboss.pnc.maven_manipulator.core.groovy.BaseScript
+import org.jboss.pnc.maven_manipulator.core.groovy.InvocationStage
+import org.jboss.pnc.maven_manipulator.core.groovy.PMEBaseScript
+import org.jboss.pnc.maven_manipulator.core.groovy.InvocationPoint
 
 @InvocationPoint( invocationPoint = InvocationStage.ALL )
 @PMEBaseScript BaseScript pme

@@ -1,1 +1,1 @@
-org.commonjava.maven.ext.annotation.ConfigValueProcessor
+org.jboss.pnc.maven_manipulator.annotation.ConfigValueProcessor

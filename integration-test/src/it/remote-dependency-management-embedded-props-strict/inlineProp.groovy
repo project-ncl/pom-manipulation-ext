@@ -17,14 +17,14 @@
 // is not actually needed at runtime (as PME will automatically provide the dependencies) but
 // its useful during development as IntelliJ can then correctly locate the dependencies for
 // the project and provide completion assist.
-// @Grab('org.commonjava.maven.ext:pom-manipulation-core:${project.version}')
+// @Grab('org.jboss.pnc.maven_manipulator:pom-manipulation-core:${project.version}')
 // @Grab('org.commonjava.atlas.maven:atlas-identities:0.17.1')
 
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectRef
-import org.commonjava.maven.ext.core.groovy.BaseScript
-import org.commonjava.maven.ext.core.groovy.InvocationStage
-import org.commonjava.maven.ext.core.groovy.PMEBaseScript
-import org.commonjava.maven.ext.core.groovy.InvocationPoint
+import org.jboss.pnc.maven_manipulator.core.groovy.BaseScript
+import org.jboss.pnc.maven_manipulator.core.groovy.InvocationStage
+import org.jboss.pnc.maven_manipulator.core.groovy.PMEBaseScript
+import org.jboss.pnc.maven_manipulator.core.groovy.InvocationPoint
 
 @InvocationPoint(invocationPoint = InvocationStage.FIRST)
 @PMEBaseScript BaseScript pme

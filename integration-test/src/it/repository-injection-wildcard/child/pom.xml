@@ -20,12 +20,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.commonjava.maven.ext.integration-test</groupId>
+    <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
     <artifactId>repository-injection-wildcard</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.commonjava.maven.ext.wildcard</groupId>
+  <groupId>org.jboss.pnc.maven_manipulator.wildcard</groupId>
   <artifactId>repository-injection-child-child</artifactId>
   <packaging>pom</packaging>
 

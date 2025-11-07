@@ -28,7 +28,7 @@
       <relativePath></relativePath>
   </parent>
 
-  <groupId>org.commonjava.maven.ext.integration-test</groupId>
+  <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
   <artifactId>parent-child-profile-version</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>

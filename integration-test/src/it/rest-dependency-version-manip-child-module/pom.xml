@@ -27,7 +27,7 @@
     <version>37</version>
   </parent>
 
-  <groupId>org.commonjava.maven.ext.integration-test</groupId>
+  <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
   <artifactId>rest-dependency-version-manip-child-module</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -43,7 +43,7 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.commonjava.maven.ext.integration-test</groupId>
+        <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
         <artifactId>rest-dependency-version-manip-child-module-child</artifactId>
         <version>1.0.0-SNAPSHOT</version>
       </dependency>

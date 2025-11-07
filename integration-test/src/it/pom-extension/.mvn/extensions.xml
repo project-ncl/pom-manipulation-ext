@@ -18,7 +18,7 @@
 -->
 <extensions>
     <extension>
-        <groupId>org.commonjava.maven.ext</groupId>
+        <groupId>org.jboss.pnc.maven_manipulator</groupId>
         <artifactId>pom-manipulation-ext</artifactId>
         <version>${project.version}</version>
     </extension>

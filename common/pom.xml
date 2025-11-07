@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.commonjava.maven.ext</groupId>
+    <groupId>org.jboss.pnc.maven_manipulator</groupId>
     <artifactId>pom-manipulation-parent</artifactId>
     <version>4.23-SNAPSHOT</version>
   </parent>
@@ -32,7 +32,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
+      <groupId>org.jboss.pnc.maven_manipulator</groupId>
       <artifactId>pom-manipulation-annotation</artifactId>
     </dependency>
 
@@ -158,7 +158,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <excludePackageNames>org.commonjava.maven.ext.common.jdom</excludePackageNames>
+          <excludePackageNames>org.jboss.pnc.maven_manipulator.common.jdom</excludePackageNames>
           <!-- Remove once https://github.com/rzwitserloot/lombok/issues/1520 is fixed as the getter/setter
                in the json package causes issues -->
           <doclint>none</doclint>

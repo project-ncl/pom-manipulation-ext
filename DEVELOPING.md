@@ -50,7 +50,7 @@ Any configuration property value **must** have a static String together with the
     public static final String VERSION_SUFFIX_SYSPROP= "versionSuffix";
 ```
 The `docIndex` value represents the property index for the gh-pages. This is automatically generated upon build inside
-`root/target/property-index-subset.md`. A new class `org.commonjava.maven.ext.core.ConfigList` is also generated that contains
+`root/target/property-index-subset.md`. A new class `org.jboss.pnc.maven_manipulator.core.ConfigList` is also generated that contains
 a HashMap of all properties ; this is used for validation input checking within the CLI /  EXT.
 
 

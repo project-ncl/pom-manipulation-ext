@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.commonjava.maven.ext</groupId>
+    <groupId>org.jboss.pnc.maven_manipulator</groupId>
     <artifactId>pom-manipulation-parent</artifactId>
     <version>4.23-SNAPSHOT</version>
   </parent>
@@ -33,27 +33,27 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
+      <groupId>org.jboss.pnc.maven_manipulator</groupId>
       <artifactId>pom-manipulation-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
+      <groupId>org.jboss.pnc.maven_manipulator</groupId>
       <artifactId>pom-manipulation-common</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
+      <groupId>org.jboss.pnc.maven_manipulator</groupId>
       <artifactId>pom-manipulation-io</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
+      <groupId>org.jboss.pnc.maven_manipulator</groupId>
       <artifactId>pom-manipulation-cli</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
+      <groupId>org.jboss.pnc.maven_manipulator</groupId>
       <artifactId>pom-manipulation-ext</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
+      <groupId>org.jboss.pnc.maven_manipulator</groupId>
       <artifactId>pom-manipulation-integration-test</artifactId>
     </dependency>
   </dependencies>
@@ -82,8 +82,8 @@
           <title>PME JaCoCo</title>
           <footer>Code Coverage Report for PME ${project.version}</footer>
           <excludes>
-            <exclude>org/commonjava/maven/ext/integrationtest/invoker/**/*.class</exclude>
-            <exclude>org/commonjava/maven/ext/integrationtest/TestUtils*.class</exclude>
+            <exclude>org.jboss.pnc.maven_manipulator/integrationtest/invoker/**/*.class</exclude>
+            <exclude>org.jboss.pnc.maven_manipulator/integrationtest/TestUtils*.class</exclude>
           </excludes>
         </configuration>
         <executions>

@@ -27,7 +27,7 @@
     <version>8</version>
   </parent>
 
-  <groupId>org.commonjava.maven.ext.integration-test</groupId>
+  <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
   <artifactId>basic-dependency-parent</artifactId>
   <version>1.0-SNAPSHOT</version>
 

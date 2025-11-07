@@ -22,12 +22,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.commonjava.maven.ext.integration-test</groupId>
+    <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
     <artifactId>child-module-dependency-override-exclusion-wildcard-groupid</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.commonjava.maven.ext.dependency-override-exclusion</groupId>
+  <groupId>org.jboss.pnc.maven_manipulator.dependency-override-exclusion</groupId>
   <artifactId>child-module-dependency-override-child-exclusion-wildcard-groupid</artifactId>
 
   <name>Test override dependency version using command line property with remote pom</name>

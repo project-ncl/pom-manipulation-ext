@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.commonjava.maven.ext.depMgmt2
+package org.jboss.pnc.maven_manipulator.depMgmt2
 
 import groovy.util.logging.Slf4j
-import org.commonjava.maven.ext.common.model.Project
-import org.commonjava.maven.ext.core.groovy.BaseScript
-import org.commonjava.maven.ext.core.groovy.InvocationStage
-import org.commonjava.maven.ext.core.groovy.PMEBaseScript
-import org.commonjava.maven.ext.core.groovy.InvocationPoint
+import org.jboss.pnc.maven_manipulator.common.model.Project
+import org.jboss.pnc.maven_manipulator.core.groovy.BaseScript
+import org.jboss.pnc.maven_manipulator.core.groovy.InvocationStage
+import org.jboss.pnc.maven_manipulator.core.groovy.PMEBaseScript
+import org.jboss.pnc.maven_manipulator.core.groovy.InvocationPoint
 
 @InvocationPoint(invocationPoint = InvocationStage.FIRST)
 @PMEBaseScript BaseScript pme

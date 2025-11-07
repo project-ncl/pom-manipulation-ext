@@ -65,7 +65,7 @@ def buildLog = new File( basedir, 'build.log' )
 def executionRoot = false
 def inheritanceRoot = false
 buildLog.eachLine {
-   if (it.contains( "Setting execution root to org.commonjava.maven.ext.integration-test:simple-numeric-directory-path:")) {
+   if (it.contains( "Setting execution root to org.jboss.pnc.maven_manipulator.integration-test:simple-numeric-directory-path:")) {
       executionRoot = true
    }
    if (it.contains( "and is the inheritance root")) {

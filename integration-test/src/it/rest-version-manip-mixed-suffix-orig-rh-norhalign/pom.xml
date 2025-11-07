@@ -21,7 +21,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.commonjava.maven.ext.integration-test</groupId>
+  <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
   <artifactId>rest-version-manip-mixed-suffix-orig-rh-norhalign</artifactId>
   <version>1.0.0.redhat-2</version>
   <packaging>pom</packaging>

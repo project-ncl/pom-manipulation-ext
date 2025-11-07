@@ -30,7 +30,7 @@ assert !jsonString.contains ("resolved:")
 def buildLog = new File( basedir, 'build.log' )
 def message = 0
 buildLog.eachLine {
-   if (it.contains( "groovyScripts org.commonjava.maven.ext.integration-test:depMgmt1:groovy:1.0")) {
+   if (it.contains( "groovyScripts org.jboss.pnc.maven_manipulator.integration-test:depMgmt1:groovy:1.0")) {
       message++
    }
 }

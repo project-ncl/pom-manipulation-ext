@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.commonjava.maven.ext</groupId>
+    <groupId>org.jboss.pnc.maven_manipulator</groupId>
     <artifactId>pom-manipulation-parent</artifactId>
     <version>4.23-SNAPSHOT</version>
   </parent>
@@ -32,7 +32,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
+      <groupId>org.jboss.pnc.maven_manipulator</groupId>
       <artifactId>pom-manipulation-common</artifactId>
     </dependency>
 
