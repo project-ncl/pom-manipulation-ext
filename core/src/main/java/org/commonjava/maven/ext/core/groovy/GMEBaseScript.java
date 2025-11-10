@@ -34,7 +34,7 @@ import org.jboss.pnc.maven_manipulator.core.groovy.GradleBaseScript;
         ElementType.LOCAL_VARIABLE,
         ElementType.PACKAGE,
         ElementType.TYPE })
-@GroovyASTTransformationClass("groovy.org.jboss.pnc.maven_manipulator.core.ASTTransformer")
+@GroovyASTTransformationClass("org.jboss.pnc.maven_manipulator.core.groovy.ASTTransformer")
 
 public @interface GMEBaseScript {
     Class value() default GradleBaseScript.class;
