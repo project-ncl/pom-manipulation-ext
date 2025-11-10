@@ -237,27 +237,28 @@
             <configuration>
               <artifactSet>
                 <includes>
-                  <include>org.commonjava.*:*</include>
                   <include>com.fasterxml.jackson.core:*</include>
+                  <include>com.google.code.gson:gson</include>
                   <include>com.jayway.jsonpath:json-path</include>
                   <include>com.konghq:unirest-java</include>
                   <include>com.konghq:unirest-objectmapper-jackson</include>
-                  <include>com.google.code.gson:gson</include>
                   <include>com.redhat.resilience.otel:opentelemetry-ext-cli-java</include>
                   <include>commons-codec:commons-codec</include>
                   <include>commons-io:commons-io</include>
                   <include>commons-jxpath:commons-jxpath</include>
-                  <include>org.apache.commons:commons-lang3</include>
                   <include>commons-logging:commons-logging</include>
                   <include>io.opentelemetry:*</include>
                   <include>net.minidev:*</include>
+                  <include>org.apache.commons:commons-lang3</include>
                   <include>org.apache.httpcomponents:*</include>
                   <include>org.apache.ivy:*</include>
                   <include>org.apache.maven.release:*</include>
                   <include>org.codehaus.groovy:groovy-json</include>
                   <include>org.codehaus.groovy:groovy-xml</include>
                   <include>org.codehaus.groovy:groovy</include>
+                  <include>org.commonjava.*:*</include>
                   <include>org.jboss.da:reports-model</include>
+                  <include>org.jboss.pnc.maven_manipulator.*:*</include>
                   <include>org.jdom:jdom2</include>
                   <include>org.ow2.asm:asm</include>
                   <include>org.yaml:snakeyaml</include>
