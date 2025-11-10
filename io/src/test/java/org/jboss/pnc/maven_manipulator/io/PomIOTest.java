@@ -95,7 +95,7 @@ public class PomIOTest {
 
         List<Project> projects = pomIO.parseProject(targetFile);
         Model model = projects.get(0).getModel();
-        model.setGroupId("org.jboss.pnc.maven_manipulator.versioning.test");
+        model.setGroupId("org.jboss.pnc.maven-manipulator.versioning.test");
         model.setArtifactId("dospom");
         model.setVersion("1.0");
         model.setPackaging("pom");
@@ -143,7 +143,7 @@ public class PomIOTest {
                 + "<project xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd\" xmlns=\"http://maven.apache.org/POM/4.0.0\"\n"
                 + "    xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\">\n"
                 + "  <modelVersion>4.0.0</modelVersion>\n"
-                + "  <groupId>org.jboss.pnc.maven_manipulator.versioning.test</groupId>\n"
+                + "  <groupId>org.jboss.pnc.maven-manipulator.versioning.test</groupId>\n"
                 + "  <artifactId>dospom</artifactId>\n" + "  <version>1.0</version>\n"
                 + "  <packaging>pom</packaging>\n" + "</project>\n";
 
@@ -155,7 +155,7 @@ public class PomIOTest {
         File targetFile = folder.newFile("target.xml");
 
         Model model = new Model();
-        model.setGroupId("org.jboss.pnc.maven_manipulator.versioning.test");
+        model.setGroupId("org.jboss.pnc.maven-manipulator.versioning.test");
         model.setArtifactId("dospom");
         model.setVersion("1.0");
         model.setPackaging("pom");

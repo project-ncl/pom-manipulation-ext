@@ -120,7 +120,7 @@ public class ResultJsonFileTest {
         assertNotNull(artifactId);
         assertNotNull(version);
 
-        assertEquals("org.jboss.pnc.maven_manipulator.versioning.test", groupId.textValue());
+        assertEquals("org.jboss.pnc.maven-manipulator.versioning.test", groupId.textValue());
         assertEquals("project-version", artifactId.textValue());
         assertEquals("1.0.0.redhat-2", version.textValue());
     }
@@ -169,7 +169,7 @@ public class ResultJsonFileTest {
         assertNotNull(artifactId);
         assertNotNull(version);
 
-        assertEquals("org.jboss.pnc.maven_manipulator.versioning.test", groupId.textValue());
+        assertEquals("org.jboss.pnc.maven-manipulator.versioning.test", groupId.textValue());
         assertEquals("project-version", artifactId.textValue());
         assertEquals("1.0.0.redhat-2", version.textValue());
     }
@@ -213,7 +213,7 @@ public class ResultJsonFileTest {
         assertNotNull(artifactId);
         assertNotNull(version);
 
-        assertEquals("org.jboss.pnc.maven_manipulator.versioning.test", groupId.textValue());
+        assertEquals("org.jboss.pnc.maven-manipulator.versioning.test", groupId.textValue());
         assertEquals("project-version", artifactId.textValue());
         assertEquals("1.0", version.textValue());
     }
@@ -267,7 +267,7 @@ public class ResultJsonFileTest {
         assertNotNull(artifactId);
         assertNotNull(version);
 
-        assertEquals("org.jboss.pnc.maven_manipulator.versioning.test", groupId.textValue());
+        assertEquals("org.jboss.pnc.maven-manipulator.versioning.test", groupId.textValue());
         assertEquals("project-version", artifactId.textValue());
         assertEquals("1.0.0.redhat-2", version.textValue());
     }

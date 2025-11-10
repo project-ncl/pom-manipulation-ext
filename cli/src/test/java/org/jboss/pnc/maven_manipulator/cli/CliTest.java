@@ -322,7 +322,7 @@ public class CliTest {
 
         // Strip out PME itself otherwise it causes issues on releasing a new version.
         String cliOutput = systemOutRule.getLogWithNormalizedLineSeparator()
-                .replaceAll("org.jboss.pnc.maven_manipulator:pom-manipulation-.*\\n", "");
+                .replaceAll("org.jboss.pnc.maven-manipulator:pom-manipulation-.*\\n", "");
         System.out.println(cliOutput);
 
         assertTrue(cliOutput.contains("Found 84"));

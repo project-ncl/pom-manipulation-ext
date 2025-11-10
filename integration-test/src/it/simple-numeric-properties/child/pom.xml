@@ -20,26 +20,26 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-      <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
+      <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
       <artifactId>simple-numeric-properties</artifactId>
       <version>1.0</version>
       <relativePath>../</relativePath>
   </parent>
   <version>${version.sal}</version>
 
-  <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
+  <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
   <artifactId>simple-numeric-properties-child</artifactId>
   <packaging>pom</packaging>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
+        <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
         <artifactId>simple-numeric-properties-child</artifactId>
         <version>\${project.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
+        <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
         <artifactId>simple-numeric-properties</artifactId>
         <version>1.0</version>
       </dependency>

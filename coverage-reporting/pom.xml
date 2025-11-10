@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.jboss.pnc.maven_manipulator</groupId>
+    <groupId>org.jboss.pnc.maven-manipulator</groupId>
     <artifactId>pom-manipulation-parent</artifactId>
     <version>4.23-SNAPSHOT</version>
   </parent>
@@ -33,27 +33,27 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.jboss.pnc.maven_manipulator</groupId>
+      <groupId>org.jboss.pnc.maven-manipulator</groupId>
       <artifactId>pom-manipulation-core</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jboss.pnc.maven_manipulator</groupId>
+      <groupId>org.jboss.pnc.maven-manipulator</groupId>
       <artifactId>pom-manipulation-common</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jboss.pnc.maven_manipulator</groupId>
+      <groupId>org.jboss.pnc.maven-manipulator</groupId>
       <artifactId>pom-manipulation-io</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jboss.pnc.maven_manipulator</groupId>
+      <groupId>org.jboss.pnc.maven-manipulator</groupId>
       <artifactId>pom-manipulation-cli</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jboss.pnc.maven_manipulator</groupId>
+      <groupId>org.jboss.pnc.maven-manipulator</groupId>
       <artifactId>pom-manipulation-ext</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.jboss.pnc.maven_manipulator</groupId>
+      <groupId>org.jboss.pnc.maven-manipulator</groupId>
       <artifactId>pom-manipulation-integration-test</artifactId>
     </dependency>
   </dependencies>

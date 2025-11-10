@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
+    <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
     <artifactId>parent-children-interdep-parent</artifactId>
     <version>1.0.redhat-1</version>
   </parent>
@@ -29,7 +29,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
+      <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
       <artifactId>parent-children-interdep-child1</artifactId>
     </dependency>
   </dependencies>

@@ -21,7 +21,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
+  <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
   <artifactId>profile-injection-basic-multiple</artifactId>
   <version>1.0-SNAPSHOT</version>
 

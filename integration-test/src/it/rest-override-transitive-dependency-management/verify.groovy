@@ -19,13 +19,13 @@ println "Slurping POM: ${pomFile.getAbsolutePath()}"
 final def pom = new XmlSlurper().parse( pomFile )
 
 final def dependencyManagement = pom.dependencyManagement.dependencies.dependency
-print 'Verifying that org.jboss.pnc.maven_manipulator.integration-test:parent-children-interdep-child1 is still there and has updated version: '
-final def dependency1 = dependencyManagement.find { it.groupId.text() == 'org.jboss.pnc.maven_manipulator.integration-test' && it.artifactId.text() == 'parent-children-interdep-child1' && it.version.text() == '1.0.0.redhat-00002' }
+print 'Verifying that org.jboss.pnc.maven-manipulator.integration-test:parent-children-interdep-child1 is still there and has updated version: '
+final def dependency1 = dependencyManagement.find { it.groupId.text() == 'org.jboss.pnc.maven-manipulator.integration-test' && it.artifactId.text() == 'parent-children-interdep-child1' && it.version.text() == '1.0.0.redhat-00002' }
 println dependency1
 assert dependency1 != null
 
-print 'Verifying that org.jboss.pnc.maven_manipulator.integration-test:parent-children-interdep-child1 is still there and has updated version: '
-final def dependency2 = dependencyManagement.find { it.groupId.text() == 'org.jboss.pnc.maven_manipulator.integration-test' && it.artifactId.text() == 'parent-children-interdep-child2' && it.version.text() == '1.0.0.redhat-00002' }
+print 'Verifying that org.jboss.pnc.maven-manipulator.integration-test:parent-children-interdep-child1 is still there and has updated version: '
+final def dependency2 = dependencyManagement.find { it.groupId.text() == 'org.jboss.pnc.maven-manipulator.integration-test' && it.artifactId.text() == 'parent-children-interdep-child2' && it.version.text() == '1.0.0.redhat-00002' }
 println dependency2
 assert dependency2 != null
 

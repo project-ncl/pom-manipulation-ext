@@ -20,13 +20,13 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-      <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
+      <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
       <artifactId>simple-numeric-directory-path-inverse</artifactId>
       <version>1.0</version>
       <relativePath>parent/pom.xml</relativePath>
   </parent>
 
-  <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
+  <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
   <artifactId>simple-numeric-directory-path-child-inverse</artifactId>
   <packaging>pom</packaging>
 

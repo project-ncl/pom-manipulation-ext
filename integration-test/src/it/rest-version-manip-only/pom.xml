@@ -22,12 +22,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-      <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
+      <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
       <artifactId>simpleParent</artifactId>
       <version>1.0</version>
   </parent>
 
-  <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
+  <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
   <artifactId>rest-version-manip-only</artifactId>
   <version>2.7.2_3-fuse-SNAPSHOT</version>
   <packaging>pom</packaging>

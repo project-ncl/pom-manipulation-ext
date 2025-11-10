@@ -20,7 +20,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
+    <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
     <artifactId>depex-wildcard</artifactId>
     <version>1.0</version>
   </parent>

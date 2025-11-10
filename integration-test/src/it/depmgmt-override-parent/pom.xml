@@ -27,7 +27,7 @@
     <version>9999</version>
   </parent>
 
-  <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
+  <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
   <artifactId>depmgmt-override-parent</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>

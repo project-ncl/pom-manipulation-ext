@@ -47,7 +47,7 @@ assert v.endsWith( '.redhat-1' )
 def buildLog = new File( basedir, 'build.log' )
 def executionRoot = false
 buildLog.eachLine {
-   if (it.contains( "Setting execution root to org.jboss.pnc.maven_manipulator.integration-test:simple-numeric-directory-path-child-inverse:1.")) {
+   if (it.contains( "Setting execution root to org.jboss.pnc.maven-manipulator.integration-test:simple-numeric-directory-path-child-inverse:1.")) {
       executionRoot = true
    }
 }

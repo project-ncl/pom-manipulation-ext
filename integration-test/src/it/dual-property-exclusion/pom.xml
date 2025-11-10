@@ -27,7 +27,7 @@
     <version>8.0.0.Final</version>
   </parent>
 
-  <groupId>org.jboss.pnc.maven_manipulator.integration-test</groupId>
+  <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
   <artifactId>dual-property-exclusion</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
