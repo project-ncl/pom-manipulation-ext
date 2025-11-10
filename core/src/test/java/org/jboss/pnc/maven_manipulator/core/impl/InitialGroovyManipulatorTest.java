@@ -48,8 +48,18 @@ public class InitialGroovyManipulatorTest {
     public TemporaryFolder tf = new TemporaryFolder();
 
     @Test
+    public void shouldRemoveProjectInLegacyGroovyScript() throws Exception {
+        final File groovy = TestUtils.resolveFileResource("groovy-project-removal", "legacy-manipulation.groovy");
+        common(groovy);
+    }
+
+    @Test
     public void shouldRemoveProjectInGroovyScript() throws Exception {
         final File groovy = TestUtils.resolveFileResource("groovy-project-removal", "manipulation.groovy");
+        common(groovy);
+    }
+
+    protected void common(File groovy) throws Exception {
         final File base = TestUtils.resolveFileResource("groovy-project-removal", "");
         final File root = tf.newFolder();
         FileUtils.copyDirectory(base, root);

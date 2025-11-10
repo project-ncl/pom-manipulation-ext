@@ -47,7 +47,6 @@ import org.jboss.pnc.maven_manipulator.common.ManipulationUncheckedException;
  * extends {@link BaseScript}.
  * This class performs the same transformations as {@link org.codehaus.groovy.transform.BaseScriptASTTransformation},
  * and in addition moves the custom annotations to the generated script class.
- *
  * This uses code from
  * <a href=
  * "https://github.com/groovy/groovy-core/blob/master/src/main/org/codehaus/groovy/transform/BaseScriptASTTransformation.java">BaseScriptASTTransformation</a>
@@ -63,6 +62,14 @@ public class ASTTransformer extends AbstractASTTransformation {
     private static final ClassNode GRADLE_TYPE = ClassHelper.make(GMEBaseScript.class);
     private static final ClassNode SBT_TYPE = ClassHelper.make(SMEGBaseScript.class);
     private static final ClassNode COMMAND_TYPE = ClassHelper.make(InvocationPoint.class);
+    private static final ClassNode LEGACY_MAVEN_TYPE = ClassHelper
+            .make(org.commonjava.maven.ext.core.groovy.PMEBaseScript.class);
+    private static final ClassNode LEGACY_GRADLE_TYPE = ClassHelper
+            .make(org.commonjava.maven.ext.core.groovy.GMEBaseScript.class);
+    private static final ClassNode LEGACY_SBT_TYPE = ClassHelper
+            .make(org.commonjava.maven.ext.core.groovy.SMEGBaseScript.class);
+    private static final ClassNode LEGACY_COMMAND_TYPE = ClassHelper
+            .make(org.commonjava.maven.ext.core.groovy.InvocationPoint.class);
     private static final ClassNode MAVEN_BASE_SCRIPT_TYPE = ClassHelper.make(BaseScript.class);
     private static final String MAVEN_TYPE_NAME = "@" + MAVEN_TYPE.getNameWithoutPackage();
     private static final ClassNode GRADLE_BASE_SCRIPT_TYPE = ClassHelper.make(GradleBaseScript.class);
@@ -84,12 +91,21 @@ public class ASTTransformer extends AbstractASTTransformation {
         AnnotationNode node = (AnnotationNode) nodes[0];
         if (MAVEN_TYPE.equals(node.getClassNode())
                 || GRADLE_TYPE.equals(node.getClassNode())
-                || SBT_TYPE.equals(node.getClassNode())) {
+                || SBT_TYPE.equals(node.getClassNode())
+                || LEGACY_MAVEN_TYPE.equals(node.getClassNode())
+                || LEGACY_GRADLE_TYPE.equals(node.getClassNode())
+                || LEGACY_SBT_TYPE.equals(node.getClassNode())) {
             if (MAVEN_TYPE.equals(node.getClassNode())) {
                 type = Type.MAVEN;
             } else if (GRADLE_TYPE.equals(node.getClassNode())) {
                 type = Type.GRADLE;
             } else if (SBT_TYPE.equals(node.getClassNode())) {
+                type = Type.SBT;
+            } else if (LEGACY_MAVEN_TYPE.equals(node.getClassNode())) {
+                type = Type.MAVEN;
+            } else if (LEGACY_GRADLE_TYPE.equals(node.getClassNode())) {
+                type = Type.GRADLE;
+            } else if (LEGACY_SBT_TYPE.equals(node.getClassNode())) {
                 type = Type.SBT;
             }
 
@@ -204,7 +220,10 @@ public class ASTTransformer extends AbstractASTTransformation {
 
         List<AnnotationNode> annotations = parent.getAnnotations(COMMAND_TYPE);
         if (cNode.getAnnotations(COMMAND_TYPE).isEmpty()) { // #388 prevent "Duplicate annotation for class" AnnotationFormatError
-
+            cNode.addAnnotations(annotations);
+        }
+        annotations = parent.getAnnotations(LEGACY_COMMAND_TYPE);
+        if (cNode.getAnnotations(LEGACY_COMMAND_TYPE).isEmpty()) { // #388 prevent "Duplicate annotation for class" AnnotationFormatError
             cNode.addAnnotations(annotations);
         }
 

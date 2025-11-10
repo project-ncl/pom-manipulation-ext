@@ -116,7 +116,7 @@ public abstract class BaseGroovyManipulator {
     void applyGroovyScript(List<Project> projects, Project project, File groovyScript) throws ManipulationException {
         final GroovyShell shell = new GroovyShell();
         final Script script;
-        final InvocationStage stage;
+        InvocationStage stage;
 
         try {
             script = shell.parse(groovyScript);
@@ -127,6 +127,15 @@ public abstract class BaseGroovyManipulator {
                 stage = invocationPoint.invocationPoint();
             } else {
                 stage = null;
+            }
+            if (stage == null) {
+                org.commonjava.maven.ext.core.groovy.InvocationPoint legacyInvocationPoint = script.getClass()
+                        .getAnnotation(org.commonjava.maven.ext.core.groovy.InvocationPoint.class);
+                if (legacyInvocationPoint != null) {
+                    logger.warn("Found legacy InvocationPoint {}", legacyInvocationPoint.invocationPoint());
+                    // While they are the 'same' values they are different classes.
+                    stage = InvocationStage.valueOf(legacyInvocationPoint.invocationPoint().getStageValue());
+                }
             }
             if (stage == null) {
                 throw new ManipulationException(

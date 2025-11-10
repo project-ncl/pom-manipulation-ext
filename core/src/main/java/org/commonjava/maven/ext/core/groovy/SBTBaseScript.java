@@ -13,13 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.pnc.maven_manipulator.core.groovy;
+package org.commonjava.maven.ext.core.groovy;
 
-import groovy.lang.Script;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Common API for developers wishing to implement groovy scripts for SBT.
  */
-public abstract class SBTBaseScript
-        extends Script implements CommonBaseScript {
+@Slf4j
+public abstract class SBTBaseScript extends org.jboss.pnc.maven_manipulator.core.groovy.SBTBaseScript {
+    {
+        log.warn("Deprecated Groovy API - switch to importing org.jboss.pnc.maven_manipulator");
+    }
 }

@@ -13,13 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.pnc.maven_manipulator.core.groovy;
+package org.commonjava.maven.ext.core.groovy;
 
-import groovy.lang.Script;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Common API for developers wishing to implement groovy scripts for SBT.
+ * Annotation to denote when the groovy script should be invoked.
+ * <p>
+ * </p>
+ * Effectively the same as {@link org.jboss.pnc.maven_manipulator.core.groovy.InvocationPoint}
  */
-public abstract class SBTBaseScript
-        extends Script implements CommonBaseScript {
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.LOCAL_VARIABLE, ElementType.TYPE })
+public @interface InvocationPoint {
+    InvocationStage invocationPoint();
 }
