@@ -31,89 +31,9 @@
   <name>POM Manipulation Extension for Maven Coverage Module</name>
   <description>Aggregate reporting module</description>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
-      <artifactId>pom-manipulation-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
-      <artifactId>pom-manipulation-common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
-      <artifactId>pom-manipulation-io</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
-      <artifactId>pom-manipulation-cli</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
-      <artifactId>pom-manipulation-ext</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.commonjava.maven.ext</groupId>
-      <artifactId>pom-manipulation-integration-test</artifactId>
-    </dependency>
-  </dependencies>
-
-  <build>
-    <plugins>
-      <!-- This module doesn't need to be installed or deployed -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-install-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <configuration>
-          <title>PME JaCoCo</title>
-          <footer>Code Coverage Report for PME ${project.version}</footer>
-          <excludes>
-            <exclude>org/commonjava/maven/ext/integrationtest/invoker/**/*.class</exclude>
-            <exclude>org/commonjava/maven/ext/integrationtest/TestUtils*.class</exclude>
-          </excludes>
-        </configuration>
-        <executions>
-          <execution>
-            <id>jacoco-merge</id>
-            <goals>
-              <goal>merge</goal>
-            </goals>
-            <phase>verify</phase>
-            <configuration>
-              <destFile>${project.build.directory}/jacoco.exec</destFile>
-              <fileSets>
-                <fileSet>
-                  <directory>${project.basedir}</directory>
-                  <includes>
-                    <include>**/*.exec</include>
-                  </includes>
-                </fileSet>
-              </fileSets>
-            </configuration>
-          </execution>
-          <execution>
-            <id>jacoco-report-aggregate</id>
-            <goals>
-              <goal>report-aggregate</goal>
-            </goals>
-            <phase>verify</phase>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+  <distributionManagement>
+    <relocation>
+      <groupId>org.jboss.pnc.maven-manipulator</groupId>
+    </relocation>
+  </distributionManagement>
 </project>
