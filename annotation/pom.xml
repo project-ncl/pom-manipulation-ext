@@ -26,82 +26,15 @@
   </parent>
 
   <artifactId>pom-manipulation-annotation</artifactId>
+  <packaging>pom</packaging>
 
   <name>POM Manipulation Extension for Maven Annotation Processor</name>
   <description>Contains config annotation and processor</description>
 
-  <dependencies>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.squareup</groupId>
-      <artifactId>javapoet</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.github.olivergondza</groupId>
-      <artifactId>maven-jdk-tools-wrapper</artifactId>
-    </dependency>
-  </dependencies>
+  <distributionManagement>
+    <relocation>
+      <groupId>org.jboss.pnc.maven-manipulator</groupId>
+    </relocation>
+  </distributionManagement>
 
-  <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>default-jar</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <excludes>
-                <exclude>**/ConfigValueProcessor*</exclude>
-                <exclude>**/javax.annotation.processing.Processor</exclude>
-              </excludes>
-            </configuration>
-          </execution>
-          <execution>
-            <id>processor</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <classifier>processor</classifier>
-              <includes>
-                <include>**/ConfigValueProcessor*</include>
-                <include>**/javax.annotation.processing.Processor</include>
-              </includes>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <compilerArgument>-proc:none</compilerArgument>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-javadocs</id>
-            <!-- Standard configuration uses a custom doclet so revert all config to standard -->
-            <configuration combine.self="override">
-              <source>8</source>
-              <quiet>true</quiet>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 </project>
