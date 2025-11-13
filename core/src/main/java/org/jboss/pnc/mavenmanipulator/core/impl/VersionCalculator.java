@@ -34,7 +34,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.commonjava.atlas.maven.ident.ref.ProjectRef;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectRef;
-import org.commonjava.maven.galley.maven.GalleyMavenException;
 import org.commonjava.maven.galley.maven.model.view.meta.MavenMetadataView;
 import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
@@ -49,8 +48,9 @@ import org.slf4j.LoggerFactory;
  * Component that calculates project version modifications, based on configuration stored in {@link VersioningState}.
  * Snapshots may/may not be preserved, and either a static or incremental (calculated) version qualifier may / may not
  * be incorporated in the version. The calculator strives for OSGi compatibility, so the use of '.' and '-' qualifier
- * separators will vary accordingly. See: http://www.aqute.biz/Bnd/Versioning and
- * http://www.osgi.org/wiki/uploads/Links/SemanticVersioning.pdf for an explanation of OSGi versioning.
+ * separators will vary accordingly. See: <a href="http://www.aqute.biz/Bnd/Versioning">Versioning</a> and
+ * <a href="http://www.osgi.org/wiki/uploads/Links/SemanticVersioning.pdf">SemanticVersioning</a> for an explanation of
+ * OSGi versioning.
  *
  * @author jdcasey
  */
@@ -60,11 +60,15 @@ import org.slf4j.LoggerFactory;
 public class VersionCalculator {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final GalleyAPIWrapper readerWrapper;
+    private GalleyAPIWrapper readerWrapper;
 
     @Inject
     public VersionCalculator(final GalleyAPIWrapper readerWrapper) {
         this.readerWrapper = readerWrapper;
+    }
+
+    // Used by GME.
+    public VersionCalculator() {
     }
 
     /**
@@ -291,7 +295,7 @@ public class VersionCalculator {
                         metadataView
                                 .resolveXPathToAggregatedStringList("/metadata/versioning/versions/version", true, -1));
             }
-        } catch (final GalleyMavenException e) {
+        } catch (final Exception e) {
             throw new ManipulationException("Failed to resolve metadata for: {}:{}", groupId, artifactId, e);
         }
         return versions;
