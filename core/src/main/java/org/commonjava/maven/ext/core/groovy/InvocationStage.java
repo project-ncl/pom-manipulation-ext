@@ -21,7 +21,7 @@ import lombok.Getter;
  * Denotes when the groovy script should be run in relation to the other manipulators.
  * <p>
  * </p>
- * Effectively the same as {@link org.jboss.pnc.maven_manipulator.core.groovy.InvocationStage}
+ * Effectively the same as {@link org.jboss.pnc.mavenmanipulator.core.groovy.InvocationStage}
  */
 public enum InvocationStage {
     /**

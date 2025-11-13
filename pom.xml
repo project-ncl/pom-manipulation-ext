@@ -621,7 +621,7 @@
             <excludes combine.children="append">
               <exclude>ide-config/eclipse.importorder</exclude>
               <exclude>**/commonjava/maven/ext/common/ExceptionHelper.java</exclude>
-              <exclude>**/src/test/resources/org.jboss.pnc.maven_manipulator/io/pom.xml</exclude>
+              <exclude>**/src/test/resources/org.jboss.pnc.mavenmanipulator/io/pom.xml</exclude>
               <exclude>**/src/test/resources/gavs.txt</exclude>
             </excludes>
           </configuration>
@@ -701,12 +701,12 @@
               </docletArtifact>
               <links>
                 <!-- TODO: Doesn't seem to work in JDK 11 -->
-                <!--                <link>https://www.javadoc.io/doc/org.jboss.pnc.maven_manipulator/pom-manipulation-common/${project.version}</link>-->
-                <!--                <link>https://www.javadoc.io/doc/org.jboss.pnc.maven_manipulator/pom-manipulation-io/${project.version}</link>-->
-                <!--                <link>https://www.javadoc.io/doc/org.jboss.pnc.maven_manipulator/pom-manipulation-core/${project.version}</link>-->
-                <!--                <link>https://www.javadoc.io/doc/org.jboss.pnc.maven_manipulator/pom-manipulation-cli/${project.version}</link>-->
-                <!--                <link>https://www.javadoc.io/doc/org.jboss.pnc.maven_manipulator/pom-manipulation-ext/${project.version}</link>-->
-                <!--                <link>https://www.javadoc.io/doc/org.jboss.pnc.maven_manipulator/pom-manipulation-integration-test/${project.version}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/org.jboss.pnc.mavenmanipulator/pom-manipulation-common/${project.version}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/org.jboss.pnc.mavenmanipulator/pom-manipulation-io/${project.version}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/org.jboss.pnc.mavenmanipulator/pom-manipulation-core/${project.version}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/org.jboss.pnc.mavenmanipulator/pom-manipulation-cli/${project.version}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/org.jboss.pnc.mavenmanipulator/pom-manipulation-ext/${project.version}</link>-->
+                <!--                <link>https://www.javadoc.io/doc/org.jboss.pnc.mavenmanipulator/pom-manipulation-integration-test/${project.version}</link>-->
 
                 <!-- Causes build failures until https://github.com/maxcellent/javadoc.io/issues/222 is fixed -->
                 <!--                <link>https://javadoc.io/doc/org.commonjava.maven.atlas/atlas-identities/${atlasVersion}</link>-->

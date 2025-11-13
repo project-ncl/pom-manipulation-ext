@@ -15,10 +15,10 @@
  */
 import groovy.xml.XmlSlurper
 import groovy.xml.XmlUtil
-import org.jboss.pnc.maven_manipulator.core.groovy.BaseScript
-import org.jboss.pnc.maven_manipulator.core.groovy.InvocationStage
-import org.jboss.pnc.maven_manipulator.core.groovy.PMEBaseScript
-import org.jboss.pnc.maven_manipulator.core.groovy.InvocationPoint
+import org.jboss.pnc.mavenmanipulator.core.groovy.BaseScript
+import org.jboss.pnc.mavenmanipulator.core.groovy.InvocationStage
+import org.jboss.pnc.mavenmanipulator.core.groovy.PMEBaseScript
+import org.jboss.pnc.mavenmanipulator.core.groovy.InvocationPoint
 
 @InvocationPoint( invocationPoint = InvocationStage.PREPARSE )
 @PMEBaseScript BaseScript pme

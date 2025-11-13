@@ -21,8 +21,8 @@ import lombok.extern.slf4j.Slf4j;
  * Common API for developers wishing to implement groovy scripts for SBT.
  */
 @Slf4j
-public abstract class SBTBaseScript extends org.jboss.pnc.maven_manipulator.core.groovy.SBTBaseScript {
+public abstract class SBTBaseScript extends org.jboss.pnc.mavenmanipulator.core.groovy.SBTBaseScript {
     {
-        log.warn("Deprecated Groovy API - switch to importing org.jboss.pnc.maven_manipulator");
+        log.warn("Deprecated Groovy API - switch to importing org.jboss.pnc.mavenmanipulator");
     }
 }

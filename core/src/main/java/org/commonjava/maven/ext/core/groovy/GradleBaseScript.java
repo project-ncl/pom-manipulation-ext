@@ -22,8 +22,8 @@ import lombok.extern.slf4j.Slf4j;
  * Abstract class that is used as a marker and extended by the Gradle Manipulation Tooling.
  */
 @Slf4j
-public abstract class GradleBaseScript extends org.jboss.pnc.maven_manipulator.core.groovy.GradleBaseScript {
+public abstract class GradleBaseScript extends org.jboss.pnc.mavenmanipulator.core.groovy.GradleBaseScript {
     {
-        log.warn("Deprecated Groovy API - switch to importing org.jboss.pnc.maven_manipulator");
+        log.warn("Deprecated Groovy API - switch to importing org.jboss.pnc.mavenmanipulator");
     }
 }

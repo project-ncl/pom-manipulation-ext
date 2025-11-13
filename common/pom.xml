@@ -158,7 +158,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <configuration>
-          <excludePackageNames>org.jboss.pnc.maven_manipulator.common.jdom</excludePackageNames>
+          <excludePackageNames>org.jboss.pnc.mavenmanipulator.common.jdom</excludePackageNames>
           <!-- Remove once https://github.com/rzwitserloot/lombok/issues/1520 is fixed as the getter/setter
                in the json package causes issues -->
           <doclint>none</doclint>

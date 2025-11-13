@@ -24,7 +24,7 @@ import java.lang.annotation.Target;
  * Annotation to denote when the groovy script should be invoked.
  * <p>
  * </p>
- * Effectively the same as {@link org.jboss.pnc.maven_manipulator.core.groovy.InvocationPoint}
+ * Effectively the same as {@link org.jboss.pnc.mavenmanipulator.core.groovy.InvocationPoint}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.LOCAL_VARIABLE, ElementType.TYPE })

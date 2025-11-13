@@ -21,7 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.codehaus.groovy.transform.GroovyASTTransformationClass;
-import org.jboss.pnc.maven_manipulator.core.groovy.MavenBaseScript;
+import org.jboss.pnc.mavenmanipulator.core.groovy.MavenBaseScript;
 
 /**
  * Custom annotation that replicates {@link groovy.transform.BaseScript} but also handles extra annotations.
@@ -33,7 +33,7 @@ import org.jboss.pnc.maven_manipulator.core.groovy.MavenBaseScript;
         ElementType.LOCAL_VARIABLE,
         ElementType.PACKAGE,
         ElementType.TYPE })
-@GroovyASTTransformationClass("org.jboss.pnc.maven_manipulator.core.groovy.ASTTransformer")
+@GroovyASTTransformationClass("org.jboss.pnc.mavenmanipulator.core.groovy.ASTTransformer")
 
 public @interface PMEBaseScript {
     Class value() default MavenBaseScript.class;

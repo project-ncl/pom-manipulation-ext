@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.pnc.maven_manipulator.depMgmt1
+package org.jboss.pnc.mavenmanipulator.depMgmt1
 
 @Grab('org.zeroturnaround:zt-exec:1.10')
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import groovy.util.logging.Slf4j
-import org.jboss.pnc.maven_manipulator.core.groovy.BaseScript
-import org.jboss.pnc.maven_manipulator.core.groovy.InvocationPoint
-import org.jboss.pnc.maven_manipulator.core.groovy.InvocationStage
-import org.jboss.pnc.maven_manipulator.core.groovy.PMEBaseScript
+import org.jboss.pnc.mavenmanipulator.core.groovy.BaseScript
+import org.jboss.pnc.mavenmanipulator.core.groovy.InvocationPoint
+import org.jboss.pnc.mavenmanipulator.core.groovy.InvocationStage
+import org.jboss.pnc.mavenmanipulator.core.groovy.PMEBaseScript
 import org.yaml.snakeyaml.Yaml
 import org.zeroturnaround.exec.ProcessExecutor
 

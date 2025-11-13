@@ -19,8 +19,8 @@ package org.commonjava.maven.ext.core.groovy;
  * Abstract class that should be used by developers wishing to implement groovy scripts
  * for PME.
  */
-public abstract class BaseScript extends org.jboss.pnc.maven_manipulator.core.groovy.BaseScript {
+public abstract class BaseScript extends org.jboss.pnc.mavenmanipulator.core.groovy.BaseScript {
     {
-        getLogger().warn("Deprecated Groovy API - switch to importing org.jboss.pnc.maven_manipulator");
+        getLogger().warn("Deprecated Groovy API - switch to importing org.jboss.pnc.mavenmanipulator");
     }
 }

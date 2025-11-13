@@ -35,7 +35,7 @@
       <pattern>%logger{0} %msg%n</pattern>
     </encoder>
   </appender>
-  <logger name="org.jboss.pnc.maven_manipulator.common.util.ProjectComparator" level="INFO" additivity="false">
+  <logger name="org.jboss.pnc.mavenmanipulator.common.util.ProjectComparator" level="INFO" additivity="false">
     <appender-ref ref="COMPARATOR" />
   </logger>
 

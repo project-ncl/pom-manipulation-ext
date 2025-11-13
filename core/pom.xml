@@ -227,12 +227,12 @@
         <configuration>
           <defaultOutputDirectory>${project.build.directory}/generated-sources</defaultOutputDirectory>
           <processors>
-            <processor>org.jboss.pnc.maven_manipulator.annotation.ConfigValueProcessor</processor>
+            <processor>org.jboss.pnc.mavenmanipulator.annotation.ConfigValueProcessor</processor>
           </processors>
           <optionMap>
             <rootDirectory>${session.executionRootDirectory}</rootDirectory>
             <generationDirectory>${project.build.directory}/generated-sources/</generationDirectory>
-            <packageName>org.jboss.pnc.maven_manipulator.core</packageName>
+            <packageName>org.jboss.pnc.mavenmanipulator.core</packageName>
           </optionMap>
           <additionalSourceDirectories>
             <additionalSourceDirectory>${project.basedir}/../common/src/main/java</additionalSourceDirectory>

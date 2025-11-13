@@ -15,10 +15,10 @@
  */
 
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef
-import org.jboss.pnc.maven_manipulator.core.groovy.BaseScript
-import org.jboss.pnc.maven_manipulator.core.groovy.InvocationPoint
-import org.jboss.pnc.maven_manipulator.core.groovy.InvocationStage
-import org.jboss.pnc.maven_manipulator.core.groovy.PMEBaseScript
+import org.jboss.pnc.mavenmanipulator.core.groovy.BaseScript
+import org.jboss.pnc.mavenmanipulator.core.groovy.InvocationPoint
+import org.jboss.pnc.mavenmanipulator.core.groovy.InvocationStage
+import org.jboss.pnc.mavenmanipulator.core.groovy.PMEBaseScript
 
 @InvocationPoint(invocationPoint = InvocationStage.FIRST)
 @PMEBaseScript BaseScript pme

@@ -82,8 +82,8 @@
           <title>PME JaCoCo</title>
           <footer>Code Coverage Report for PME ${project.version}</footer>
           <excludes>
-            <exclude>org.jboss.pnc.maven_manipulator/integrationtest/invoker/**/*.class</exclude>
-            <exclude>org.jboss.pnc.maven_manipulator/integrationtest/TestUtils*.class</exclude>
+            <exclude>org.jboss.pnc.mavenmanipulator/integrationtest/invoker/**/*.class</exclude>
+            <exclude>org.jboss.pnc.mavenmanipulator/integrationtest/TestUtils*.class</exclude>
           </excludes>
         </configuration>
         <executions>

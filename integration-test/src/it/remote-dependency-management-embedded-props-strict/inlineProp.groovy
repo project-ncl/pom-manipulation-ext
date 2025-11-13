@@ -21,10 +21,10 @@
 // @Grab('org.commonjava.atlas.maven:atlas-identities:0.17.1')
 
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectRef
-import org.jboss.pnc.maven_manipulator.core.groovy.BaseScript
-import org.jboss.pnc.maven_manipulator.core.groovy.InvocationStage
-import org.jboss.pnc.maven_manipulator.core.groovy.PMEBaseScript
-import org.jboss.pnc.maven_manipulator.core.groovy.InvocationPoint
+import org.jboss.pnc.mavenmanipulator.core.groovy.BaseScript
+import org.jboss.pnc.mavenmanipulator.core.groovy.InvocationStage
+import org.jboss.pnc.mavenmanipulator.core.groovy.PMEBaseScript
+import org.jboss.pnc.mavenmanipulator.core.groovy.InvocationPoint
 
 @InvocationPoint(invocationPoint = InvocationStage.FIRST)
 @PMEBaseScript BaseScript pme

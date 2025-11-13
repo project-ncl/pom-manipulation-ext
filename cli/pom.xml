@@ -198,7 +198,7 @@
           <archive>
             <index>true</index>
             <manifest>
-              <mainClass>org.jboss.pnc.maven_manipulator.cli.Cli</mainClass>
+              <mainClass>org.jboss.pnc.mavenmanipulator.cli.Cli</mainClass>
             </manifest>
           </archive>
           <descriptors>
