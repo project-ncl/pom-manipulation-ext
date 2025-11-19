@@ -248,7 +248,7 @@ public class PomIO {
 
             MavenProject mp = new MavenProject(model);
             ModelETLRequest request = new ModelETLRequest();
-            request.setLineSeparator(ls.value());
+            releaseDescriptorBuilder.setLineSeparator(ls.value());
             request.setProject(mp);
             request.setReleaseDescriptor(ReleaseUtils.buildReleaseDescriptor(releaseDescriptorBuilder));
 

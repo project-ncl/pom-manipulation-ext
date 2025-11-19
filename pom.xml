@@ -89,6 +89,7 @@
     <docletVersion>1.1</docletVersion>
     <lombokPluginVersion>1.18.20.0</lombokPluginVersion>
     <shadePluginVersion>3.2.4</shadePluginVersion>
+    <mavenReleaseVersion>3.2.0</mavenReleaseVersion>
 
     <!-- Both Jackson versions should be identical except if Jackson has not -->
     <!-- published javadoc for the micro version -->
@@ -348,7 +349,7 @@
       <dependency>
         <groupId>org.apache.maven.release</groupId>
         <artifactId>maven-release-manager</artifactId>
-        <version>3.2.0</version>
+        <version>${mavenReleaseVersion}</version>
         <!-- As we only want the immediate dependency and some of the transitives cause -->
         <!-- clashes then exclude everything for simplicity -->
         <exclusions>
@@ -361,7 +362,7 @@
       <dependency>
         <groupId>org.apache.maven.release</groupId>
         <artifactId>maven-release-api</artifactId>
-        <version>3.0.0-M4</version>
+        <version>${mavenReleaseVersion}</version>
         <!-- As we only want the immediate dependency and some of the transitives cause -->
         <!-- clashes then exclude everything for simplicity -->
         <exclusions>

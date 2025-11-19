@@ -32,6 +32,8 @@ import org.apache.maven.settings.building.DefaultSettingsBuildingRequest;
 import org.apache.maven.settings.building.SettingsBuilder;
 import org.apache.maven.settings.building.SettingsBuildingException;
 import org.apache.maven.shared.release.ReleaseExecutionException;
+import org.apache.maven.shared.release.config.ReleaseDescriptorBuilder;
+import org.apache.maven.shared.release.config.ReleaseUtils;
 import org.apache.maven.shared.release.transform.ModelETL;
 import org.apache.maven.shared.release.transform.ModelETLRequest;
 import org.apache.maven.shared.release.transform.jdom2.JDomModelETL;
@@ -56,6 +58,8 @@ public class SettingsIO {
     private final JDomModelETLFactory modelETLFactories = new JDomModelETLFactory();
 
     private final SettingsBuilder settingsBuilder;
+
+    private final ReleaseDescriptorBuilder releaseDescriptorBuilder = new ReleaseDescriptorBuilder();
 
     @Inject
     public SettingsIO(SettingsBuilder settingsBuilder) {
@@ -82,7 +86,8 @@ public class SettingsIO {
             if (settingsFile.length() > 0) {
                 ls = FileIO.determineEOL(settingsFile);
                 ModelETLRequest request = new ModelETLRequest();
-                request.setLineSeparator(ls.value());
+                releaseDescriptorBuilder.setLineSeparator(ls.value());
+                request.setReleaseDescriptor(ReleaseUtils.buildReleaseDescriptor(releaseDescriptorBuilder));
                 ModelETL etl = modelETLFactories.newInstance(request);
 
                 // Reread in order to fill in JdomModelETL
