@@ -93,7 +93,7 @@
 
     <!-- Both Jackson versions should be identical except if Jackson has not -->
     <!-- published javadoc for the micro version -->
-    <jacksonVersion>2.15.0</jacksonVersion>
+    <jacksonVersion>2.20</jacksonVersion>
     <jacksonJavadocVersion>2.14</jacksonJavadocVersion>
 
     <argLine/>
