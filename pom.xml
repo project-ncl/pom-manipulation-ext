@@ -79,4 +79,22 @@
     <projectOwner>Red Hat, Inc.</projectOwner>
   </properties>
 
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.mycila</groupId>
+          <artifactId>license-maven-plugin</artifactId>
+          <configuration>
+            <excludes combine.children="append">
+              <exclude>ide-config/eclipse.importorder</exclude>
+              <exclude>**/commonjava/maven/ext/common/ExceptionHelper.java</exclude>
+              <exclude>**/src/test/resources/org.jboss.pnc.mavenmanipulator/io/pom.xml</exclude>
+              <exclude>**/src/test/resources/gavs.txt</exclude>
+            </excludes>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 </project>
