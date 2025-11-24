@@ -62,6 +62,16 @@ Each groovy script will be run on the execution root (i.e. where Maven is invoke
 <table bgcolor="#ffff00">
 <tr>
 <td>
+    <b>NOTE</b> : As of PME 5.0 the API has changed: <i>org.jboss.pnc.mavenmanipulator.core.groovy.BaseScript</i> instead of <i>org.commonjava.maven.ext.core.groovy.BaseScript</i> and <i>org.jboss.pnc.mavenmanipulator.common.model.Project</i> instead of <i>org.commonjava.maven.ext.common.model.Project</i>. The Atlas dependency has also changed its groupId from <i>org.commonjava.maven.atlas.ident.ref.SimpleProjectRef</i> to <i>org.commonjava.atlas.maven.ident.ref.SimpleProjectRef</i>
+</td>
+</tr>
+<tr>
+<td>
+    <b>NOTE</b> : As of PME 5.0 the groupId and java packaging has changed: <i>org.jboss.pnc.mavenmanipulator</i> instead of <i>org.commonjava.maven.ext</i> and <i>org/jboss/pnc/mavenmanipulator</i> instead of <i>org/commonjava/maven/ext</i>
+</td>
+</tr>
+<tr>
+<td>
     <b>NOTE</b> : Prior to PME 3.5 groovy manipulator precedence was controlled via a flag ; by setting <i>groovyManipulatorPrecedence</i> to <i>FIRST</i> instead of the default <i>LAST</i> value. Further, annotation was different; the scripts used the <a href="http://docs.groovy-lang.org/latest/html/gapi/groovy/transform/BaseScript.html">BaseScript</a> annotation e.g.
 <br/>
 <i>@BaseScript org.commonjava.maven.ext.core.groovy.BaseScript pme</i>
@@ -85,10 +95,10 @@ Each script <b>must</b> use the following annotations:
 </table>
 
 ```groovy
-import org.commonjava.maven.ext.core.groovy.BaseScript
-import org.commonjava.maven.ext.core.groovy.InvocationStage
-import org.commonjava.maven.ext.core.groovy.PMEBaseScript
-import org.commonjava.maven.ext.core.groovy.InvocationPoint
+import org.jboss.pnc.mavenmanipulator.core.groovy.BaseScript
+import org.jboss.pnc.mavenmanipulator.core.groovy.InvocationStage
+import org.jboss.pnc.mavenmanipulator.core.groovy.PMEBaseScript
+import org.jboss.pnc.mavenmanipulator.core.groovy.InvocationPoint
 ...
 
 @InvocationPoint(invocationPoint = InvocationStage.FIRST)
@@ -136,25 +146,25 @@ The following API is available:
 
 | Method | Description | Since      | Valid in Stage      |
 | -------|:------------|:-----------|:--------------------|
-| ~~[Map](https://docs.oracle.com/javase/7/docs/api/java/util/Map.html)<[ProjectVersionRef](https://github.com/Commonjava/atlas/blob/master/identities/src/main/java/org/commonjava/atlas/maven/ident/ref/ProjectVersionRef.java), [String](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html)> translateVersions([List](https://docs.oracle.com/javase/7/docs/api/java/util/List.html)<[Project](https://github.com/project-ncl/pom-manipulation-ext/blob/master/common/src/main/java/org/commonjava/maven/ext/common/model/Project.java)>)~~ | Translate the versions. _Removed in 4.4; use `lookupProjectVersions` or `lookupVersions` instead_. | [1.7, 4.3] | ~~`FIRST`, `LAST`~~ |
+| ~~[Map](https://docs.oracle.com/javase/7/docs/api/java/util/Map.html)<[ProjectVersionRef](https://github.com/Commonjava/atlas/blob/master/identities/src/main/java/org/commonjava/atlas/maven/ident/ref/ProjectVersionRef.java), [String](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html)> translateVersions([List](https://docs.oracle.com/javase/7/docs/api/java/util/List.html)<[Project](https://github.com/project-ncl/pom-manipulation-ext/blob/main/common/src/main/java/org/commonjava/maven/ext/common/model/Project.java)>)~~ | Translate the versions. _Removed in 4.4; use `lookupProjectVersions` or `lookupVersions` instead_. | [1.7, 4.3] | ~~`FIRST`, `LAST`~~ |
 | [File](https://docs.oracle.com/javase/7/docs/api/java/io/File.html) getBaseDir() | Get the working directory (the execution root). | 1.10 | `FIRST`, `LAST`     |
 | [ProjectVersionRef](https://github.com/Commonjava/atlas/blob/master/identities/src/main/java/org/commonjava/atlas/maven/ident/ref/ProjectVersionRef.java) getGAV() | Get the GAV of the current project. | 1.10 | `FIRST`, `LAST`     |
-| [Project](https://github.com/project-ncl/pom-manipulation-ext/blob/master/common/src/main/java/org/commonjava/maven/ext/common/model/Project.java) getProject() | Return the current Project. | 1.10 | `FIRST`, `LAST`     |
-| [List](https://docs.oracle.com/javase/7/docs/api/java/util/List.html)<[Project](https://github.com/project-ncl/pom-manipulation-ext/blob/master/common/src/main/java/org/commonjava/maven/ext/common/model/Project.java)> getProjects() | Returns the entire collection of Projects. | 1.10 | `FIRST`, `LAST`     |
+| [Project](https://github.com/project-ncl/pom-manipulation-ext/blob/main/common/src/main/java/org/jboss/pnc/mavenmanipulator/common/model/Project.java) getProject() | Return the current Project. | 1.10 | `FIRST`, `LAST`     |
+| [List](https://docs.oracle.com/javase/7/docs/api/java/util/List.html)<[Project](https://github.com/project-ncl/pom-manipulation-ext/blob/main/common/src/main/java/org/jboss/pnc/mavenmanipulator/common/model/Project.java)> getProjects() | Returns the entire collection of Projects. | 1.10 | `FIRST`, `LAST`     |
 | [Properties](https://docs.oracle.com/javase/7/docs/api/java/util/Properties.html) getUserProperties() | Get the user properties. | 2.0 | `ALL`               |
-| [ModelIO](https://github.com/project-ncl/pom-manipulation-ext/blob/master/io/src/main/java/org/commonjava/maven/ext/io/ModelIO.java) getModelIO() | Return a ModelIO instance for artifact resolving. | 3.2 | `ALL`               |
-| [MavenSessionHandler](https://github.com/project-ncl/pom-manipulation-ext/blob/master/common/src/main/java/org/commonjava/maven/ext/common/session/MavenSessionHandler.java) getSession() | Return the current session handler. | 3.2 | `ALL`               |
-| [InvocationStage](https://github.com/project-ncl/pom-manipulation-ext/blob/master/core/src/main/java/org/commonjava/maven/ext/core/groovy/InvocationStage.java) getInvocationStage() | Return the current stage of the groovy manipulation. | 3.5 | `ALL`               |
-| void inlineProperty([Project](https://github.com/project-ncl/pom-manipulation-ext/blob/master/common/src/main/java/org/commonjava/maven/ext/common/model/Project.java), [String](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html)) | Allows the specified property to be inlined in any dependencies/dependencyManagement. This is useful to split up properties that cover multiple separate projects. _Note that as of version 3.8, the `String` argument changed from `group:artifact` to `propertyKey`_. | 3.5 | `FIRST`, `LAST`     |
-| void inlineProperty([Project](https://github.com/project-ncl/pom-manipulation-ext/blob/master/common/src/main/java/org/commonjava/maven/ext/common/model/Project.java), [ProjectRef](https://github.com/Commonjava/atlas/blob/master/identities/src/main/java/org/commonjava/atlas/maven/ident/ref/ProjectRef.java)) | Allows the specified group:artifact property to be inlined in any dependencies/dependencyManagement. This is useful to split up properties that cover multiple separate projects. Supports `*` as a wildcard for artifactId. | 3.8 | `FIRST`, `LAST`     |
+| [ModelIO](https://github.com/project-ncl/pom-manipulation-ext/blob/main/io/src/main/java/org/jboss/pnc/mavenmanipulator/io/ModelIO.java) getModelIO() | Return a ModelIO instance for artifact resolving. | 3.2 | `ALL`               |
+| [MavenSessionHandler](https://github.com/project-ncl/pom-manipulation-ext/blob/main/common/src/main/java/org/jboss/pnc/mavenmanipulator/common/session/MavenSessionHandler.java) getSession() | Return the current session handler. | 3.2 | `ALL`               |
+| [InvocationStage](https://github.com/project-ncl/pom-manipulation-ext/blob/main/core/src/main/java/org/jboss/pnc/mavenmanipulator/core/groovy/InvocationStage.java) getInvocationStage() | Return the current stage of the groovy manipulation. | 3.5 | `ALL`               |
+| void inlineProperty([Project](https://github.com/project-ncl/pom-manipulation-ext/blob/main/common/src/main/java/org/jboss/pnc/mavenmanipulator/common/model/Project.java), [String](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html)) | Allows the specified property to be inlined in any dependencies/dependencyManagement. This is useful to split up properties that cover multiple separate projects. _Note that as of version 3.8, the `String` argument changed from `group:artifact` to `propertyKey`_. | 3.5 | `FIRST`, `LAST`     |
+| void inlineProperty([Project](https://github.com/project-ncl/pom-manipulation-ext/blob/main/common/src/main/java/org/jboss/pnc/mavenmanipulator/common/model/Project.java), [ProjectRef](https://github.com/Commonjava/atlas/blob/master/identities/src/main/java/org/commonjava/atlas/maven/ident/ref/ProjectRef.java)) | Allows the specified group:artifact property to be inlined in any dependencies/dependencyManagement. This is useful to split up properties that cover multiple separate projects. Supports `*` as a wildcard for artifactId. | 3.8 | `FIRST`, `LAST`     |
 | void overrideProjectVersion([ProjectVersionRef](https://github.com/Commonjava/atlas/blob/master/identities/src/main/java/org/commonjava/atlas/maven/ident/ref/ProjectVersionRef.java)) | The specified GAV will be queried from DA for its current suffix and that suffix be used in [versionSuffix](project-version-manip.html#manual-version-suffix) instead of any [versionIncrementalSuffix](project-version-manip.html#automatic-version-increment). | 3.8 | `FIRST`, `LAST`     |
 | void reinitialiseSessionStates() | This will re-initialise any State linked to this session. This is useful if the groovy scripts have altered the user properties. | 3.8 | `ALL`               |
 | [Logger](https://www.javadoc.io/doc/org.slf4j/slf4j-api/1.7.30/org/slf4j/Logger.html) getLogger() | This will return the current SLF4J Logger instance. | 3.8.2 | `ALL`               |
-| [FileIO](https://github.com/project-ncl/pom-manipulation-ext/blob/master/io/src/main/java/org/commonjava/maven/ext/io/FileIO.java) getFileIO() | This will return a FileIO instance for remote File resolving. | 4.0 | `ALL`               |
-| [PomIO](https://github.com/project-ncl/pom-manipulation-ext/blob/master/io/src/main/java/org/commonjava/maven/ext/io/PomIO.java) getPomIO() | This will return a PomIO instance for parsing POM models. | 4.0 | `ALL`               |
-| [Translator](https://github.com/project-ncl/pom-manipulation-ext/blob/master/io/src/main/java/org/commonjava/maven/ext/io/rest/Translator.java) getRESTAPI() throws [ManipulationException](https://github.com/project-ncl/pom-manipulation-ext/blob/master/common/src/main/java/org/commonjava/maven/ext/common/ManipulationException.java) | Gets a configured VersionTranslator to make REST calls to DA. | 4.0 | `ALL`               |
-| [Map](https://docs.oracle.com/javase/7/docs/api/java/util/Map.html)<[ProjectVersionRef](https://github.com/Commonjava/atlas/blob/master/identities/src/main/java/org/commonjava/atlas/maven/ident/ref/ProjectVersionRef.java), [String](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html)> lookupProjectVersions([List](https://docs.oracle.com/javase/7/docs/api/java/util/List.html)<[Project](https://github.com/project-ncl/pom-manipulation-ext/blob/master/common/src/main/java/org/commonjava/maven/ext/common/model/Project.java)>) throws [RestException](https://github.com/project-ncl/pom-manipulation-ext/blob/main/io/src/main/java/org/commonjava/maven/ext/io/rest/RestException.java) | Lookup versions (e.g. for a project) ignoring DA suffix priority schemes returning the latest version. | 4.4 | `FIRST`, `LAST`     |
-| [Map](https://docs.oracle.com/javase/7/docs/api/java/util/Map.html)<[ProjectVersionRef](https://github.com/Commonjava/atlas/blob/master/identities/src/main/java/org/commonjava/atlas/maven/ident/ref/ProjectVersionRef.java), [String](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html)> lookupVersions([List](https://docs.oracle.com/javase/7/docs/api/java/util/List.html)<[Project](https://github.com/project-ncl/pom-manipulation-ext/blob/master/common/src/main/java/org/commonjava/maven/ext/common/model/Project.java)>) throws [RestException](https://github.com/project-ncl/pom-manipulation-ext/blob/main/io/src/main/java/org/commonjava/maven/ext/io/rest/RestException.java) | Lookup versions respecting DA suffix priority schemes which will return the best matched version. | 4.4 | `FIRST`, `LAST`     |
+| [FileIO](https://github.com/project-ncl/pom-manipulation-ext/blob/main/io/src/main/java/org/jboss/pnc/mavenmanipulator/io/FileIO.java) getFileIO() | This will return a FileIO instance for remote File resolving. | 4.0 | `ALL`               |
+| [PomIO](https://github.com/project-ncl/pom-manipulation-ext/blob/main/io/src/main/java/org/jboss/pnc/mavenmanipulator/io/PomIO.java) getPomIO() | This will return a PomIO instance for parsing POM models. | 4.0 | `ALL`               |
+| [Translator](https://github.com/project-ncl/pom-manipulation-ext/blob/main/io/src/main/java/org/jboss/pnc/mavenmanipulator/io/rest/Translator.java) getRESTAPI() throws [ManipulationException](https://github.com/project-ncl/pom-manipulation-ext/blob/main/common/src/main/java/org/jboss/pnc/mavenmanipulator/common/ManipulationException.java) | Gets a configured VersionTranslator to make REST calls to DA. | 4.0 | `ALL`               |
+| [Map](https://docs.oracle.com/javase/7/docs/api/java/util/Map.html)<[ProjectVersionRef](https://github.com/Commonjava/atlas/blob/master/identities/src/main/java/org/commonjava/atlas/maven/ident/ref/ProjectVersionRef.java), [String](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html)> lookupProjectVersions([List](https://docs.oracle.com/javase/7/docs/api/java/util/List.html)<[Project](https://github.com/project-ncl/pom-manipulation-ext/blob/main/common/src/main/java/org/jboss/pnc/mavenmanipulator/common/model/Project.java)>) throws [RestException](https://github.com/project-ncl/pom-manipulation-ext/blob/main/io/src/main/java/org/jboss/pnc/mavenmanipulator/io/rest/RestException.java) | Lookup versions (e.g. for a project) ignoring DA suffix priority schemes returning the latest version. | 4.4 | `FIRST`, `LAST`     |
+| [Map](https://docs.oracle.com/javase/7/docs/api/java/util/Map.html)<[ProjectVersionRef](https://github.com/Commonjava/atlas/blob/master/identities/src/main/java/org/commonjava/atlas/maven/ident/ref/ProjectVersionRef.java), [String](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html)> lookupVersions([List](https://docs.oracle.com/javase/7/docs/api/java/util/List.html)<[Project](https://github.com/project-ncl/pom-manipulation-ext/blob/main/common/src/main/java/org/jboss/pnc/mavenmanipulator/common/model/Project.java)>) throws [RestException](https://github.com/project-ncl/pom-manipulation-ext/blob/main/io/src/main/java/org/jboss/pnc/mavenmanipulator/io/rest/RestException.java) | Lookup versions respecting DA suffix priority schemes which will return the best matched version. | 4.4 | `FIRST`, `LAST`     |
 
 ### Utility Functions
 
@@ -188,10 +198,10 @@ A typical groovy script that alters a JSON file on disk might be:
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import groovy.util.logging.Slf4j
-import org.commonjava.maven.ext.core.groovy.BaseScript
-import org.commonjava.maven.ext.core.groovy.InvocationStage
-import org.commonjava.maven.ext.core.groovy.PMEBaseScript
-import org.commonjava.maven.ext.core.groovy.InvocationPoint
+import org.jboss.pnc.mavenmanipulator.core.groovy.BaseScript
+import org.jboss.pnc.mavenmanipulator.core.groovy.InvocationStage
+import org.jboss.pnc.mavenmanipulator.core.groovy.PMEBaseScript
+import org.jboss.pnc.mavenmanipulator.core.groovy.InvocationPoint
 
 @InvocationPoint(invocationPoint = InvocationStage.FIRST)
 @PMEBaseScript BaseScript pme

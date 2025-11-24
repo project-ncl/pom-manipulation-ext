@@ -8,7 +8,7 @@
 
 POM Manipulation Extension (PME) is a Maven tool to align the versions in your POMs according to some external reference, sort of like a BOM but much more extensive and without the added baggage of a BOM declaration.
 
-It is suppplied as a core library, a Maven extension (in the sense of installing to `lib/ext`, not `pom.xml` `<extensions/>`) and a command line tool.
+It is supplied as a core library, a Maven extension (in the sense of installing to `lib/ext`, not `pom.xml` `<extensions/>`) and a command line tool.
 
 PME excels in a cleanroom environment where large numbers of pre-existing projects must be rebuilt. To minimize the number of builds necessary, PME supports aligning dependency versions using an external BOM-like reference. However, it can also use a similar POM external reference to align plugin versions, and inject standardized plugin executions into project builds. Because in this scenario you're often rebuilding projects from existing release tags, PME also supports appending a rebuild version suffix, such as `rebuild-1`, where the actual rebuild number is automatically incremented beyond the highest rebuild number detected in the Maven repository.
 
@@ -20,7 +20,7 @@ For a list of changes please see [here](https://github.com/project-ncl/pom-manip
 
 #### Installation as CLI tool.
 
-Obtain the jar from [here](https://repo1.maven.org/maven2/org/commonjava/maven/ext/pom-manipulation-cli) and then it may be invoked as
+Obtain the jar from [here](https://repo1.maven.org/maven2/org/jboss/pnc/maven-manipulator/pom-manipulation-cli) and then it may be invoked as
 
     java -jar pom-manipulation-cli-<version>.jar
 
@@ -49,7 +49,7 @@ It supports the following arguments
 
 #### Installation as an Extension
 
-Installing PME is as simple as [grabbing the binary](https://repo1.maven.org/maven2/org/commonjava/maven/ext/pom-manipulation-ext) and copying it to your `${MAVEN_HOME}/lib/ext` directory. Once PME is installed, Maven should output something like the following when run:
+Installing PME is as simple as [grabbing the binary](https://repo1.maven.org/maven2/org/jboss/pnc/maven-manipulator/pom-manipulation-ext) and copying it to your `${MAVEN_HOME}/lib/ext` directory. Once PME is installed, Maven should output something like the following when run:
 
     [INFO] Maven-Manipulation-Extension
 
@@ -140,8 +140,8 @@ an alternate name for the file.
 }
 ```
 
-This JSON file may be read as POJO by using the [JSONUtils](https://github.com/project-ncl/pom-manipulation-ext/blob/master/common/src/main/java/org/commonjava/maven/ext/common/util/JSONUtils.java)
-class which utilises the [json](https://github.com/project-ncl/pom-manipulation-ext/blob/master/common/src/main/java/org/commonjava/maven/ext/common/json)
+This JSON file may be read as POJO by using the [JSONUtils](https://github.com/project-ncl/pom-manipulation-ext/blob/main/common/src/main/java/org/jboss/pnc/mavenmanipulator/common/util/JSONUtils.java)
+class which utilises the [json](https://github.com/project-ncl/pom-manipulation-ext/blob/main/common/src/main/java/org/jboss/pnc/mavenmanipulator/common/json)
 package.
 
 ### Javadoc
