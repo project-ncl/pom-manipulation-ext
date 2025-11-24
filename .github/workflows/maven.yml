@@ -43,7 +43,7 @@ jobs:
     if: github.repository == 'project-ncl/pom-manipulation-ext' && github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Cache local Maven repository
       uses: actions/cache@v4
       with:
@@ -71,7 +71,7 @@ jobs:
     if: github.repository == 'project-ncl/pom-manipulation-ext' && github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - name: Cache local Maven repository
       uses: actions/cache@v4
       with:
