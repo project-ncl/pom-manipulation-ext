@@ -419,11 +419,10 @@
         <version>9.4.58.v20250814</version>
       </dependency>
 
-      <!-- Attempting to upgrade this causes performance issues on Appveyor CI -->
       <dependency>
         <groupId>org.eclipse.sisu</groupId>
         <artifactId>org.eclipse.sisu.plexus</artifactId>
-        <version>0.3.5</version>
+        <version>0.9.0.M4</version>
       </dependency>
 
       <dependency>

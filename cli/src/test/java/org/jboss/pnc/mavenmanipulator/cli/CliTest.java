@@ -388,7 +388,7 @@ public class CliTest {
                                 + "org.commonjava.maven.galley:galley-transport-httpclient:1.21                    jar                                     compile             \n"
                                 + "org.eclipse.aether:aether-api:1.1.0                                             jar                                     provided            \n"
                                 + "org.eclipse.jetty:jetty-server:9.[.\\d+]+[v\\d+]*\\s+                           jar                                     compile             \n"
-                                + "org.eclipse.sisu:org.eclipse.sisu.plexus:0.3.4                                  jar                                     compile             \n"
+                                + "org.eclipse.sisu:org.eclipse.sisu.plexus:0.9.0.M4                               jar                                     compile             \n"
                                 + "org.goots.hiderdoclet:doclet:1.1                                                jar                                     compile             \n"
                                 + "org.hamcrest:hamcrest-all:1.3                                                   jar                                     test                \n"
                                 + "org.jacoco:jacoco-maven-plugin:0.8[.\\d+]+\\s+                                  maven-plugin                                                \n"
