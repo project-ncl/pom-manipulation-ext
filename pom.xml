@@ -91,10 +91,9 @@
     <shadePluginVersion>3.2.4</shadePluginVersion>
     <mavenReleaseVersion>3.2.0</mavenReleaseVersion>
 
-    <!-- Both Jackson versions should be identical except if Jackson has not -->
-    <!-- published javadoc for the micro version -->
-    <jacksonVersion>2.20</jacksonVersion>
-    <jacksonJavadocVersion>2.14</jacksonJavadocVersion>
+    <jacksonVersion>2.20.0</jacksonVersion>
+    <!-- In https://github.com/FasterXML/jackson-annotations/blob/2.x/release-notes/VERSION-2.x#L31 the patch number was dropped -->
+    <jacksonAnnotationsVersion>2.20</jacksonAnnotationsVersion>
 
     <argLine/>
     <surefireSecurityManager/>
@@ -404,7 +403,7 @@
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-annotations</artifactId>
-        <version>${jacksonVersion}</version>
+        <version>${jacksonAnnotationsVersion}</version>
       </dependency>
 
       <dependency>
@@ -721,7 +720,8 @@
                 <!--                <link>https://www.javadoc.io/doc/org.slf4j/slf4j-api/${slf4jVersion}</link>-->
                 <!--                <link>https://www.javadoc.io/doc/com.jayway.jsonpath/json-path/${jsonPathVersion}</link>-->
                 <!--                <link>https://www.javadoc.io/doc/org.codehaus.groovy/groovy-all/${groovyVersion}</link>-->
-                <link>https://fasterxml.github.io/jackson-core/javadoc/${jacksonJavadocVersion}</link>
+                <!-- Last published version on jackson site (3.0 and above on javadoc.io) -->
+                <link>https://fasterxml.github.io/jackson-core/javadoc/2.14</link>
               </links>
               <additionalJOptions>
                 <additionalJOption>-J--add-exports=jdk.javadoc/jdk.javadoc.internal.tool=ALL-UNNAMED</additionalJOption>
