@@ -211,7 +211,7 @@ public class BaseScriptTest {
         bs.inlineProperty(root, dependencyPluginArtifact);
 
         assertEquals(
-                "3.2.4",
+                "3.5.1",
                 root.getResolvedManagedPlugins(bs.getSession())
                         .entrySet()
                         .stream()
