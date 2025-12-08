@@ -90,7 +90,7 @@
     <lombokPluginVersion>1.18.20.0</lombokPluginVersion>
     <!-- Cannot update beyond 3.5.1 as this is the last version that supports Maven < 3.6.3 (MSHADE-464) -->
     <shadePluginVersion>3.5.1</shadePluginVersion>
-    <mavenReleaseVersion>3.2.0</mavenReleaseVersion>
+    <mavenReleaseVersion>3.3.0</mavenReleaseVersion>
 
     <jacksonVersion>2.20.0</jacksonVersion>
     <!-- In https://github.com/FasterXML/jackson-annotations/blob/2.x/release-notes/VERSION-2.x#L31 the patch number was dropped -->
