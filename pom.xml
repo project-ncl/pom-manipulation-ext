@@ -307,7 +307,7 @@
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
-        <version>3.4.2</version>
+        <version>4.0.2</version>
       </dependency>
 
       <!-- Use the same versions of guava and guice as Maven : https://maven.apache.org/ref/3.9.11/maven-core/dependencies.html -->
