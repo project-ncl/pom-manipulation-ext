@@ -190,9 +190,14 @@ Additionally, the feature supports per-module overrides, which can be specified 
 
     -DenforceSkip.org.group.id:artifact-id=(none|on|true|off|false|detect)
 
-#### Project Sources / Build Metadata Plugin Injection
+#### Project Sources Injection
 
 <table bgcolor="#ffff00">
+<tr>
+<td>
+    <b>NOTE</b> : As of PME 5.1 (Jan 2026) the metadata plugin injection has been removed, the project-sources-maven-plugin has been moved to the project-ncl org and the deprecated property names have been removed..
+</td>
+</tr>
 <tr>
 <td>
     <b>NOTE</b> : As of PME 3.14 (Jul 2023) these options are now deprecated and may be removed in a future release.
@@ -205,14 +210,12 @@ Additionally, the feature supports per-module overrides, which can be specified 
 </tr>
 </table>
 
-The extension may optionally inject an execution of [project-sources-maven-plugin](https://github.com/commonjava/project-sources-maven-plugin) and [build-metadata-plugin](https://github.com/project-ncl/buildmetadata-maven-plugin). This will result in an archive being created containing all project sources **after** this extension has made any modifications to the pom.xml's. The archive will only be created in the execution-root project, and will be attached for installation and deployment using the `project-sources` classifier. The metadata plugin will create a build.properties file containing information (e.g. the command line) on the invoked project. This will also be included in the archive tar. A related project is the [Maven Metadata Extension](https://github.com/project-ncl/metadata-extension).
+The extension may optionally inject an execution of [project-sources-maven-plugin](https://github.com/project-ncl/project-sources-maven-plugin). This will result in an archive being created containing all project sources **after** this extension has made any modifications to the pom.xml's. The archive will only be created in the execution-root project, and will be attached for installation and deployment using the `project-sources` classifier and `tar.gz` packaging.
 
-To activate injection of the sources and metadata plugins, you can use the properties `projectSrcSkip` (*Deprecated property `project.src.skip`*) and `projectMetaSkip` (*Deprecated property `project.meta.skip` for versions **3.8.1 and prior***):
+To activate injection of the sources plugin, you can use the properties `projectSrcSkip`:
 
     mvn install -DprojectSrcSkip=false
-    mvn install -DprojectMetaSkip=false
 
-If unspecified no plugins will be injected. If specified, default versions of the project sources and metadata plugins will be injected (currently, version 0.3 and 1.5.0 respectively). To gain more control over this injection, you can specify the versions for project sources and metadata plugins with the properties `projectSrcVersion` (*Deprecated property `project.src.version`*) and `projectMetaVersion` (*Deprecated property `project.meta.version` for versions **3.8.1 and prior***):
+If unspecified no plugins will be injected. If specified, default versions of the project sources plugin will be injected (currently, version 1.0). To gain more control over this injection, you can specify the versions for project sources and metadata plugins with the properties `projectSrcVersion`.
 
-    mvn install -Dproject.src.version=x.y
-    mvn install -Dproject.meta.version=x.y
+    mvn install -DprojectSrcVersion=x.y
