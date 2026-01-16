@@ -96,8 +96,8 @@
     <!-- In https://github.com/FasterXML/jackson-annotations/blob/2.x/release-notes/VERSION-2.x#L31 the patch number was dropped -->
     <jacksonAnnotationsVersion>2.20</jacksonAnnotationsVersion>
 
-    <argLine />
-    <surefireSecurityManager />
+    <argLine/>
+    <surefireSecurityManager/>
   </properties>
 
   <dependencyManagement>
@@ -599,12 +599,12 @@
             </additionalClasspathElements>
             <!-- ensure we don't inherit a byteman jar from any env settings -->
             <environmentVariables>
-              <BYTEMAN_HOME />
+              <BYTEMAN_HOME/>
             </environmentVariables>
             <systemProperties>
               <property>
                 <name>org.jboss.byteman.home</name>
-                <value />
+                <value/>
               </property>
             </systemProperties>
           </configuration>
@@ -790,7 +790,7 @@
             </sortPom>
           </pom>
           <java>
-            <removeUnusedImports />
+            <removeUnusedImports/>
             <importOrder>
               <file>java-import-order.txt</file>
             </importOrder>

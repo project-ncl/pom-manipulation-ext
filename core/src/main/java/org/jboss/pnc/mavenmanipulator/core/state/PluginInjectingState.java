@@ -26,12 +26,9 @@ import org.jboss.pnc.mavenmanipulator.core.impl.PluginInjectingManipulator;
  *
  * <ul>
  * <li><b>projectSrcSkip</b> - If true, don't try to inject the project-sources-maven-plugin.</li>
- * <li><b>project.src.version</b> - The version of the project-sources-maven-plugin to be injected.</li>
- * <li><b>projectMetaSkip</b> - If true, don't try to inject the buildmetadata-maven-plugin.</li>
- * <li><b>project.meta.version</b> - The version of the buildmetadata-maven-plugin to be injected.</li>
+ * <li><b>projectSrcVersion</b> - The version of the project-sources-maven-plugin to be injected.</li>
  * </ul>
  */
-@Deprecated
 public class PluginInjectingState
         implements State {
 
@@ -39,36 +36,19 @@ public class PluginInjectingState
      * Set this property to true using <code>-DprojectSrcSkip=true</code> in order to turn off injection of the
      * project-sources plugin.
      */
-    @ConfigValue(docIndex = "plugin-manip.html#project-sources--build-metadata-plugin-injection", deprecated = true)
+    @ConfigValue(docIndex = "plugin-manip.html#project-sources-injection")
     private static final String PROJECT_SOURCES_SKIP_PROPERTY = "projectSrcSkip";
 
-    /**
-     * Set this property to true using <code>-DprojectMetaSkip=true</code> in order to turn off injection of the
-     * project-sources plugin.
-     */
-    @ConfigValue(docIndex = "plugin-manip.html#project-sources--build-metadata-plugin-injection", deprecated = true)
-    private static final String BMMP_SKIP_PROPERTY = "projectMetaSkip";
-
     /** Set this property to control the version of the project-sources plugin to be injected. */
-    @ConfigValue(docIndex = "plugin-manip.html#project-sources--build-metadata-plugin-injection", deprecated = true)
+    @ConfigValue(docIndex = "plugin-manip.html#project-sources-injection")
     private static final String PROJECT_SOURCES_PLUGIN_VERSION_PROPERTY = "projectSrcVersion";
 
     /** The default plugin version to use in case no alternative version is specified on the command line. */
-    private static final String DEFAULT_PROJECT_SOURCES_PLUGIN_VERSION = "1.0";
-
-    /** Set this property to control the version of the build-metadata plugin to be injected. */
-    @ConfigValue(docIndex = "plugin-manip.html#project-sources--build-metadata-plugin-injection", deprecated = true)
-    private static final String BMMP_VERSION_PROPERTY = "projectMetaVersion";
-
-    private static final String DEFAULT_BMMP_VERSION = "1.7.0";
+    private static final String DEFAULT_PROJECT_SOURCES_PLUGIN_VERSION = "2.0";
 
     private boolean projectsourcesEnabled;
 
-    private boolean metadataEnabled;
-
     private String projectSrcPluginVersion;
-
-    private String bmmpVersion;
 
     static {
         State.activeByDefault.add(PluginInjectingState.class);
@@ -87,38 +67,27 @@ public class PluginInjectingState
     public void initialise(Properties userProperties) {
         projectsourcesEnabled = !Boolean
                 .parseBoolean(userProperties.getProperty(PROJECT_SOURCES_SKIP_PROPERTY, "true"));
-        metadataEnabled = !Boolean.parseBoolean(userProperties.getProperty(BMMP_SKIP_PROPERTY, "true"));
 
         projectSrcPluginVersion = userProperties
                 .getProperty(PROJECT_SOURCES_PLUGIN_VERSION_PROPERTY, DEFAULT_PROJECT_SOURCES_PLUGIN_VERSION);
-        bmmpVersion = userProperties.getProperty(BMMP_VERSION_PROPERTY, DEFAULT_BMMP_VERSION);
     }
 
     /**
      * @see PluginInjectingState#PROJECT_SOURCES_SKIP_PROPERTY
      *
-     * @return true if <b>either</b> of {@link #isProjectSourcesPluginEnabled()} or
-     *         {@link #isBuildMetadataPluginEnabled()} is enabled.
+     * @return true if {@link #isProjectSourcesPluginEnabled()} is enabled.
      */
     @Override
     public boolean isEnabled() {
-        return isBuildMetadataPluginEnabled() || isProjectSourcesPluginEnabled();
+        return isProjectSourcesPluginEnabled();
     }
 
     /**
-     * @see PluginInjectingState#BMMP_SKIP_PROPERTY
+     * @see PluginInjectingState#PROJECT_SOURCES_SKIP_PROPERTY
      * @return whether the BuildMetadata plugin is projectsourcesEnabled.
      */
     public boolean isProjectSourcesPluginEnabled() {
         return projectsourcesEnabled;
-    }
-
-    /**
-     * @see PluginInjectingState#BMMP_SKIP_PROPERTY
-     * @return whether the BuildMetadata plugin is projectsourcesEnabled.
-     */
-    public boolean isBuildMetadataPluginEnabled() {
-        return metadataEnabled;
     }
 
     /**
@@ -129,14 +98,4 @@ public class PluginInjectingState
     public String getProjectSourcesPluginVersion() {
         return projectSrcPluginVersion;
     }
-
-    /**
-     * @see #BMMP_VERSION_PROPERTY
-     * @see #DEFAULT_BMMP_VERSION
-     * @return the BuildMetadata plugin version
-     */
-    public String getBuildMetadataPluginVersion() {
-        return bmmpVersion;
-    }
-
 }
