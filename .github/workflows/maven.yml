@@ -38,7 +38,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        maven: [3.3.9, 3.5.4, 3.6.3, 3.8.7, 3.9.0, 3.9.8, 3.9.11]
+        maven: [3.3.9, 3.5.4, 3.6.3, 3.8.7, 3.9.0, 3.9.8]
+        java-version: ['11']
+        # Use include to add a specific Maven/JDK combination
+        include:
+          - maven-version: '3.9.11'
+            java-version: '17'
     # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idif
     if: github.repository == 'project-ncl/pom-manipulation-ext' && github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -51,11 +56,11 @@ jobs:
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
-    - name: Set up JDK 11
+    - name: Set up JDK
       uses: actions/setup-java@v5
       with:
         distribution: 'temurin'
-        java-version: 11
+        java-version: ${{ matrix.java-version }}
     - name: Set up Maven
       uses: stCarolas/setup-maven@v5
       with:
