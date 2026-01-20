@@ -186,7 +186,7 @@ public class Cli implements Callable<Integer> {
                 logger.error("Disabling log file as running in container!");
             } else {
                 LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-                loggerContext.reset();
+                ((ch.qos.logback.classic.Logger) rootLogger).detachAndStopAllAppenders();
 
                 PatternLayoutEncoder ple = new PatternLayoutEncoder();
                 ple.setPattern("%level %logger{36} %msg%n");
@@ -196,7 +196,7 @@ public class Cli implements Callable<Integer> {
                 FileAppender<ILoggingEvent> fileAppender = new FileAppender<>();
                 fileAppender.setEncoder(ple);
                 fileAppender.setContext(loggerContext);
-                fileAppender.setName("fileLogging");
+                fileAppender.setName("PME-CLI");
                 fileAppender.setAppend(false);
                 fileAppender.setFile(logFile);
                 fileAppender.start();

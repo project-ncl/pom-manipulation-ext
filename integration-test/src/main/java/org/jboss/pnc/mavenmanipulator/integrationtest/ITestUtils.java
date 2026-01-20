@@ -206,7 +206,6 @@ public class ITestUtils {
         // harness and it saves time when running the tests.
         final ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory
                 .getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
-
         root.detachAndStopAllAppenders();
 
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
@@ -218,6 +217,7 @@ public class ITestUtils {
 
         ConsoleAppender<ILoggingEvent> consoleAppender = new ConsoleAppender<>();
         consoleAppender.setEncoder(ple);
+        consoleAppender.setName("STDOUT");
         consoleAppender.setContext(loggerContext);
         consoleAppender.start();
 
