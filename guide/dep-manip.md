@@ -114,6 +114,76 @@ For example:
 
     -DrestHeaders=log-user-id:102,log-request-context:061294ff-088,log-process-context:,log-expires:,log-tmp:
 
+##### REST PNC-Specific properties 
+
+<table bgcolor="#ffff00">
+<tr>
+<td>
+    <b>NOTE</b> : Available from version 4.16
+</td>
+</tr>
+</table>
+
+As of new versions of DA (version TBD), it makes available 3 additional ways how you can influence returned results. By
+default DA returns highest version with the highest version suffix. With `-DrestDependencyRanks`,
+`-DrestDependencyAllowList`, `-DrestDependencyDenyList` you can alter this behaviour if you want to highlight some PNC
+specific properties of the dependencies.
+
+The general framework about how to express these PNC-Specific qualities is done through so called Qualifiers. Examples
+of such Qualifiers are `PRODUCT`(PNC Product), `VERSION` (PNC Product Version), `MILESTONE` (PNC Product Milestone) or
+`QUALITY` (PNC Artifact Quality) and more... These Qualifier have their respective values like `PRODUCT:RHSSO`,
+`VERSION:RHSSO 7.2`, `MILESTONE:RHSSO 7.2.3.CR2`. If an PNC-made Artifact was built by Build which was a part of RHSSO
+Product. A Qualifier `PRODUCT:RHSSO` would match that artifact or dependency in PME's context. 
+
+With `restDependencyRanks` you can express a preference which artifacts you prefer more than others. It consists of 
+separate ranks where each rank is delimited by `;` (can be modified by `-DrestDependencyRankDelimiter=','`). Simple
+example of ranking could be`-DrestDependencyRanks="PRODUCT:RHSSO"`. What would happen is, that DA will look at all 
+versions of a dependency and sort them by the Product and version suffix at the same time. 
+With some example versions and `-DrestDependencyRanks="PRODUCT:RHSSO"` best version would be picked like this.
+(highlighted version is picked for that dependency)
+
+| Version       | Product | Quality  | SORTED -->><br/><<--PRE-SORT | Version           | Product   | Quality      |
+|---------------|---------|----------|------------------------------|-------------------|-----------|--------------|
+| release-00006 | EAP     |          |                              | **release-00005** | **RHSSO** | **RELEASED** |
+| release-00002 |         |          |                              | release-00004     | RHSSO     |              |
+| release-00003 | EAP     | RELEASED |                              | release-00006     | EAP       |              |
+| release-00005 | RHSSO   | RELEASED |                              | release-00002     |           |              |
+| release-00001 |         |          |                              | release-00003     | EAP       | RELEASED     |
+| release-00004 | RHSSO   |          |                              | release-00001     |           |              |
+
+Order of ranks matter, with higher rank comes higher priority. Additionally, ranks 'cooperate' with each other. Versions
+with multiple ranks that match will be prioritized. 
+
+For example `-DrestDependencyRanks="PRODUCT:EAP;QUALITY:RELEASED"` would result in this order.
+
+| Version       | Product | Quality  | SORTED -->><br/><<--PRE-SORT | Version           | Product | Quality      |
+|---------------|---------|----------|------------------------------|-------------------|---------|--------------|
+| release-00006 | EAP     |          |                              | **release-00003** | **EAP** | **RELEASED** |
+| release-00002 |         |          |                              | release-00006     | EAP     |              |
+| release-00003 | EAP     | RELEASED |                              | release-00005     | RHSSO   | RELEASED     |
+| release-00005 | RHSSO   | RELEASED |                              | release-00004     | RHSSO   |              |
+| release-00001 |         |          |                              | release-00002     |         |              |
+| release-00004 | RHSSO   |          |                              | release-00001     |         |              |
+
+
+`restDependencyAllowList` and `restDependencyDenyList` are fairly straightforward. They are comma-seperated 
+(non-configurable) list of Qualifiers that will, in case of allowList, be **exclusively** allowed or in case of
+denyList, **not allowed at all**.
+
+An example:
+
+    -DrestDependencyAllowList="PRODUCT:EAP, PRODUCT:RHSSO"
+
+    -DrestDependencyDenyList="QUALITY:BLACKLISTED"
+
+Furthermore, you can change the scope of affected dependencies for specific groupIDs or groupID:artifactIDs. The
+`-DrestDependencyRanks` is global, while `-DrestDependencyRanks.artifactID:groupID` is applied on a subset.
+For example`-DrestDependencyRanks.org.slf4j='PRODUCT:EAP'` would apply only to artifacts with `org.slf4j` groupID. This 
+is the case also for `-DrestDependencyAllowList.org.slf4j:slf4j-api` and `-DrestDependencyAllowList.org.slf4j:slf4j-api`. 
+
+Full list of available Qualifiers and much more in-depth guide how ranking system works will be available in other
+document (TBD).
+
 ### Direct/Transitive Dependencies
 
 <table bgcolor="#ffff00">
