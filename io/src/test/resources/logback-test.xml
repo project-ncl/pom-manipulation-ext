@@ -35,4 +35,5 @@
   <logger name="com.jayway.jsonpath.internal.JsonContext" level="WARN" />
   <logger name="org.commonjava.util.jhttpc" level="WARN" />
   <logger name="org.commonjava.maven.galley" level="WARN" />
+  <logger name="Sisu" level="WARN" />
 </configuration>

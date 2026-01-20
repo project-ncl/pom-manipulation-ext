@@ -325,7 +325,7 @@ public class CliTest {
                 .replaceAll("org.jboss.pnc.maven-manipulator:pom-manipulation-.*\\n", "");
         System.out.println(cliOutput);
 
-        assertTrue(cliOutput.contains("Found 84"));
+        assertTrue(cliOutput.contains("Found 85"));
         assertTrue(
                 cliOutput.matches(
                         "(?s).*"
@@ -389,6 +389,7 @@ public class CliTest {
                                 + "org.eclipse.aether:aether-api:1.1.0                                             jar                                     provided            \n"
                                 + "org.eclipse.jetty:jetty-server:9.[.\\d+]+[v\\d+]*\\s+                           jar                                     compile             \n"
                                 + "org.eclipse.sisu:org.eclipse.sisu.plexus:0.9.0.M4                               jar                                     compile             \n"
+                                + "org.eclipse.sisu:sisu-maven-plugin:0.9.0.M4                                     maven-plugin                                                \n"
                                 + "org.goots.hiderdoclet:doclet:1.1                                                jar                                     compile             \n"
                                 + "org.hamcrest:hamcrest-all:1.3                                                   jar                                     test                \n"
                                 + "org.jacoco:jacoco-maven-plugin:0.8[.\\d+]+\\s+                                  maven-plugin                                                \n"
