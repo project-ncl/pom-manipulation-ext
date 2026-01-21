@@ -87,7 +87,7 @@ public class PluginInjectingManipulator
                 session.anyStateEnabled(State.activeByDefault)) {
             for (final Project project : projects) {
                 if (project.isExecutionRoot()) {
-                    logger.info("Examining {} to apply sources/metadata plugins.", project);
+                    logger.info("Examining {} to apply project-sources plugin.", project);
 
                     final Model model = project.getModel();
                     Build build = model.getBuild();
@@ -126,7 +126,9 @@ public class PluginInjectingManipulator
 
     @Override
     public int getExecutionIndex() {
+        // Note: while this execution index means its run roughly halfway through the process that doesn't actually
+        // matter as it is just adding the plugin definition. The actual generation of the tar is run during the build
+        // during the initialise phase.
         return 60;
     }
-
 }

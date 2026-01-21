@@ -26,4 +26,12 @@ plugin = pom.build.plugins.plugin.find { it.artifactId.text() == "maven-processo
 assert plugin != null
 assert plugin.version.text() == "3.3.2"
 
+def foundProjectSources = false
+pom.build.plugins.children().each{
+    if (it.artifactId == "project-sources-maven-plugin" ){
+        foundProjectSources = true
+    }
+}
+assert foundProjectSources == false
+
 assert pomFile.text.contains ("<buildNumberPlugin>1.4")
