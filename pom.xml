@@ -76,7 +76,7 @@
     <javaTestVersion>${javaVersion}</javaTestVersion>
     <addJarIndex>false</addJarIndex>
 
-    <mavenVersion>3.9.11</mavenVersion>
+    <mavenVersion>3.9.12</mavenVersion>
     <atlasVersion>1.1.8</atlasVersion>
     <daVersion>2.6.9</daVersion>
     <galleyVersion>1.21</galleyVersion>
