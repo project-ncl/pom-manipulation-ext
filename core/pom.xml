@@ -135,6 +135,12 @@
       <artifactId>lombok</artifactId>
     </dependency>
 
+    <!-- Provided scope in parent -->
+    <dependency>
+      <groupId>org.goots.hiderdoclet</groupId>
+      <artifactId>doclet</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

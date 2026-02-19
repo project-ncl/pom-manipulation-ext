@@ -31,6 +31,7 @@
   <description>Common code shared amongst IO and Core</description>
 
   <dependencies>
+    <!-- Provided scope in parent -->
     <dependency>
       <groupId>org.jboss.pnc.maven-manipulator</groupId>
       <artifactId>pom-manipulation-annotation</artifactId>
@@ -46,10 +47,6 @@
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
-      <artifactId>maven-model-builder</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.maven</groupId>
       <artifactId>maven-settings</artifactId>
     </dependency>
 
@@ -61,6 +58,13 @@
     <dependency>
       <groupId>org.commonjava.atlas</groupId>
       <artifactId>atlas-identities</artifactId>
+      <!-- Drags in logback when we don't need it -->
+      <exclusions>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -84,14 +88,29 @@
       <artifactId>unirest-objectmapper-jackson</artifactId>
     </dependency>
 
+    <!-- Only want org.commonjava.maven.galley.maven.internal.defaults.StandardMaven350PluginDefaults and
+         org.commonjava.maven.galley.maven.spi.defaults.MavenPluginDefaults -->
     <dependency>
       <groupId>org.commonjava.maven.galley</groupId>
       <artifactId>galley-maven</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
+    <!-- Only want org.jboss.da.model.rest.GAV -->
     <dependency>
       <groupId>org.jboss.da</groupId>
       <artifactId>reports-model</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -103,27 +122,24 @@
       <artifactId>commons-lang3</artifactId>
     </dependency>
     <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.goots.hiderdoclet</groupId>
-      <artifactId>doclet</artifactId>
-    </dependency>
-
-    <dependency>
       <groupId>org.jdom</groupId>
       <artifactId>jdom2</artifactId>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
+    </dependency>
+
+    <!-- Provided scope in parent -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+
+    <!-- Provided scope in parent -->
+    <dependency>
+      <groupId>org.goots.hiderdoclet</groupId>
+      <artifactId>doclet</artifactId>
     </dependency>
 
     <dependency>
@@ -144,6 +160,11 @@
     <dependency>
       <groupId>org.jboss.byteman</groupId>
       <artifactId>byteman-bmunit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>

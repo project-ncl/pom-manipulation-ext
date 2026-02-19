@@ -97,8 +97,8 @@
     <!-- In https://github.com/FasterXML/jackson-annotations/blob/2.x/release-notes/VERSION-2.x#L31 the patch number was dropped -->
     <jacksonAnnotationsVersion>2.20</jacksonAnnotationsVersion>
 
-    <argLine />
-    <surefireSecurityManager />
+    <argLine/>
+    <surefireSecurityManager/>
   </properties>
 
   <dependencyManagement>
@@ -107,6 +107,7 @@
         <groupId>org.jboss.pnc.maven-manipulator</groupId>
         <artifactId>pom-manipulation-annotation</artifactId>
         <version>5.2-SNAPSHOT</version>
+        <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.jboss.pnc.maven-manipulator</groupId>
@@ -496,6 +497,7 @@
         <groupId>org.goots.hiderdoclet</groupId>
         <artifactId>doclet</artifactId>
         <version>${docletVersion}</version>
+        <scope>provided</scope>
       </dependency>
 
       <dependency>
@@ -599,12 +601,12 @@
             </additionalClasspathElements>
             <!-- ensure we don't inherit a byteman jar from any env settings -->
             <environmentVariables>
-              <BYTEMAN_HOME />
+              <BYTEMAN_HOME/>
             </environmentVariables>
             <systemPropertyVariables>
               <property>
                 <name>org.jboss.byteman.home</name>
-                <value />
+                <value/>
               </property>
             </systemPropertyVariables>
           </configuration>
@@ -795,7 +797,7 @@
             </sortPom>
           </pom>
           <java>
-            <removeUnusedImports />
+            <removeUnusedImports/>
             <importOrder>
               <file>java-import-order.txt</file>
             </importOrder>

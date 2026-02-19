@@ -390,7 +390,7 @@ public class CliTest {
                                 + "org.eclipse.jetty:jetty-server:9.[.\\d+]+[v\\d+]*\\s+                           jar                                     compile             \n"
                                 + "org.eclipse.sisu:org.eclipse.sisu.plexus:0.9.0.M4                               jar                                     compile             \n"
                                 + "org.eclipse.sisu:sisu-maven-plugin:0.9.0.M4                                     maven-plugin                                                \n"
-                                + "org.goots.hiderdoclet:doclet:1.1                                                jar                                     compile             \n"
+                                + "org.goots.hiderdoclet:doclet:1.1                                                jar                                     provided            \n"
                                 + "org.hamcrest:hamcrest-all:1.3                                                   jar                                     test                \n"
                                 + "org.jacoco:jacoco-maven-plugin:0.8[.\\d+]+\\s+                                  maven-plugin                                                \n"
                                 + "org.jboss.byteman:byteman-bmunit:4[.\\d+]+\\s+                                  jar                                     test                \n"
