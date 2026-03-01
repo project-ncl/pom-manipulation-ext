@@ -93,7 +93,7 @@
     <shadePluginVersion>3.5.1</shadePluginVersion>
     <mavenReleaseVersion>3.3.1</mavenReleaseVersion>
 
-    <jacksonVersion>2.20.0</jacksonVersion>
+    <jacksonVersion>2.21.1</jacksonVersion>
     <!-- In https://github.com/FasterXML/jackson-annotations/blob/2.x/release-notes/VERSION-2.x#L31 the patch number was dropped -->
     <jacksonAnnotationsVersion>2.20</jacksonAnnotationsVersion>
 
