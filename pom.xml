@@ -94,9 +94,6 @@
     <mavenReleaseVersion>3.3.1</mavenReleaseVersion>
 
     <jacksonVersion>2.20.0</jacksonVersion>
-    <!-- In https://github.com/FasterXML/jackson-annotations/blob/2.x/release-notes/VERSION-2.x#L31 the patch number was dropped -->
-    <jacksonAnnotationsVersion>2.20</jacksonAnnotationsVersion>
-
     <argLine/>
     <surefireSecurityManager/>
   </properties>
@@ -394,19 +391,11 @@
       </dependency>
 
       <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-core</artifactId>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
         <version>${jacksonVersion}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${jacksonVersion}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-annotations</artifactId>
-        <version>${jacksonAnnotationsVersion}</version>
+        <type>pom</type>
+        <scope>import</scope>
       </dependency>
 
       <dependency>

@@ -189,7 +189,7 @@ public class ProjectComparatorTest {
         assertFalse(result.contains("org.foobar"));
         assertTrue(
                 result.contains(
-                        "Non-Aligned Managed dependencies : com.fasterxml.jackson.core:jackson-annotations:jar:2."));
+                        "Non-Aligned Managed dependencies : com.fasterxml.jackson:jackson-bom:pom:"));
         assertTrue(result.contains("Non-Aligned Managed plugins : org.codehaus.mojo:animal-sniffer-maven-plugin:1.2"));
     }
 

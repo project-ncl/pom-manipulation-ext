@@ -187,7 +187,7 @@ public class BaseScriptTest {
                         .getDependencyManagement()
                         .getDependencies()
                         .stream()
-                        .filter(d -> d.getArtifactId().equals("jackson-databind"))
+                        .filter(d -> d.getArtifactId().equals("jackson-bom"))
                         .findFirst()
                         .orElseThrow(Exception::new)
                         .getVersion()
