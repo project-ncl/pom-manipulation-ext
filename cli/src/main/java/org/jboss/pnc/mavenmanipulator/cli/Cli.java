@@ -60,7 +60,7 @@ import org.codehaus.plexus.PlexusContainerException;
 import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.commonjava.atlas.maven.ident.ref.ArtifactRef;
 import org.commonjava.atlas.maven.ident.ref.InvalidRefException;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.model.SimpleScopedArtifactRef;
 import org.jboss.pnc.mavenmanipulator.core.ManipulationManager;
 import org.jboss.pnc.mavenmanipulator.core.ManipulationSession;

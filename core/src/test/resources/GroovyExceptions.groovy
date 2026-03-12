@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException
 import org.jboss.pnc.mavenmanipulator.core.groovy.BaseScript
 import org.jboss.pnc.mavenmanipulator.core.groovy.InvocationPoint
 import org.jboss.pnc.mavenmanipulator.core.groovy.InvocationStage

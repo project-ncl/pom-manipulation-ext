@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
+import org.jboss.pnc.mavenmanipulator.common.Version;
 import org.jboss.pnc.mavenmanipulator.core.state.VersioningState;
 import org.junit.Test;
 
@@ -53,9 +54,17 @@ public class VersionTest {
 
     @Test
     public void testAppendQualifierSuffix_WithProperty() {
-        assertThat(Version.appendQualifierSuffix(Version.PROJECT_VERSION, "foo"), equalTo("${project.version}-foo"));
+        assertThat(
+                Version.appendQualifierSuffix(
+                        Version.PROJECT_VERSION,
+                        "foo"),
+                equalTo("${project.version}-foo"));
         assertThat(Version.appendQualifierSuffix("1.0.${micro}", ".foo"), equalTo("1.0.${micro}.foo"));
-        assertThat(Version.setBuildNumber(Version.PROJECT_VERSION, "10"), equalTo("${project.version}-10"));
+        assertThat(
+                Version.setBuildNumber(
+                        Version.PROJECT_VERSION,
+                        "10"),
+                equalTo("${project.version}-10"));
         assertThat(Version.setBuildNumber("${project.version}-foo", "10"), equalTo("${project.version}-foo-10"));
     }
 
@@ -199,11 +208,13 @@ public class VersionTest {
 
         String o = "1.1-foo";
         assertThat(
-                Version.getOsgiVersion(Version.getOsgiMMM(o, true) + "." + Version.getQualifier(o)),
+                Version.getOsgiVersion(
+                        Version.getOsgiMMM(o, true) + "." + Version.getQualifier(o)),
                 equalTo("1.1.0.foo"));
         o = "1.2";
         assertThat(
-                Version.getOsgiVersion(Version.getOsgiMMM(o, true) + "." + Version.getQualifier(o)),
+                Version.getOsgiVersion(
+                        Version.getOsgiMMM(o, true) + "." + Version.getQualifier(o)),
                 equalTo("1.2.0"));
     }
 

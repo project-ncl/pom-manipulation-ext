@@ -53,6 +53,7 @@
 
   <modules>
     <module>annotation</module>
+    <module>common-lite</module>
     <module>common</module>
     <module>io</module>
     <module>core</module>
@@ -105,6 +106,11 @@
         <artifactId>pom-manipulation-annotation</artifactId>
         <version>5.2-SNAPSHOT</version>
         <scope>provided</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.jboss.pnc.maven-manipulator</groupId>
+        <artifactId>pom-manipulation-common-lite</artifactId>
+        <version>5.2-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.jboss.pnc.maven-manipulator</groupId>

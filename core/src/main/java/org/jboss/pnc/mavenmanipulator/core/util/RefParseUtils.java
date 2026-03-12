@@ -29,7 +29,7 @@ import java.util.function.Function;
 
 import org.apache.commons.io.FileUtils;
 import org.commonjava.atlas.maven.ident.ref.InvalidRefException;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationUncheckedException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationUncheckedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

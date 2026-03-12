@@ -24,7 +24,7 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
 
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;

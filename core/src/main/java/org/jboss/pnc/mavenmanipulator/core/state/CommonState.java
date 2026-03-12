@@ -21,7 +21,7 @@ import java.util.Properties;
 
 import org.apache.maven.artifact.ArtifactScopeEnum;
 import org.jboss.pnc.mavenmanipulator.annotation.ConfigValue;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.core.impl.DependencyManipulator;
 import org.jboss.pnc.mavenmanipulator.core.impl.PluginManipulator;
 

@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Properties;
 
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.core.ManipulationSession;
 import org.jboss.pnc.mavenmanipulator.core.state.CommonState;
 import org.jboss.pnc.mavenmanipulator.core.state.VersioningState;

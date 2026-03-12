@@ -21,7 +21,7 @@ import static org.junit.Assert.assertSame;
 
 import java.util.UUID;
 
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.io.rest.RestException;
 import org.junit.Test;
 

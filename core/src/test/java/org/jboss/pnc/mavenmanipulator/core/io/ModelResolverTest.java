@@ -23,7 +23,7 @@ import org.apache.maven.repository.DefaultMirrorSelector;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
 import org.jboss.byteman.contrib.bmunit.BMRule;
 import org.jboss.byteman.contrib.bmunit.BMUnitRunner;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.core.ManipulationSession;
 import org.jboss.pnc.mavenmanipulator.core.fixture.TestUtils;
 import org.jboss.pnc.mavenmanipulator.io.ModelIO;

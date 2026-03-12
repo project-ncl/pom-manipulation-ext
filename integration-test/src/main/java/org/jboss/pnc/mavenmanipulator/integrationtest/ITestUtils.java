@@ -36,7 +36,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.jboss.pnc.mavenmanipulator.cli.Cli;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.integrationtest.invoker.DefaultExecutionParser;
 import org.jboss.pnc.mavenmanipulator.integrationtest.invoker.Execution;
 import org.jboss.pnc.mavenmanipulator.integrationtest.invoker.ExecutionParser;

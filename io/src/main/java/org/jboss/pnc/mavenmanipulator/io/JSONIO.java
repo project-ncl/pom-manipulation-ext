@@ -26,7 +26,7 @@ import java.nio.charset.StandardCharsets;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

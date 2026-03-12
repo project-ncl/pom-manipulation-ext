@@ -28,7 +28,7 @@ import org.apache.maven.model.Plugin;
 import org.commonjava.atlas.maven.ident.ref.ArtifactRef;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.jboss.pnc.mavenmanipulator.annotation.ConfigValue;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.core.impl.PluginManipulator;
 import org.jboss.pnc.mavenmanipulator.core.util.IdUtils;
 

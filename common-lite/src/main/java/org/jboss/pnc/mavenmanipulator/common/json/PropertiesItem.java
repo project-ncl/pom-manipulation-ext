@@ -19,28 +19,31 @@ package org.jboss.pnc.mavenmanipulator.common.json;
  * Created by JacksonGenerator on 23/07/2019.
  */
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
-@JsonPropertyOrder({ "executionRoot", "modules" })
-public class PME {
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class PropertiesItem {
     /**
-     * Represents the root of the project and is used by Repour to calculate the project GAV change.
+     * The original value of the property.
+     *
+     * @return the old value
      */
-    @JsonProperty("executionRoot")
-    private GAV gav = new GAV();
+    @Getter
+    @Setter
+    @JsonProperty("oldValue")
+    private String oldValue;
 
     /**
-     * A collection of one or more modules containing the changes made.
+     * The new value of the property.
      */
-    @JsonProperty
-    private List<ModulesItem> modules = new ArrayList<>();
+    @JsonProperty("value")
+    private String newValue;
 }

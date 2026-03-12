@@ -42,7 +42,7 @@ import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.maven.galley.maven.parse.GalleyMavenXMLException;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
 import org.jboss.pnc.mavenmanipulator.core.ManipulationSession;
 import org.jboss.pnc.mavenmanipulator.io.resolver.GalleyAPIWrapper;

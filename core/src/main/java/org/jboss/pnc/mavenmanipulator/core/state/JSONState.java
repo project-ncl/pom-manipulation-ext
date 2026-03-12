@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.jboss.pnc.mavenmanipulator.annotation.ConfigValue;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.core.impl.JSONManipulator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

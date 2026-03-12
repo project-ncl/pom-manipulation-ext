@@ -39,7 +39,7 @@ import org.apache.maven.model.Profile;
 import org.apache.maven.project.MavenProject;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
 import org.jboss.pnc.mavenmanipulator.common.util.ProfileUtils;
 import org.jboss.pnc.mavenmanipulator.core.ManipulationSession;

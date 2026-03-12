@@ -27,7 +27,7 @@ import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
 import org.codehaus.plexus.PlexusContainer;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
 import org.jboss.pnc.mavenmanipulator.core.fixture.TestUtils;
 import org.jboss.pnc.mavenmanipulator.core.state.VersioningState;

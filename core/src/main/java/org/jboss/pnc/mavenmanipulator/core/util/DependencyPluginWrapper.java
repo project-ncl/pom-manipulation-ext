@@ -19,7 +19,7 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Exclusion;
 import org.apache.maven.model.InputLocationTracker;
 import org.apache.maven.model.Plugin;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 
 /**
  * Simple wrapper to allow a Plugin or Dependency to be handled within the same way.

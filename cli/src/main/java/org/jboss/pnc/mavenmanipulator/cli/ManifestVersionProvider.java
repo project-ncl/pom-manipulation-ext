@@ -16,7 +16,7 @@
 
 package org.jboss.pnc.mavenmanipulator.cli;
 
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.util.ManifestUtils;
 
 import picocli.CommandLine;

@@ -30,7 +30,7 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
 import org.jboss.pnc.mavenmanipulator.core.ManipulationSession;
 import org.jboss.pnc.mavenmanipulator.core.state.XMLState;

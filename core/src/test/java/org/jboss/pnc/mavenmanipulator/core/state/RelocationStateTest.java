@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.Properties;
 
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.junit.Test;
 
 public class RelocationStateTest {

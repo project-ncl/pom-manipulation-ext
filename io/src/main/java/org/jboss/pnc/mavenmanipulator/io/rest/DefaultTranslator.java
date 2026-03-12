@@ -33,7 +33,7 @@ import org.apache.http.HttpStatus;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.jboss.da.lookup.model.MavenLatestRequest;
 import org.jboss.da.lookup.model.MavenLookupRequest;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationUncheckedException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationUncheckedException;
 import org.jboss.pnc.mavenmanipulator.common.json.DependencyAnalyserResult;
 import org.jboss.pnc.mavenmanipulator.common.json.ErrorMessage;
 import org.jboss.pnc.mavenmanipulator.common.util.GAVUtils;

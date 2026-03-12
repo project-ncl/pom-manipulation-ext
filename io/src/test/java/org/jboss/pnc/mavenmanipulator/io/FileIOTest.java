@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.FileUtils;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.io.resolver.GalleyInfrastructure;
 import org.jboss.pnc.mavenmanipulator.io.rest.handler.StaticResourceHandler;
 import org.jboss.pnc.mavenmanipulator.io.rest.rule.MockServer;

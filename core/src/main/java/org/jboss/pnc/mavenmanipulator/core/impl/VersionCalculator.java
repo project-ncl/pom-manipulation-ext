@@ -15,7 +15,7 @@
  */
 package org.jboss.pnc.mavenmanipulator.core.impl;
 
-import static org.jboss.pnc.mavenmanipulator.core.impl.Version.findHighestMatchingBuildNumber;
+import static org.jboss.pnc.mavenmanipulator.common.Version.findHighestMatchingBuildNumber;
 import static org.jboss.pnc.mavenmanipulator.core.util.IdUtils.gav;
 
 import java.util.HashMap;
@@ -35,7 +35,8 @@ import org.commonjava.atlas.maven.ident.ref.ProjectRef;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectRef;
 import org.commonjava.maven.galley.maven.model.view.meta.MavenMetadataView;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.Version;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
 import org.jboss.pnc.mavenmanipulator.common.util.PropertyResolver;
 import org.jboss.pnc.mavenmanipulator.core.ManipulationSession;

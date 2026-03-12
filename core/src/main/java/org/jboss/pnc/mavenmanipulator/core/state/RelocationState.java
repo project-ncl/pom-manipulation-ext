@@ -25,7 +25,7 @@ import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
 import org.jboss.pnc.mavenmanipulator.annotation.ConfigValue;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.util.WildcardMap;
 import org.jboss.pnc.mavenmanipulator.core.util.PropertiesUtils;
 import org.slf4j.Logger;

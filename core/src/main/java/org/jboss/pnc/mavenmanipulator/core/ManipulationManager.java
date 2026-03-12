@@ -44,7 +44,7 @@ import org.apache.maven.profiles.activation.ProfileActivationException;
 import org.apache.maven.project.ProjectBuilder;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.jboss.pnc.mavenmanipulator.annotation.ConfigValue;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.json.PME;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
 import org.jboss.pnc.mavenmanipulator.common.util.JSONUtils;

@@ -18,7 +18,7 @@ package org.jboss.pnc.mavenmanipulator.core.impl;
 import java.util.List;
 import java.util.Set;
 
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
 import org.jboss.pnc.mavenmanipulator.core.ManipulationSession;
 import org.jboss.pnc.mavenmanipulator.core.state.State;

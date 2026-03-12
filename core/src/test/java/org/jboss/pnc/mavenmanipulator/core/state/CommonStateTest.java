@@ -21,7 +21,7 @@ import static org.jboss.pnc.mavenmanipulator.core.state.DependencyState.DEPENDEN
 
 import java.util.Properties;
 
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.junit.Test;
 
 public class CommonStateTest {

@@ -33,7 +33,7 @@ import java.util.Collections;
 import org.apache.commons.io.FileUtils;
 import org.apache.maven.settings.Settings;
 import org.apache.maven.settings.io.DefaultSettingsReader;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;

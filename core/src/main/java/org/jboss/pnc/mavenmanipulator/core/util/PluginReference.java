@@ -19,8 +19,8 @@ package org.jboss.pnc.mavenmanipulator.core.util;
 import org.apache.maven.model.ConfigurationContainer;
 import org.apache.maven.model.InputLocation;
 import org.apache.maven.model.InputLocationTracker;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationUncheckedException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationUncheckedException;
 import org.jboss.pnc.mavenmanipulator.io.resolver.GalleyAPIWrapper;
 import org.w3c.dom.Node;
 

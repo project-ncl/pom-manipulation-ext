@@ -48,7 +48,7 @@ import org.apache.maven.shared.release.transform.jdom2.JDomModelETLFactory;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.maven.galley.maven.parse.PomPeek;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.jdom.JDOMModelConverter;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
 import org.jboss.pnc.mavenmanipulator.common.session.MavenSessionHandler;

@@ -22,7 +22,7 @@ import java.security.CodeSource;
 import java.util.jar.JarInputStream;
 import java.util.jar.Manifest;
 
-import org.jboss.pnc.mavenmanipulator.common.ManipulationUncheckedException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationUncheckedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

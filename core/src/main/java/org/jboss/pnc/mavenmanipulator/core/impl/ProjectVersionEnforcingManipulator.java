@@ -27,6 +27,7 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.Profile;
+import org.jboss.pnc.mavenmanipulator.common.Version;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
 import org.jboss.pnc.mavenmanipulator.common.util.ProfileUtils;
 import org.jboss.pnc.mavenmanipulator.core.ManipulationSession;

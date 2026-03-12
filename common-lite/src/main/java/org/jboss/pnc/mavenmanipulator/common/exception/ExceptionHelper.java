@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.jboss.pnc.mavenmanipulator.common;
+package org.jboss.pnc.mavenmanipulator.common.exception;
 
 /**
  * This class should not really be required but when the tooling is embedded in Maven as an extension

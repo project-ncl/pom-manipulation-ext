@@ -41,7 +41,7 @@ import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
 import org.commonjava.atlas.maven.ident.util.VersionUtils;
 import org.commonjava.maven.galley.maven.internal.defaults.StandardMaven350PluginDefaults;
 import org.commonjava.maven.galley.maven.spi.defaults.MavenPluginDefaults;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.session.MavenSessionHandler;
 import org.jboss.pnc.mavenmanipulator.common.util.ProfileUtils;
 import org.jboss.pnc.mavenmanipulator.common.util.PropertyResolver;

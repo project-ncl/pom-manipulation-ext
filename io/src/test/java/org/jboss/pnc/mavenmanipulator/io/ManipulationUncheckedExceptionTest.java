@@ -21,7 +21,7 @@ import static org.junit.Assert.assertSame;
 
 import java.util.UUID;
 
-import org.jboss.pnc.mavenmanipulator.common.ManipulationUncheckedException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationUncheckedException;
 import org.junit.Test;
 
 public class ManipulationUncheckedExceptionTest {

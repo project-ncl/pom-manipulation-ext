@@ -28,7 +28,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
 import org.jboss.pnc.mavenmanipulator.core.ManipulationSession;
 import org.jboss.pnc.mavenmanipulator.core.state.PropertyState;

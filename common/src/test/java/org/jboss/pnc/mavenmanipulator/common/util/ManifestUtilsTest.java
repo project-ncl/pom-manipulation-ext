@@ -21,12 +21,15 @@ import static org.junit.Assert.fail;
 import org.apache.maven.model.Model;
 import org.jboss.byteman.contrib.bmunit.BMRule;
 import org.jboss.byteman.contrib.bmunit.BMUnitRunner;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationUncheckedException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationUncheckedException;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.junit.runner.RunWith;
 
+/**
+ * The source for this is in commons-lite but keeping this here keeps the dependencies minimal.
+ */
 @RunWith(BMUnitRunner.class)
 public class ManifestUtilsTest {
     @Rule

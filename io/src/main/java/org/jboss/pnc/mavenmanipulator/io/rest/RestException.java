@@ -15,7 +15,7 @@
  */
 package org.jboss.pnc.mavenmanipulator.io.rest;
 
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 
 /**
  * @author vdedik@redhat.com

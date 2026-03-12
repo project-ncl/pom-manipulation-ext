@@ -52,7 +52,7 @@ import org.commonjava.maven.galley.maven.model.view.DependencyView;
 import org.commonjava.maven.galley.maven.model.view.MavenPomView;
 import org.commonjava.maven.galley.maven.model.view.PluginView;
 import org.commonjava.maven.galley.model.Transfer;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.io.resolver.GalleyAPIWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

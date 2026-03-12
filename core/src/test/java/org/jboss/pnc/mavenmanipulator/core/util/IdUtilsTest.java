@@ -23,7 +23,7 @@ import java.util.List;
 
 import org.commonjava.atlas.maven.ident.ref.ProjectRef;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationUncheckedException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationUncheckedException;
 import org.jboss.pnc.mavenmanipulator.io.rest.handler.StaticResourceHandler;
 import org.jboss.pnc.mavenmanipulator.io.rest.rule.MockServer;
 import org.junit.Rule;

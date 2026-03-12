@@ -18,7 +18,7 @@ package org.jboss.pnc.mavenmanipulator.core.groovy;
 import java.io.File;
 import java.util.Properties;
 
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.io.FileIO;
 import org.jboss.pnc.mavenmanipulator.io.rest.Translator;
 

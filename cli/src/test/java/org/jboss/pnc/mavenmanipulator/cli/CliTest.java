@@ -325,7 +325,7 @@ public class CliTest {
                 .replaceAll("org.jboss.pnc.maven-manipulator:pom-manipulation-.*\\n", "");
         System.out.println(cliOutput);
 
-        assertTrue(cliOutput.contains("Found 83"));
+        assertTrue(cliOutput.contains("Found 84"));
         assertTrue(
                 cliOutput.matches(
                         "(?s).*"

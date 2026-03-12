@@ -21,12 +21,12 @@ import java.util.Map;
 
 import org.commonjava.atlas.maven.ident.ref.ProjectRef;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationUncheckedException;
+import org.jboss.pnc.mavenmanipulator.common.Version;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationUncheckedException;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
 import org.jboss.pnc.mavenmanipulator.common.util.PropertyResolver;
 import org.jboss.pnc.mavenmanipulator.core.ManipulationSession;
-import org.jboss.pnc.mavenmanipulator.core.impl.Version;
 import org.jboss.pnc.mavenmanipulator.core.state.VersioningState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

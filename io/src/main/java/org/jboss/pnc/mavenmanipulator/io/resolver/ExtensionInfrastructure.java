@@ -20,7 +20,7 @@ import java.io.File;
 import org.apache.maven.execution.MavenSession;
 import org.commonjava.maven.galley.model.Location;
 import org.commonjava.maven.galley.spi.transport.Transport;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 
 /**
  * Represents a piece of extension infrastructure that gets initialised when the {@link MavenSession} becomes available.

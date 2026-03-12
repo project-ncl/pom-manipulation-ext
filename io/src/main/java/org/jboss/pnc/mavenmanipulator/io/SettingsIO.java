@@ -38,7 +38,7 @@ import org.apache.maven.shared.release.transform.ModelETL;
 import org.apache.maven.shared.release.transform.ModelETLRequest;
 import org.apache.maven.shared.release.transform.jdom2.JDomModelETL;
 import org.apache.maven.shared.release.transform.jdom2.JDomModelETLFactory;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.jdom.JDOMSettingsConverter;
 import org.jboss.pnc.mavenmanipulator.common.util.LineSeparator;
 import org.jdom2.JDOMException;

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
-import org.jboss.pnc.mavenmanipulator.common.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
 import org.jboss.pnc.mavenmanipulator.common.session.MavenSessionHandler;
 import org.jboss.pnc.mavenmanipulator.core.ManipulationSession;
