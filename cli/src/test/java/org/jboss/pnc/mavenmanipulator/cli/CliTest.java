@@ -325,16 +325,14 @@ public class CliTest {
                 .replaceAll("org.jboss.pnc.maven-manipulator:pom-manipulation-.*\\n", "");
         System.out.println(cliOutput);
 
-        assertTrue(cliOutput.contains("Found 85"));
+        assertTrue(cliOutput.contains("Found 83"));
         assertTrue(
                 cliOutput.matches(
                         "(?s).*"
                                 + "ch.qos.logback:logback-classic:1.[.\\d+]+\\s+                                   jar                                     compile             \n"
                                 + "ch.qos.logback:logback-core:1.[.\\d+]+\\s+                                      jar                                     compile             \n"
                                 + "com.diffplug.spotless:spotless-maven-plugin:[.\\d+]+\\s+                        maven-plugin                                                \n"
-                                + "com.fasterxml.jackson.core:jackson-annotations:2.[.\\w+|\\a|-]+\\s+             jar                                     compile             \n"
-                                + "com.fasterxml.jackson.core:jackson-core:2.[.\\w+|-]+\\s+                        jar                                     compile             \n"
-                                + "com.fasterxml.jackson.core:jackson-databind:2.[.\\w+|-]+\\s+                    jar                                     compile             \n"
+                                + "com.fasterxml.jackson:jackson-bom:2.[.\\d+]+\\s+                                pom                                     import              \n"
                                 + "com.github.olivergondza:maven-jdk-tools-wrapper:0.1                             jar                                     compile             \n"
                                 + "com.github.stefanbirkner:system-rules:1.[.\\d+]+\\s+                            jar                                     test                \n"
                                 + "com.google.guava:guava:33.[.\\d+]+-jre\\s+                                      jar                                     compile             \n"
