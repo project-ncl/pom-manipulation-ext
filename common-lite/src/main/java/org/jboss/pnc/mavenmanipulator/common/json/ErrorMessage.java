@@ -15,14 +15,11 @@
  */
 package org.jboss.pnc.mavenmanipulator.common.json;
 
-import org.goots.hiderdoclet.doclet.JavadocExclude;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-@JavadocExclude
 public class ErrorMessage {
     private String errorType;
 

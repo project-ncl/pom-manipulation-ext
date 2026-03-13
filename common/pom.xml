@@ -85,6 +85,10 @@
     </dependency>
     <dependency>
       <groupId>com.konghq</groupId>
+      <artifactId>unirest-java</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.konghq</groupId>
       <artifactId>unirest-objectmapper-jackson</artifactId>
     </dependency>
 

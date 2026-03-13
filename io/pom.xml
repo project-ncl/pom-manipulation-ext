@@ -39,6 +39,10 @@
       <groupId>org.jboss.pnc.maven-manipulator</groupId>
       <artifactId>pom-manipulation-common</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.jboss.pnc.maven-manipulator</groupId>
+      <artifactId>pom-manipulation-common-lite</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>commons-io</groupId>

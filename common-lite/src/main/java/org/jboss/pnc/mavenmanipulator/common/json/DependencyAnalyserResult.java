@@ -16,7 +16,6 @@
 package org.jboss.pnc.mavenmanipulator.common.json;
 
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
-import org.goots.hiderdoclet.doclet.JavadocExclude;
 import org.jboss.da.model.rest.GAV;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -28,7 +27,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-@JavadocExclude
 @EqualsAndHashCode(exclude = "projectVersionRef")
 @NoArgsConstructor
 @Data

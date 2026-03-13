@@ -20,33 +20,23 @@ import java.io.IOException;
 
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
-import org.goots.hiderdoclet.doclet.JavadocExclude;
-import org.jboss.da.model.rest.GAV;
-import org.jboss.pnc.mavenmanipulator.common.json.DependencyAnalyserResult;
 import org.jboss.pnc.mavenmanipulator.common.json.PME;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.node.JsonNodeType;
-
-import kong.unirest.jackson.JacksonObjectMapper;
 
 public class JSONUtils {
-    private static final String GROUP_ID = "groupId";
-    private static final String ARTIFACT_ID = "artifactId";
-    private static final String VERSION = "version";
-    private static final String BEST_MATCH_VERSION = "bestMatchVersion";
-    private static final String LATEST_VERSION = "latestVersion";
+    public static final String GROUP_ID = "groupId";
+    public static final String ARTIFACT_ID = "artifactId";
+    public static final String VERSION = "version";
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -104,50 +94,6 @@ public class JSONUtils {
             gen.writeStringField(ARTIFACT_ID, value.getArtifactId());
             gen.writeStringField(VERSION, value.getVersionString());
             gen.writeEndObject();
-        }
-    }
-
-    @JavadocExclude
-    public static class MavenResultDeserializer extends JsonDeserializer<DependencyAnalyserResult> {
-        @Override
-        public DependencyAnalyserResult deserialize(JsonParser p, DeserializationContext ctxt)
-                throws IOException {
-            JsonNode node = p.getCodec().readTree(p);
-            final String groupId = node.get(GROUP_ID).asText();
-            final String artifactId = node.get(ARTIFACT_ID).asText();
-            final String version = node.get(VERSION).asText();
-
-            DependencyAnalyserResult result = new DependencyAnalyserResult();
-            result.setGav(new GAV(groupId, artifactId, version));
-
-            if (node.has(BEST_MATCH_VERSION) && !node.get(BEST_MATCH_VERSION).getNodeType().equals(JsonNodeType.NULL)) {
-                result.setBestMatchVersion(node.get(BEST_MATCH_VERSION).asText());
-            }
-            if (node.has(LATEST_VERSION) && !node.get(LATEST_VERSION).getNodeType().equals(JsonNodeType.NULL)) {
-                result.setLatestVersion(node.get(LATEST_VERSION).asText());
-            }
-
-            result.setProjectVersionRef(new SimpleProjectVersionRef(groupId, artifactId, version));
-
-            return result;
-        }
-    }
-
-    @JavadocExclude
-    public static class InternalObjectMapper extends JacksonObjectMapper {
-        public InternalObjectMapper(ObjectMapper mapper) {
-            super(mapper);
-
-            mapper.configure(JsonGenerator.Feature.IGNORE_UNKNOWN, true);
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
-            SimpleModule module = new SimpleModule();
-            module.addDeserializer(ProjectVersionRef.class, new ProjectVersionRefDeserializer());
-            module.addSerializer(ProjectVersionRef.class, new ProjectVersionRefSerializer());
-            module.addDeserializer(DependencyAnalyserResult.class, new MavenResultDeserializer());
-            mapper.registerModule(module);
-
         }
     }
 }

@@ -32,7 +32,7 @@ import org.jboss.da.lookup.model.MavenLatestResult;
 import org.jboss.da.lookup.model.MavenLookupRequest;
 import org.jboss.da.lookup.model.MavenLookupResult;
 import org.jboss.da.model.rest.GAV;
-import org.jboss.pnc.mavenmanipulator.common.util.JSONUtils;
+import org.jboss.pnc.mavenmanipulator.common.util.PMEObjectMapper;
 import org.jboss.pnc.mavenmanipulator.io.rest.DefaultTranslator.Endpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,7 +61,7 @@ public class AddSuffixJettyHandler
 
     private final String endpoint;
 
-    private final JSONUtils.InternalObjectMapper objectMapper = new JSONUtils.InternalObjectMapper(new ObjectMapper());
+    private final PMEObjectMapper objectMapper = new PMEObjectMapper(new ObjectMapper());
 
     @Setter
     private String suffix;

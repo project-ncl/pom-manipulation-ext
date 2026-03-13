@@ -72,24 +72,10 @@
       </exclusions>
     </dependency>
 
-    <dependency>
-      <groupId>com.konghq</groupId>
-      <artifactId>unirest-java</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.konghq</groupId>
-      <artifactId>unirest-objectmapper-jackson</artifactId>
-    </dependency>
-
     <!-- Provided scope in parent -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-    </dependency>
-    <!-- Provided scope in parent -->
-    <dependency>
-      <groupId>org.goots.hiderdoclet</groupId>
-      <artifactId>doclet</artifactId>
     </dependency>
 
     <dependency>
