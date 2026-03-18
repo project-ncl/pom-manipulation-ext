@@ -427,6 +427,11 @@
         <version>${slf4jVersion}</version>
       </dependency>
       <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4jVersion}</version>
+      </dependency>
+      <dependency>
         <groupId>ch.qos.logback</groupId>
         <artifactId>logback-classic</artifactId>
         <version>${logbackVersion}</version>
@@ -599,10 +604,8 @@
               <BYTEMAN_HOME/>
             </environmentVariables>
             <systemPropertyVariables>
-              <property>
-                <name>org.jboss.byteman.home</name>
-                <value/>
-              </property>
+              <org.jboss.byteman.home/>
+              <org.slf4j.simpleLogger.defaultLogLevel>DEBUG</org.slf4j.simpleLogger.defaultLogLevel>
             </systemPropertyVariables>
           </configuration>
         </plugin>

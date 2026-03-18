@@ -325,7 +325,7 @@ public class CliTest {
                 .replaceAll("org.jboss.pnc.maven-manipulator:pom-manipulation-.*\\n", "");
         System.out.println(cliOutput);
 
-        assertTrue(cliOutput.contains("Found 84"));
+        assertTrue(cliOutput.contains("Found 85"));
         assertTrue(
                 cliOutput.matches(
                         "(?s).*"
@@ -397,6 +397,7 @@ public class CliTest {
                                 + "org.projectlombok:lombok:1.[.\\d+]+\\s+                                         jar                                     provided            \n"
                                 + "org.projectlombok:lombok-maven-plugin:1.[.\\d+]+\\s+                            maven-plugin                                                \n"
                                 + "org.slf4j:slf4j-api:2.[.\\d+]+\\s+                                              jar                                     compile             \n"
+                                + "org.slf4j:slf4j-simple:2.[.\\d+]+\\s+                                           jar                                     compile             \n"
                                 + "org.xmlunit:xmlunit-core:2.[.\\d+]+\\s+                                         jar                                     test                \n"
                                 + "org.xmlunit:xmlunit-matchers:2.[.\\d+]+\\s+                                     jar                                     test                \n"
                                 + "org.yaml:snakeyaml:2.[.\\d+]+\\s+                                               jar                                     compile.*"));
