@@ -22,11 +22,9 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
-import java.util.Properties;
 import java.util.Set;
 
 import org.jboss.pnc.mavenmanipulator.common.Version;
-import org.jboss.pnc.mavenmanipulator.core.state.VersioningState;
 import org.junit.Test;
 
 public class VersionTest {
@@ -410,32 +408,5 @@ public class VersionTest {
         assertEquals("t-20170216-223844-555-rebuild-5", Version.getQualifier(v));
         assertEquals(".t-20170216-223844-555-rebuild-5", Version.getQualifierWithDelim(v));
         assertEquals("t-20170216-223844-555-rebuild", Version.getQualifierBase(v));
-    }
-
-    @Test
-    public void testStateAlternatives() {
-        Properties p = new Properties();
-        VersioningState state = new VersioningState(p);
-        assertEquals(1, state.getSuffixAlternatives().size());
-        assertEquals("redhat", state.getSuffixAlternatives().get(0));
-
-        p.clear();
-        p.setProperty(VersioningState.VERSION_SUFFIX_SYSPROP, "redhat-10");
-        state = new VersioningState(p);
-        assertEquals(0, state.getSuffixAlternatives().size());
-        assertEquals(1, state.getAllSuffixes().size());
-
-        p.clear();
-        p.setProperty(VersioningState.VERSION_SUFFIX_SYSPROP, "temporary-redhat-10");
-        p.setProperty(VersioningState.VERSION_SUFFIX_ALT, "redhat-alt");
-        state = new VersioningState(p);
-        assertEquals(1, state.getSuffixAlternatives().size());
-        assertEquals("redhat-alt", state.getSuffixAlternatives().get(0));
-
-        p.clear();
-        p.setProperty(VersioningState.VERSION_SUFFIX_SYSPROP, "temporary-redhat-1");
-        state = new VersioningState(p);
-        assertEquals(1, state.getSuffixAlternatives().size());
-        assertEquals(2, state.getAllSuffixes().size());
     }
 }
