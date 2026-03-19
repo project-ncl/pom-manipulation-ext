@@ -24,11 +24,15 @@ import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
 public class GAV {
     /**
      * A string representing the Maven groupId
