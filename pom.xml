@@ -85,7 +85,7 @@
 
     <groovyVersion>3.0.25</groovyVersion>
     <unirestVersion>3.14.5</unirestVersion>
-    <jsonPathVersion>2.10.0</jsonPathVersion>
+    <jsonPathVersion>3.0.0</jsonPathVersion>
     <slf4jVersion>2.0.17</slf4jVersion>
     <logbackVersion>1.5.25</logbackVersion>
     <docletVersion>1.1</docletVersion>
