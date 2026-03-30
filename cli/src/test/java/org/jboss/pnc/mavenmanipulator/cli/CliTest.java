@@ -325,7 +325,7 @@ public class CliTest {
                 .replaceAll("org.jboss.pnc.maven-manipulator:pom-manipulation-.*\\n", "");
         System.out.println(cliOutput);
 
-        assertTrue(cliOutput.contains("Found 85"));
+        assertTrue(cliOutput.contains("Found 86"));
         assertTrue(
                 cliOutput.matches(
                         "(?s).*"
@@ -378,6 +378,7 @@ public class CliTest {
                                 + "org.codehaus.mojo:animal-sniffer-maven-plugin:1.[.\\d+]+\\s+                    maven-plugin                                                \n"
                                 + "org.codehaus.plexus:plexus-interpolation:[.\\d+]+\\s+                           jar                                     provided            \n"
                                 + "org.codehaus.plexus:plexus-utils:[.\\d+]+\\s+                                   jar                                     compile             \n"
+                                + "org.codehaus.plexus:plexus-xml:[.\\d+]+\\s+                                     jar                                     compile             \n"
                                 + "org.commonjava.atlas:atlas-identities:1.[.\\d+]+\\s+                            jar                                     compile             \n"
                                 + "org.commonjava.maven.galley:galley-api:1.21                                     jar                                     compile             \n"
                                 + "org.commonjava.maven.galley:galley-core:1.21                                    jar                                     compile             \n"
