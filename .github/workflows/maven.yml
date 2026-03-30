@@ -70,7 +70,7 @@ jobs:
     # - name: Setup tmate session
     #   uses: mxschmitt/action-tmate@v3
     - name: Codecov
-      uses: codecov/codecov-action@v5
+      uses: codecov/codecov-action@v6
 
   snapshot:
     if: github.repository == 'project-ncl/pom-manipulation-ext' && github.event_name == 'push' && github.ref == 'refs/heads/main'
