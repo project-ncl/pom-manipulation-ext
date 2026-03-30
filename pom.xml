@@ -87,7 +87,7 @@
     <unirestVersion>3.14.5</unirestVersion>
     <jsonPathVersion>2.10.0</jsonPathVersion>
     <slf4jVersion>2.0.17</slf4jVersion>
-    <logbackVersion>1.5.25</logbackVersion>
+    <logbackVersion>1.5.32</logbackVersion>
     <docletVersion>1.1</docletVersion>
     <lombokPluginVersion>1.18.20.0</lombokPluginVersion>
     <!-- Cannot update beyond 3.5.1 as this is the last version that supports Maven < 3.6.3 (MSHADE-464) -->
