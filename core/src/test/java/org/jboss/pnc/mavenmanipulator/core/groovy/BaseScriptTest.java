@@ -177,7 +177,7 @@ public class BaseScriptTest {
                         .getDependencies()
                         .stream()
                         .filter(d -> d.getGroupId().equals("org.commonjava.maven.galley"))
-                        .filter(d -> d.getVersion().equals("1.21"))
+                        .filter(d -> d.getVersion().equals("1.22"))
                         .count());
 
         bs.inlineProperty(root, "jacksonVersion");

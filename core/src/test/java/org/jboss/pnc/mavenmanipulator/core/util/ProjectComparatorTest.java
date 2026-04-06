@@ -140,8 +140,8 @@ public class ProjectComparatorTest {
         assertFalse(result.contains("Non-Aligned Managed plugins"));
 
         String jsonString = JSONUtils.jsonToString(json);
-        assertTrue(jsonString.contains("org.commonjava.maven.galley:galley-maven:1.21\" : {"));
-        assertTrue(jsonString.contains("\"version\" : \"1.21-redhat-1\""));
+        assertTrue(jsonString.contains("org.commonjava.maven.galley:galley-maven:1.22\" : {"));
+        assertTrue(jsonString.contains("\"version\" : \"1.22-redhat-1\""));
     }
 
     @Test
