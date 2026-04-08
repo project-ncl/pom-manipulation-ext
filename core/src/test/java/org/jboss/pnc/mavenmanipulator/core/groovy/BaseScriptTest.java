@@ -161,7 +161,7 @@ public class BaseScriptTest {
         }
 
         assertEquals(
-                "1.2.1",
+                "1.2.2",
                 root.getModel()
                         .getDependencyManagement()
                         .getDependencies()
