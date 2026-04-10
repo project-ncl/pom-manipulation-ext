@@ -33,7 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RESTIntegrationTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultCliIntegrationTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RESTIntegrationTest.class);
 
     private final AddSuffixJettyHandler handler = new AddSuffixJettyHandler("/", null);
 
@@ -187,6 +187,12 @@ public class RESTIntegrationTest {
     @Test
     public void testRESTVersionManipAlignmentDisabled() throws Exception {
         String test = getDefaultTestLocation("rest-version-manip-alignment-disabled");
+        runLikeInvoker(test, mockServer.getUrl());
+    }
+
+    @Test
+    public void testRESTVersionManipWithProperties() throws Exception {
+        String test = getDefaultTestLocation("rest-version-manip-with-properties");
         runLikeInvoker(test, mockServer.getUrl());
     }
 }

@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GroovyIntegrationTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultCliIntegrationTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GroovyIntegrationTest.class);
 
     private final StaticResourceHandler handler = new StaticResourceHandler("src/it/setup/depMgmt2/POMModifier.groovy");
 
