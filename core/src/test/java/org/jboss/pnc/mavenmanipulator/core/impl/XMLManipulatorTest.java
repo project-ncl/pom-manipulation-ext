@@ -66,7 +66,7 @@ public class XMLManipulatorTest {
         File target = tf.newFile();
         FileUtils.copyFile(xmlFile, target);
 
-        Project p = new Project(target, TestUtils.getDummyModel());
+        Project p = new Project(null, target, TestUtils.getDummyModel());
 
         xmlManipulator.internalApplyChanges(p, new XMLState.XMLOperation(target.getName(), path, null));
     }
@@ -78,7 +78,7 @@ public class XMLManipulatorTest {
 
         File target = tf.newFile();
         FileUtils.copyFile(xmlFile, target);
-        Project project = new Project(target, TestUtils.getDummyModel());
+        Project project = new Project(null, target, TestUtils.getDummyModel());
 
         xmlManipulator
                 .internalApplyChanges(project, new XMLState.XMLOperation(target.getName(), tomcatPath, replacementGA));

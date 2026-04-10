@@ -93,7 +93,19 @@ public class Project {
      */
     private Project projectParent;
 
-    public Project(final File pom, final Model model) throws ManipulationException {
+    /**
+     * Maven session context for this project (may be null, e.g. in tests).
+     */
+    private final MavenSessionHandler session;
+
+    /**
+     * @param sessionHandler Maven session context (may be null, e.g. in unit tests)
+     * @param pom POM file for this project
+     * @param model model to manipulate
+     */
+    public Project(final MavenSessionHandler sessionHandler, final File pom, final Model model)
+            throws ManipulationException {
+        this.session = sessionHandler;
         this.pom = pom;
         this.model = model;
 
@@ -113,16 +125,17 @@ public class Project {
      */
     public Project(final Model model)
             throws ManipulationException {
-        this(model.getPomFile(), model);
+        this(null, model.getPomFile(), model);
     }
 
     /**
-     * Create a project by copying another.
+     * Create a project by copying another. Only used by ManipulationManager for comparing changes.
      *
      * @param original the Project to use.
      */
     @SuppressWarnings("IncompleteCopyConstructor")
     public Project(final Project original) {
+        this.session = original.session;
         this.pom = original.pom;
         this.model = original.model.clone();
         this.inheritanceRoot = original.inheritanceRoot;

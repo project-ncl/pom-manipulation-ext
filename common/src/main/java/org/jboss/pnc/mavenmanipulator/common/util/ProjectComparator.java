@@ -126,10 +126,11 @@ public class ProjectComparator {
 
                                 ModulesItem module = new ModulesItem();
                                 modules.add(module);
+                                ProjectVersionRef pvr = newProject.getKey();
                                 module.getGav().setOriginalGAV(originalProject.getKey().toString());
-                                module.getGav().setPVR(newProject.getKey());
+                                module.getGav().setPVR(pvr);
 
-                                append(builder, "------------------- project {}", newProject.getKey().asProjectRef());
+                                append(builder, "------------------- project {}", pvr.asProjectRef());
                                 if (!originalProject.getVersion().equals(newProject.getVersion())) {
                                     append(
                                             builder,

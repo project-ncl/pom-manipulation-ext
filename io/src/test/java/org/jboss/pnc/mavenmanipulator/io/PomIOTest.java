@@ -64,7 +64,7 @@ public class PomIOTest {
         File targetFile = folder.newFile("target.xml");
         FileUtils.copyFile(pom, targetFile);
 
-        List<Project> projects = pomIO.parseProject(targetFile);
+        List<Project> projects = pomIO.parseProject(null, targetFile);
 
         assertNull(projects.get(0).getModel().getModelEncoding());
 
@@ -93,7 +93,7 @@ public class PomIOTest {
                 StandardCharsets.UTF_8);
         FileUtils.copyFile(pom, targetFile);
 
-        List<Project> projects = pomIO.parseProject(targetFile);
+        List<Project> projects = pomIO.parseProject(null, targetFile);
         Model model = projects.get(0).getModel();
         model.setGroupId("org.jboss.pnc.maven-manipulator.versioning.test");
         model.setArtifactId("dospom");
@@ -101,7 +101,7 @@ public class PomIOTest {
         model.setPackaging("pom");
         model.setModelVersion("4.0.0");
 
-        Project p = new Project(targetFile, model);
+        Project p = new Project(null, targetFile, model);
         HashSet<Project> changed = new HashSet<>();
         changed.add(p);
         pomIO.rewritePOMs(changed);
@@ -121,7 +121,7 @@ public class PomIOTest {
         File targetFile = folder.newFile("target.xml");
         FileUtils.copyFile(pom, targetFile);
 
-        List<Project> projects = pomIO.parseProject(targetFile);
+        List<Project> projects = pomIO.parseProject(null, targetFile);
         Project p = projects.get(0);
         p.getModel().getRepositories().clear();
 
@@ -130,7 +130,7 @@ public class PomIOTest {
 
         pomIO.rewritePOMs(changed);
 
-        p = pomIO.parseProject(targetFile).get(0);
+        p = pomIO.parseProject(null, targetFile).get(0);
 
         assertEquals(0, p.getModel().getRepositories().size());
     }
@@ -177,7 +177,7 @@ public class PomIOTest {
         File targetFile = folder.newFile("target.xml");
         FileUtils.copyFile(pom, targetFile);
 
-        Project project = pomIO.parseProject(targetFile).get(0);
+        Project project = pomIO.parseProject(null, targetFile).get(0);
         project.setExecutionRoot();
 
         HashSet<Project> changed = new HashSet<>();

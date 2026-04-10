@@ -224,7 +224,7 @@ public class ManipulationManager {
                     session.getPom());
         }
 
-        final List<Project> currentProjects = pomIO.parseProject(session.getPom());
+        final List<Project> currentProjects = pomIO.parseProject(session, session.getPom());
         final List<Project> originalProjects = new ArrayList<>();
         currentProjects.forEach(p -> originalProjects.add(new Project(p)));
 

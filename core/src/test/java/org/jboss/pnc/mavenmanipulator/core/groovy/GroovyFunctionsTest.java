@@ -65,7 +65,7 @@ public class GroovyFunctionsTest {
                         .getParentFile(),
                 "pom.xml");
         PomIO pomIO = new PomIO();
-        List<Project> projects = pomIO.parseProject(projectroot);
+        List<Project> projects = pomIO.parseProject(null, projectroot);
 
         BaseScriptImplTest impl = new BaseScriptImplTest();
         Properties p = new Properties();
@@ -97,7 +97,7 @@ public class GroovyFunctionsTest {
         final PlexusContainer container = new DefaultPlexusContainer(config);
         final PomIO pomIO = container.lookup(PomIO.class);
         final File projectroot = new File(root, "pom.xml");
-        final List<Project> projects = pomIO.parseProject(projectroot);
+        final List<Project> projects = pomIO.parseProject(null, projectroot);
 
         assertEquals(3, projects.size());
 
@@ -133,7 +133,7 @@ public class GroovyFunctionsTest {
 
         final PlexusContainer container = new DefaultPlexusContainer(config);
         final PomIO pomIO = container.lookup(PomIO.class);
-        final List<Project> projects = pomIO.parseProject(target);
+        final List<Project> projects = pomIO.parseProject(null, target);
 
         assertEquals(1, projects.size());
 

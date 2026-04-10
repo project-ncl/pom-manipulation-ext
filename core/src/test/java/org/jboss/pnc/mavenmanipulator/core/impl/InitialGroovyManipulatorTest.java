@@ -73,7 +73,7 @@ public class InitialGroovyManipulatorTest {
 
         PomIO pomIO = container.lookup(PomIO.class);
 
-        List<Project> projects = pomIO.parseProject(projectroot);
+        List<Project> projects = pomIO.parseProject(null, projectroot);
 
         assertThat(projects.size(), equalTo(3));
 
@@ -85,7 +85,7 @@ public class InitialGroovyManipulatorTest {
         smc.getManager().scanAndApply(smc.getSession());
 
         // re-read the projects:
-        projects = pomIO.parseProject(projectroot);
+        projects = pomIO.parseProject(null, projectroot);
         assertThat(projects.size(), equalTo(3));
 
         assertEquals(1, projectForArtifactId(projects, "groovy-project-removal").getModel().getProfiles().size());
