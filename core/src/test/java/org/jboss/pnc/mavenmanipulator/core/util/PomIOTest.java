@@ -47,7 +47,7 @@ public class PomIOTest {
         FileUtils.copyFile(resource, projectroot);
 
         PomIO pomIO = new PomIO(TestUtils.createSessionAndManager(new Properties(), projectroot).getSession());
-        List<Project> projects = pomIO.parseProject(projectroot);
+        List<Project> projects = pomIO.parseProject(null, projectroot);
         assertEquals(1, projects.size());
         assertEquals("${one}", projects.get(0).getGroupId());
     }
@@ -62,7 +62,7 @@ public class PomIOTest {
         Properties p = new Properties();
         p.put(PomIO.PARSE_POM_TEMPLATES, "false");
         PomIO pomIO = new PomIO(TestUtils.createSessionAndManager(p, projectroot).getSession());
-        List<Project> projects = pomIO.parseProject(projectroot);
+        List<Project> projects = pomIO.parseProject(null, projectroot);
         assertEquals(0, projects.size());
         assertTrue(systemOutRule.getLog().contains("PomPeek - Could not peek at POM coordinate for"));
     }
@@ -76,7 +76,7 @@ public class PomIOTest {
 
         Properties p = new Properties();
         PomIO pomIO = new PomIO(TestUtils.createSessionAndManager(p, projectroot).getSession());
-        List<Project> projects = pomIO.parseProject(projectroot);
+        List<Project> projects = pomIO.parseProject(null, projectroot);
         assertEquals(1, projects.size());
     }
 }

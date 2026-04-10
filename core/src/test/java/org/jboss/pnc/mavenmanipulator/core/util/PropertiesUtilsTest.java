@@ -152,7 +152,7 @@ public class PropertiesUtilsTest {
     public void testCacheProperty() throws Exception {
         ManipulationSession session = createUpdateSession();
         Map<Project, Map<String, PropertyMapper>> propertyMap = new HashMap<>();
-        Project project = getProject();
+        Project project = getProject(session);
         Plugin dummy = new Plugin();
         dummy.setGroupId("org.dummy");
         dummy.setArtifactId("dummyArtifactId");
@@ -232,8 +232,8 @@ public class PropertiesUtilsTest {
 
     @Test
     public void testUpdateNestedProperties1() throws Exception {
-        Project pP = getProject();
         ManipulationSession session = createUpdateSession();
+        Project pP = getProject(session);
 
         assertSame(
                 updateProperties(session, pP, false, "version.hibernate.core", "5.0.4.Final-redhat-1"),
@@ -251,9 +251,8 @@ public class PropertiesUtilsTest {
 
     @Test
     public void testUpdateNestedProperties2() throws Exception {
-        Project pP = getProject();
-
         ManipulationSession session = createUpdateSession();
+        Project pP = getProject(session);
 
         assertSame(
                 updateProperties(session, pP, false, "version.hibernate.osgi", "5.0.4.Final-redhat-1"),
@@ -294,8 +293,8 @@ public class PropertiesUtilsTest {
 
     @Test
     public void testUpdateNestedProperties4() throws Exception {
-        Project pP = getProject();
         ManipulationSession session = createUpdateSession();
+        Project pP = getProject(session);
 
         assertSame(
                 updateProperties(
@@ -355,8 +354,8 @@ public class PropertiesUtilsTest {
         final Model modelParent = TestUtils.resolveModelResource(RESOURCE_BASE, "infinispan-bom-8.2.0.Final.pom");
         ManipulationSession session = createUpdateSession();
 
-        Project pP = new Project(modelParent);
-        Project pC = new Project(modelChild);
+        Project pP = new Project(session, modelParent.getPomFile(), modelParent);
+        Project pC = new Project(session, modelChild.getPomFile(), modelChild);
         List<Project> al = new ArrayList<>();
         al.add(pC);
         al.add(pP);
@@ -383,9 +382,8 @@ public class PropertiesUtilsTest {
 
     @Test
     public void testUpdateProjectVersionProperty() throws Exception {
-        Project pP = getProject();
-
         ManipulationSession session = createUpdateSession();
+        Project pP = getProject(session);
 
         assertNotSame(
                 updateProperties(session, pP, false, "project.version", "5.0.4.Final-redhat-1"),
@@ -398,9 +396,9 @@ public class PropertiesUtilsTest {
         ManipulationSession session = createUpdateSession();
 
         PomIO pomIO = new PomIO();
-        List<Project> projects = pomIO.parseProject(projectroot);
+        List<Project> projects = pomIO.parseProject(session, projectroot);
 
-        List<Project> newprojects = pomIO.parseProject(projectroot);
+        List<Project> newprojects = pomIO.parseProject(session, projectroot);
 
         WildcardMap<ProjectVersionRef> map = (session.getState(RelocationState.class) == null ? new WildcardMap<>()
                 : session.getState(RelocationState.class).getDependencyRelocations());
@@ -410,9 +408,9 @@ public class PropertiesUtilsTest {
                 result.contains("------------------- project org.infinispan:infinispan-bom" + System.lineSeparator()));
     }
 
-    private Project getProject() throws Exception {
+    private Project getProject(ManipulationSession session) throws Exception {
         final Model modelParent = TestUtils.resolveModelResource(RESOURCE_BASE, "infinispan-bom-8.2.0.Final.pom");
-        return new Project(modelParent);
+        return new Project(session, modelParent.getPomFile(), modelParent);
     }
 
     @SuppressWarnings("deprecation")
@@ -524,7 +522,7 @@ public class PropertiesUtilsTest {
     public void testOriginalTypeChecking() throws Exception {
         ManipulationSession session = createUpdateSession();
         Map<Project, Map<String, PropertyMapper>> propertyMap = new HashMap<>();
-        Project project = getProject();
+        Project project = getProject(session);
 
         try {
             assertFalse(

@@ -53,7 +53,7 @@ public class ProjectInheritanceTest {
         final File projectroot = Paths.get(ROOT_DIRECTORY.toString(), "pom.xml").toFile();
 
         PomIO pomIO = new PomIO();
-        List<Project> projects = pomIO.parseProject(projectroot);
+        List<Project> projects = pomIO.parseProject(null, projectroot);
         for (Project p : projects) {
             if (!p.getPom().equals(projectroot)) {
                 assertEquals(p.getProjectParent().getPom(), projectroot);
@@ -69,7 +69,7 @@ public class ProjectInheritanceTest {
 
         PomIO pomIO = new PomIO();
 
-        List<Project> projects = pomIO.parseProject(projectroot);
+        List<Project> projects = pomIO.parseProject(null, projectroot);
 
         for (int i = 0; i <= 3; i++) {
             if (i == 0) {
@@ -98,7 +98,7 @@ public class ProjectInheritanceTest {
 
         PomIO pomIO = new PomIO();
 
-        List<Project> projects = pomIO.parseProject(projectroot);
+        List<Project> projects = pomIO.parseProject(null, projectroot);
 
         for (Project p : projects) {
             if (p.getKey().toString().equals("io.apiman:apiman-common:1.2.7-SNAPSHOT")) {
@@ -122,7 +122,7 @@ public class ProjectInheritanceTest {
 
         PomIO pomIO = new PomIO();
 
-        List<Project> projects = pomIO.parseProject(relative.toFile());
+        List<Project> projects = pomIO.parseProject(null, relative.toFile());
 
         assertEquals(1, projects.size());
         assertTrue(projects.get(0).isExecutionRoot());
@@ -144,7 +144,7 @@ public class ProjectInheritanceTest {
         Files.createSymbolicLink(dummyPom.toPath(), targetPom.toPath());
 
         PomIO pomIO = new PomIO();
-        List<Project> projects = pomIO.parseProject(dummyPom);
+        List<Project> projects = pomIO.parseProject(null, dummyPom);
 
         assertEquals(1, projects.size());
         assertTrue(projects.get(0).isExecutionRoot());
@@ -158,7 +158,7 @@ public class ProjectInheritanceTest {
 
         PomIO pomIO = new PomIO();
 
-        List<Project> projects = pomIO.parseProject(projectroot);
+        List<Project> projects = pomIO.parseProject(null, projectroot);
 
         for (int i = 0; i <= 3; i++) {
             if (i == 0) {
@@ -186,7 +186,7 @@ public class ProjectInheritanceTest {
                 .toFile();
 
         PomIO pomIO = new PomIO();
-        List<Project> projects = pomIO.parseProject(projectroot);
+        List<Project> projects = pomIO.parseProject(null, projectroot);
         for (Project p : projects) {
             if (p.getPom().equals(projectroot)) {
                 Map<ArtifactRef, Dependency> deps = p.getResolvedManagedDependencies(session);

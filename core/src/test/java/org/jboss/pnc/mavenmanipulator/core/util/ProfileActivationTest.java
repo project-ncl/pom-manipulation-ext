@@ -41,7 +41,7 @@ public class ProfileActivationTest {
 
     private List<Project> getProject() throws Exception {
         PomIO pomIO = new PomIO();
-        List<Project> projects = pomIO.parseProject(PROJECTROOT);
+        List<Project> projects = pomIO.parseProject(null, PROJECTROOT);
         assertEquals(1, projects.size());
 
         return projects;

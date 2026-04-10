@@ -93,10 +93,15 @@ public class PomIO {
         parsePomTemplates = true;
     }
 
-    public List<Project> parseProject(final File pom) throws ManipulationException {
-        final List<PomPeek> peeked = peekAtPomHierarchy(pom);
+    /**
+     * @param session Maven session context (may be null in tests); stored on each parsed {@link Project}
+     * @param pom execution root POM file
+     */
+    public List<Project> parseProject(final MavenSessionHandler session, final File pom)
+            throws ManipulationException {
+        final List<PomPeek> peeked = peekAtPomHierarchy(session, pom);
         try {
-            return readModelsForManipulation(pom.getCanonicalFile(), peeked);
+            return readModelsForManipulation(session, pom.getCanonicalFile(), peeked);
         } catch (IOException e) {
             throw new ManipulationException("Error getting canonical file", e);
         }
@@ -112,7 +117,10 @@ public class PomIO {
      * @return a collection of Projects
      * @throws ManipulationException if an error occurs.
      */
-    private List<Project> readModelsForManipulation(File executionRoot, final List<PomPeek> peeked)
+    private List<Project> readModelsForManipulation(
+            MavenSessionHandler session,
+            File executionRoot,
+            final List<PomPeek> peeked)
             throws ManipulationException {
         final List<Project> projects = new ArrayList<>();
         final HashMap<Project, ProjectVersionRef> projectToParent = new HashMap<>();
@@ -136,7 +144,7 @@ public class PomIO {
                 continue;
             }
 
-            final Project project = new Project(pom, raw);
+            final Project project = new Project(session, pom, raw);
             projectToParent.put(project, peek.getParentKey());
             project.setInheritanceRoot(peek.isInheritanceRoot());
 
@@ -298,7 +306,10 @@ public class PomIO {
         }
     }
 
-    private List<PomPeek> peekAtPomHierarchy(final File topPom)
+    /**
+     * @param session Maven session context (may be null); reserved for callers that need session-aware peeking
+     */
+    private List<PomPeek> peekAtPomHierarchy(final MavenSessionHandler session, final File topPom)
             throws ManipulationException {
         final List<PomPeek> peeked = new ArrayList<>();
 

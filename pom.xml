@@ -95,8 +95,8 @@
     <mavenReleaseVersion>3.3.1</mavenReleaseVersion>
 
     <jacksonVersion>2.20.0</jacksonVersion>
-    <argLine />
-    <surefireSecurityManager />
+    <argLine/>
+    <surefireSecurityManager/>
   </properties>
 
   <dependencyManagement>
@@ -606,10 +606,10 @@
             </additionalClasspathElements>
             <!-- ensure we don't inherit a byteman jar from any env settings -->
             <environmentVariables>
-              <BYTEMAN_HOME />
+              <BYTEMAN_HOME/>
             </environmentVariables>
             <systemPropertyVariables>
-              <org.jboss.byteman.home />
+              <org.jboss.byteman.home/>
               <org.slf4j.simpleLogger.defaultLogLevel>DEBUG</org.slf4j.simpleLogger.defaultLogLevel>
             </systemPropertyVariables>
           </configuration>
@@ -800,7 +800,7 @@
             </sortPom>
           </pom>
           <java>
-            <removeUnusedImports />
+            <removeUnusedImports/>
             <importOrder>
               <file>java-import-order.txt</file>
             </importOrder>

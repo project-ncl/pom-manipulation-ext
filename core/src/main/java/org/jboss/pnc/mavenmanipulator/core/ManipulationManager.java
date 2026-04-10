@@ -224,7 +224,7 @@ public class ManipulationManager {
                     session.getPom());
         }
 
-        final List<Project> currentProjects = pomIO.parseProject(session.getPom());
+        final List<Project> currentProjects = pomIO.parseProject(session, session.getPom());
         final List<Project> originalProjects = new ArrayList<>();
         currentProjects.forEach(p -> originalProjects.add(new Project(p)));
 
@@ -243,8 +243,11 @@ public class ManipulationManager {
             logger.info("Maven-Manipulation-Extension: Completed with changed: {}", currentProjects);
 
             Optional<Project> newExecutionRoot = changed.stream().filter(Project::isExecutionRoot).findFirst();
-            newExecutionRoot.ifPresent(project -> jsonReport.getGav().setPVR(project.getKey()));
-            jsonReport.getGav().setOriginalGAV(originalExecutionRoot.getKey().toString());
+            newExecutionRoot.ifPresent(
+                    project -> jsonReport.getGav()
+                            .setPVR(project.getKey()));
+            jsonReport.getGav()
+                    .setOriginalGAV(originalExecutionRoot.getKey().toString());
 
             WildcardMap<ProjectVersionRef> map = (session.getState(RelocationState.class) == null ? new WildcardMap<>()
                     : session.getState(RelocationState.class).getDependencyRelocations());

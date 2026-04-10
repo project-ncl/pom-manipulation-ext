@@ -38,7 +38,7 @@ public class ResolveArtifactTest {
 
         final File projectroot = TestUtils.resolveFileResource(RESOURCE_BASE, "infinispan-bom-8.2.0.Final.pom");
         PomIO pomIO = new PomIO();
-        List<Project> projects = pomIO.parseProject(projectroot);
+        List<Project> projects = pomIO.parseProject(null, projectroot);
 
         Set<ArtifactRef> artifacts = RESTCollector.establishAllDependencies(session, projects, null);
         System.out.println("### artifact count is " + artifacts.size());

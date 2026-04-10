@@ -93,7 +93,19 @@ public class Project {
      */
     private Project projectParent;
 
-    public Project(final File pom, final Model model) throws ManipulationException {
+    /**
+     * Maven session context for this project (may be null, e.g. in tests).
+     */
+    private final MavenSessionHandler session;
+
+    /**
+     * @param sessionHandler Maven session context (may be null, e.g. in unit tests)
+     * @param pom POM file for this project
+     * @param model model to manipulate
+     */
+    public Project(final MavenSessionHandler sessionHandler, final File pom, final Model model)
+            throws ManipulationException {
+        this.session = sessionHandler;
         this.pom = pom;
         this.model = model;
 
@@ -113,16 +125,17 @@ public class Project {
      */
     public Project(final Model model)
             throws ManipulationException {
-        this(model.getPomFile(), model);
+        this(null, model.getPomFile(), model);
     }
 
     /**
-     * Create a project by copying another.
+     * Create a project by copying another. Only used by ManipulationManager for comparing changes.
      *
      * @param original the Project to use.
      */
     @SuppressWarnings("IncompleteCopyConstructor")
     public Project(final Project original) {
+        this.session = original.session;
         this.pom = original.pom;
         this.model = original.model.clone();
         this.inheritanceRoot = original.inheritanceRoot;
@@ -193,7 +206,11 @@ public class Project {
     }
 
     public ProjectVersionRef getKey() {
-        return new SimpleProjectVersionRef(getGroupId(), getArtifactId(), getVersion());
+        return new SimpleProjectVersionRef(
+                getGroupId(),
+                getArtifactId(),
+                getVersion());
+
     }
 
     public Parent getModelParent() {
@@ -212,7 +229,10 @@ public class Project {
             // Note: reliant upon model validation that the parent is not null.
             g = model.getParent().getGroupId();
         }
-        return g;
+        return PropertyResolver.resolvePropertiesUnchecked(
+                session,
+                getInheritedList(),
+                g);
     }
 
     /**
@@ -221,7 +241,10 @@ public class Project {
      * @return the artifactId
      */
     public String getArtifactId() {
-        return getModel().getArtifactId();
+        return PropertyResolver.resolvePropertiesUnchecked(
+                session,
+                getInheritedList(),
+                getModel().getArtifactId());
     }
 
     /**
@@ -236,7 +259,10 @@ public class Project {
             // Note: reliant upon model validation that the parent is not null.
             v = model.getParent().getVersion();
         }
-        return v;
+        return PropertyResolver.resolvePropertiesUnchecked(
+                session,
+                getInheritedList(),
+                v);
     }
 
     /**
