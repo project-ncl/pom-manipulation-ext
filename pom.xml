@@ -94,7 +94,7 @@
     <shadePluginVersion>3.5.1</shadePluginVersion>
     <mavenReleaseVersion>3.3.1</mavenReleaseVersion>
 
-    <jacksonVersion>2.20.0</jacksonVersion>
+    <jacksonVersion>2.21.2</jacksonVersion>
     <argLine />
     <surefireSecurityManager />
   </properties>
