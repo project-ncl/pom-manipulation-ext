@@ -81,7 +81,7 @@
     <atlasVersion>1.2.2</atlasVersion>
     <daVersion>2.6.9</daVersion>
     <galleyVersion>1.22</galleyVersion>
-    <sisuVersion>0.9.0.M4</sisuVersion>
+    <sisuVersion>1.0.0</sisuVersion>
 
     <groovyVersion>3.0.25</groovyVersion>
     <unirestVersion>3.14.5</unirestVersion>
