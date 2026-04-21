@@ -129,8 +129,8 @@ public class BaseScriptTest {
         PomIO pomIO = new PomIO();
         FileIO fileIO = new FileIO(temporaryFolder.newFolder());
 
-        List<Project> projects = pomIO.parseProject(null, projectroot);
         ManipulationSession ms = TestUtils.createSession(null, projectroot);
+        List<Project> projects = pomIO.parseProject(ms, projectroot);
 
         Project root = projects.stream()
                 .filter(p -> p.getProjectParent() == null)

@@ -73,8 +73,8 @@ public class ProjectComparatorTest {
                         .getParentFile(),
                 "pom.xml");
         PomIO pomIO = new PomIO();
-        List<Project> projectOriginal = pomIO.parseProject(null, projectroot);
-        List<Project> projectNew = pomIO.parseProject(null, projectroot);
+        List<Project> projectOriginal = pomIO.parseProject(session, projectroot);
+        List<Project> projectNew = pomIO.parseProject(session, projectroot);
 
         String result = ProjectComparator.compareProjects(
                 session,
@@ -104,8 +104,8 @@ public class ProjectComparatorTest {
                 "pom.xml");
         PomIO pomIO = new PomIO();
 
-        List<Project> projectOriginal = pomIO.parseProject(null, projectroot);
-        List<Project> projectNew = pomIO.parseProject(null, projectroot);
+        List<Project> projectOriginal = pomIO.parseProject(session, projectroot);
+        List<Project> projectNew = pomIO.parseProject(session, projectroot);
 
         projectNew.forEach(project -> project.getModel().setVersion(project.getVersion() + "-redhat-1"));
         projectNew.forEach(project -> {
@@ -161,8 +161,8 @@ public class ProjectComparatorTest {
                 "pom.xml");
         PomIO pomIO = new PomIO();
 
-        List<Project> projectOriginal = pomIO.parseProject(null, projectroot);
-        List<Project> projectNew = pomIO.parseProject(null, projectroot);
+        List<Project> projectOriginal = pomIO.parseProject(session, projectroot);
+        List<Project> projectNew = pomIO.parseProject(session, projectroot);
 
         projectNew.forEach(project -> project.getModel().setVersion(project.getVersion() + "-redhat-1"));
         projectNew.forEach(project -> {
@@ -215,8 +215,8 @@ public class ProjectComparatorTest {
                 "pom.xml");
         PomIO pomIO = new PomIO();
 
-        List<Project> projectOriginal = pomIO.parseProject(null, projectroot);
-        List<Project> projectNew = pomIO.parseProject(null, projectroot);
+        List<Project> projectOriginal = pomIO.parseProject(session, projectroot);
+        List<Project> projectNew = pomIO.parseProject(session, projectroot);
 
         projectNew.forEach(project -> project.getModel().setVersion(project.getVersion() + "-redhat-1"));
         projectNew.forEach(project -> {

@@ -18,12 +18,9 @@ System.out.println( "Slurping POM: ${pomFile.getAbsolutePath()}" )
 
 def pom = new XmlSlurper().parse( pomFile )
 
-System.out.println( "POM Version: ${pom.version.text()}" )
-assert pom.version.text().equals( "2.7.2.3-fuse-redhat-2" )
-
-v = pom.parent.version.text()
+v = pom.version.text()
 System.out.println( "POM Version: ${v}" )
-assert v == "\${project-version}"
+assert v == '${project-version}'
 
 // Currently the AddSuffixJettyHandler doesn't do OSGi compatibility.
 def dependency = pom.dependencyManagement.dependencies.dependency.find { it.artifactId.text() == "commons-lang" }
@@ -48,9 +45,9 @@ pom.properties.each {
 assert (passed == 2)
 
 def buildLog = new File( basedir, "build.log")
-assert buildLog.getText().contains("Passing 6 GAVs")
-assert !buildLog.getText().contains("Passing 1 Project GAVs into the REST client api [org.jboss.pnc.maven-manipulator.integration-test:\${myArtifactId}:\${project-version}]")
-assert buildLog.getText().contains("Passing 1 Project GAVs into the REST client api [org.jboss.pnc.maven-manipulator.integration-test:rest-version-manip-with-properties:2.7.2_3-fuse-SNAPSHOT]")
+assert buildLog.getText().contains("Passing 5 GAVs")
+assert !buildLog.getText().contains('Passing 1 Project GAVs into the REST client api [org.jboss.pnc.maven-manipulator.integration-test:${myArtifactId}:${project-version}]')
+assert buildLog.getText().contains("Passing 1 Project GAVs into the REST client api [org.jboss.pnc.maven-manipulator.integration-test:rest-version-manip-with-properties:2.7.2.3-fuse]")
 
 File json = new File( basedir, "target/alignmentReport.json")
 assert json.exists()

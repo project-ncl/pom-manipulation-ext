@@ -186,7 +186,7 @@ public class ProjectInheritanceTest {
                 .toFile();
 
         PomIO pomIO = new PomIO();
-        List<Project> projects = pomIO.parseProject(null, projectroot);
+        List<Project> projects = pomIO.parseProject(session, projectroot);
         for (Project p : projects) {
             if (p.getPom().equals(projectroot)) {
                 Map<ArtifactRef, Dependency> deps = p.getResolvedManagedDependencies();
