@@ -209,6 +209,13 @@ public class Project {
         return new SimpleProjectVersionRef(getGroupId(), getArtifactId(), getVersion());
     }
 
+    public ProjectVersionRef getResolvedKey() {
+        return new SimpleProjectVersionRef(
+                PropertyResolver.resolvePropertiesUnchecked(session, getInheritedList(), getGroupId()),
+                PropertyResolver.resolvePropertiesUnchecked(session, getInheritedList(), getArtifactId()),
+                PropertyResolver.resolvePropertiesUnchecked(session, getInheritedList(), getVersion()));
+    }
+
     public Parent getModelParent() {
         return model.getParent();
     }

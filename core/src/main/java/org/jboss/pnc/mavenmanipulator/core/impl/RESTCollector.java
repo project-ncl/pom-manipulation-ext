@@ -91,7 +91,7 @@ public class RESTCollector
         for (final Project project : projects) {
             if (isEmpty(override)) {
                 // Strip SNAPSHOT and handle OSGi and alternate suffixes from the version for matching.
-                ProjectVersionRef pvr = project.getKey();
+                ProjectVersionRef pvr = project.getResolvedKey();
                 restLookupProjectVersionParamList.add(
                         new SimpleProjectVersionRef(
                                 pvr.asProjectRef(),

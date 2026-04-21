@@ -243,8 +243,8 @@ public class ManipulationManager {
             logger.info("Maven-Manipulation-Extension: Completed with changed: {}", currentProjects);
 
             Optional<Project> newExecutionRoot = changed.stream().filter(Project::isExecutionRoot).findFirst();
-            newExecutionRoot.ifPresent(project -> jsonReport.getGav().setPVR(project.getKey()));
-            jsonReport.getGav().setOriginalGAV(originalExecutionRoot.getKey().toString());
+            newExecutionRoot.ifPresent(project -> jsonReport.getGav().setPVR(project.getResolvedKey()));
+            jsonReport.getGav().setOriginalGAV(originalExecutionRoot.getResolvedKey().toString());
 
             WildcardMap<ProjectVersionRef> map = (session.getState(RelocationState.class) == null ? new WildcardMap<>()
                     : session.getState(RelocationState.class).getDependencyRelocations());
