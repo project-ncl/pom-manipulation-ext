@@ -189,17 +189,17 @@ public class ProjectInheritanceTest {
         List<Project> projects = pomIO.parseProject(null, projectroot);
         for (Project p : projects) {
             if (p.getPom().equals(projectroot)) {
-                Map<ArtifactRef, Dependency> deps = p.getResolvedManagedDependencies(session);
+                Map<ArtifactRef, Dependency> deps = p.getResolvedManagedDependencies();
                 for (ArtifactRef a : deps.keySet()) {
                     assertFalse(a.getVersionString().contains("project.version"));
                 }
-                deps = p.getResolvedDependencies(session);
+                deps = p.getResolvedDependencies();
                 assertEquals(1, deps.size());
                 for (ArtifactRef a : deps.keySet()) {
                     assertFalse(a.getVersionString().contains("project.version"));
                 }
                 assertFalse(deps.containsKey(SimpleScopedArtifactRef.parse("org.mockito:mockito-all:jar:*")));
-                deps = p.getAllResolvedDependencies(session);
+                deps = p.getAllResolvedDependencies();
                 assertEquals(3, deps.size());
                 for (ArtifactRef a : deps.keySet()) {
                     assertFalse(a.getVersionString().contains("project.version"));

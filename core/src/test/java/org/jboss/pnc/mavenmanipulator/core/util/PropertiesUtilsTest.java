@@ -438,8 +438,8 @@ public class PropertiesUtilsTest {
         ManipulationSession session = createUpdateSession();
         Project pC = new Project(modelChild);
 
-        assertEquals(0, pC.getResolvedPlugins(session).size());
-        assertEquals(0, pC.getResolvedManagedPlugins(session).size());
+        assertEquals(0, pC.getResolvedPlugins().size());
+        assertEquals(0, pC.getResolvedManagedPlugins().size());
     }
 
     @Test

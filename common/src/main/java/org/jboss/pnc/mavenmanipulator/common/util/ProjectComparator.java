@@ -504,30 +504,30 @@ public class ProjectComparator {
         try {
             switch (type) {
                 case DEPENDENCIES: {
-                    return project.getResolvedDependencies(session).keySet();
+                    return project.getResolvedDependencies().keySet();
                 }
                 case MANAGED_DEPENDENCIES: {
-                    return project.getResolvedManagedDependencies(session).keySet();
+                    return project.getResolvedManagedDependencies().keySet();
                 }
                 case PROFILE_DEPENDENCIES: {
-                    return project.getResolvedProfileDependencies(session)
+                    return project.getResolvedProfileDependencies()
                             .getOrDefault(profile, Collections.emptyMap())
                             .keySet();
                 }
                 case PROFILE_MANAGED_DEPENDENCIES: {
-                    return project.getResolvedProfileManagedDependencies(session)
+                    return project.getResolvedProfileManagedDependencies()
                             .getOrDefault(profile, Collections.emptyMap())
                             .keySet();
                 }
                 case DEPENDENCIES_UNVERSIONED: {
-                    return project.getAllResolvedDependencies(session)
+                    return project.getAllResolvedDependencies()
                             .keySet()
                             .stream()
                             .filter(a -> a.getVersionString().equals("*"))
                             .collect(Collectors.toSet());
                 }
                 case PROFILE_DEPENDENCIES_UNVERSIONED: {
-                    return project.getAllResolvedProfileDependencies(session)
+                    return project.getAllResolvedProfileDependencies()
                             .getOrDefault(profile, Collections.emptyMap())
                             .keySet()
                             .stream()
@@ -552,18 +552,18 @@ public class ProjectComparator {
         try {
             switch (type) {
                 case PLUGINS: {
-                    return project.getResolvedPlugins(session).keySet();
+                    return project.getResolvedPlugins().keySet();
                 }
                 case MANAGED_PLUGINS: {
-                    return project.getResolvedManagedPlugins(session).keySet();
+                    return project.getResolvedManagedPlugins().keySet();
                 }
                 case PROFILE_PLUGINS: {
-                    return project.getResolvedProfilePlugins(session)
+                    return project.getResolvedProfilePlugins()
                             .getOrDefault(profile, Collections.emptyMap())
                             .keySet();
                 }
                 case PROFILE_MANAGED_PLUGINS: {
-                    return project.getResolvedProfileManagedPlugins(session)
+                    return project.getResolvedProfileManagedPlugins()
                             .getOrDefault(profile, Collections.emptyMap())
                             .keySet();
                 }

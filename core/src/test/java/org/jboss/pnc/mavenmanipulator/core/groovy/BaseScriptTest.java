@@ -198,7 +198,7 @@ public class BaseScriptTest {
 
         assertEquals(
                 "1.18.20.0",
-                root.getResolvedPlugins(bs.getSession())
+                root.getResolvedPlugins()
                         .entrySet()
                         .stream()
                         .filter(d -> d.getKey().getArtifactId().equals(pluginArtifact.getArtifactId()))
@@ -212,7 +212,7 @@ public class BaseScriptTest {
 
         assertEquals(
                 "3.5.1",
-                root.getResolvedManagedPlugins(bs.getSession())
+                root.getResolvedManagedPlugins()
                         .entrySet()
                         .stream()
                         .filter(d -> d.getKey().getArtifactId().equals(dependencyPluginArtifact.getArtifactId()))

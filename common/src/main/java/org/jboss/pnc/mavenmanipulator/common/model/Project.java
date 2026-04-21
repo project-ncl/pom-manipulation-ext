@@ -261,11 +261,10 @@ public class Project {
      * Model as it is the same object, if you wish to remove or add items to the Model then you
      * must use {@link #getModel()}
      *
-     * @param session MavenSessionHandler, used by {@link PropertyResolver}
      * @return a list of fully resolved {@link ArtifactRef} to the original {@link Dependency}
      * @throws ManipulationException if an error occurs
      */
-    public Map<Profile, Map<ArtifactRef, Dependency>> getResolvedProfileDependencies(MavenSessionHandler session)
+    public Map<Profile, Map<ArtifactRef, Dependency>> getResolvedProfileDependencies()
             throws ManipulationException {
         Map<Profile, Map<ArtifactRef, Dependency>> resolvedProfileDependencies = new HashMap<>();
 
@@ -289,11 +288,10 @@ public class Project {
      * Model as it is the same object, if you wish to remove or add items to the Model then you
      * must use {@link #getModel()}
      *
-     * @param session MavenSessionHandler, used by {@link PropertyResolver}
      * @return a list of fully resolved {@link ArtifactRef} to the original {@link Dependency}
      * @throws ManipulationException if an error occurs
      */
-    public Map<Profile, Map<ArtifactRef, Dependency>> getAllResolvedProfileDependencies(MavenSessionHandler session)
+    public Map<Profile, Map<ArtifactRef, Dependency>> getAllResolvedProfileDependencies()
             throws ManipulationException {
         Map<Profile, Map<ArtifactRef, Dependency>> allResolvedProfileDependencies = new HashMap<>();
 
@@ -314,12 +312,11 @@ public class Project {
      * reference returned will be reflected in the Model as it is the same object, if you wish to remove or add items
      * to the Model then you must use {@link #getModel()}
      *
-     * @param session MavenSessionHandler, used by {@link PropertyResolver}
      * @return a list of fully resolved {@link ArtifactRef} to the original {@link Dependency} (that were within
      *         DependencyManagement)
      * @throws ManipulationException if an error occurs
      */
-    public Map<Profile, Map<ArtifactRef, Dependency>> getResolvedProfileManagedDependencies(MavenSessionHandler session)
+    public Map<Profile, Map<ArtifactRef, Dependency>> getResolvedProfileManagedDependencies()
             throws ManipulationException {
         Map<Profile, Map<ArtifactRef, Dependency>> resolvedProfileManagedDependencies = new HashMap<>();
 
@@ -342,11 +339,10 @@ public class Project {
      * while updating the {@link Plugin} reference returned will be reflected in the Model as it is the
      * same object, if you wish to remove or add items to the Model then you must use {@link #getModel()}
      *
-     * @param session MavenSessionHandler, used by {@link PropertyResolver}
      * @return a list of fully resolved {@link ProjectVersionRef} to the original {@link Plugin}
      * @throws ManipulationException if an error occurs
      */
-    public Map<ProjectVersionRef, Plugin> getResolvedPlugins(MavenSessionHandler session) throws ManipulationException {
+    public Map<ProjectVersionRef, Plugin> getResolvedPlugins() throws ManipulationException {
         Map<ProjectVersionRef, Plugin> resolvedPlugins = new HashMap<>();
 
         if (getModel().getBuild() != null) {
@@ -361,11 +357,10 @@ public class Project {
      * list. Note that while updating the {@link Plugin} reference returned will be reflected in the Model as it is the
      * same object, if you wish to remove or add items to the Model then you must use {@link #getModel()}
      *
-     * @param session MavenSessionHandler, used by {@link PropertyResolver}
      * @return a list of fully resolved {@link ProjectVersionRef} to the original {@link Plugin}
      * @throws ManipulationException if an error occurs
      */
-    public Map<ProjectVersionRef, Plugin> getAllResolvedPlugins(MavenSessionHandler session)
+    public Map<ProjectVersionRef, Plugin> getAllResolvedPlugins()
             throws ManipulationException {
         Map<ProjectVersionRef, Plugin> resolvedPlugins = new HashMap<>();
 
@@ -382,11 +377,10 @@ public class Project {
      * the Model as it is the same object, if you wish to remove or add items to the Model then you must
      * use {@link #getModel()}
      *
-     * @param session MavenSessionHandler, used by {@link PropertyResolver}
      * @return a list of fully resolved {@link ProjectVersionRef} to the original {@link Plugin}
      * @throws ManipulationException if an error occurs
      */
-    public Map<ProjectVersionRef, Plugin> getResolvedManagedPlugins(MavenSessionHandler session)
+    public Map<ProjectVersionRef, Plugin> getResolvedManagedPlugins()
             throws ManipulationException {
         Map<ProjectVersionRef, Plugin> resolvedManagedPlugins = new HashMap<>();
 
@@ -406,11 +400,10 @@ public class Project {
      * returned will be reflected in the Model as it is the same object, if you wish to
      * remove or add items to the Model then you must use {@link #getModel()}
      *
-     * @param session MavenSessionHandler, used by {@link PropertyResolver}
      * @return a list of fully resolved {@link ProjectVersionRef} to the original {@link Plugin}
      * @throws ManipulationException if an error occurs
      */
-    public Map<Profile, Map<ProjectVersionRef, Plugin>> getResolvedProfilePlugins(MavenSessionHandler session)
+    public Map<Profile, Map<ProjectVersionRef, Plugin>> getResolvedProfilePlugins()
             throws ManipulationException {
         Map<Profile, Map<ProjectVersionRef, Plugin>> resolvedProfilePlugins = new HashMap<>();
 
@@ -433,11 +426,10 @@ public class Project {
      * reflected in the Model as it is the same object, if you wish to remove or add items to the Model then you must
      * use {@link #getModel()}
      *
-     * @param session MavenSessionHandler, used by {@link PropertyResolver}
      * @return a list of fully resolved {@link ProjectVersionRef} to the original {@link Plugin}
      * @throws ManipulationException if an error occurs
      */
-    public Map<Profile, Map<ProjectVersionRef, Plugin>> getAllResolvedProfilePlugins(MavenSessionHandler session)
+    public Map<Profile, Map<ProjectVersionRef, Plugin>> getAllResolvedProfilePlugins()
             throws ManipulationException {
         Map<Profile, Map<ProjectVersionRef, Plugin>> allResolvedProfilePlugins = new HashMap<>();
 
@@ -460,11 +452,10 @@ public class Project {
      * reference returned will be reflected in the Model as it is the same object, if you wish to remove
      * or add items to the Model then you must use {@link #getModel()}
      *
-     * @param session MavenSessionHandler, used by {@link PropertyResolver}
      * @return a list of fully resolved {@link ProjectVersionRef} to the original {@link Plugin}
      * @throws ManipulationException if an error occurs
      */
-    public Map<Profile, Map<ProjectVersionRef, Plugin>> getResolvedProfileManagedPlugins(MavenSessionHandler session)
+    public Map<Profile, Map<ProjectVersionRef, Plugin>> getResolvedProfileManagedPlugins()
             throws ManipulationException {
         Map<Profile, Map<ProjectVersionRef, Plugin>> resolvedProfileManagedPlugins = new HashMap<>();
 
@@ -490,11 +481,10 @@ public class Project {
      * Note that while updating the {@link Dependency} reference returned will be reflected in the Model
      * as it is the same object, if you wish to remove or add items to the Model then you must use {@link #getModel()}
      *
-     * @param session MavenSessionHandler, used by {@link PropertyResolver}
      * @return a list of fully resolved {@link ArtifactRef} to the original {@link Dependency}
      * @throws ManipulationException if an error occurs
      */
-    public Map<ArtifactRef, Dependency> getResolvedDependencies(MavenSessionHandler session)
+    public Map<ArtifactRef, Dependency> getResolvedDependencies()
             throws ManipulationException {
         Map<ArtifactRef, Dependency> resolvedDependencies = new HashMap<>();
 
@@ -511,11 +501,10 @@ public class Project {
      * Note that while updating the {@link Dependency} reference returned will be reflected in the Model
      * as it is the same object, if you wish to remove or add items to the Model then you must use {@link #getModel()}
      *
-     * @param session MavenSessionHandler, used by {@link PropertyResolver}
      * @return a list of fully resolved {@link ArtifactRef} to the original {@link Dependency}
      * @throws ManipulationException if an error occurs
      */
-    public Map<ArtifactRef, Dependency> getAllResolvedDependencies(MavenSessionHandler session)
+    public Map<ArtifactRef, Dependency> getAllResolvedDependencies()
             throws ManipulationException {
         Map<ArtifactRef, Dependency> allResolvedDependencies = new HashMap<>();
 
@@ -534,11 +523,10 @@ public class Project {
      * Note that while updating the {@link Dependency} reference returned will be reflected in the Model
      * as it is the same object, if you wish to remove or add items to the Model then you must use {@link #getModel()}
      *
-     * @param session MavenSessionHandler, used by {@link PropertyResolver}
      * @return a list containing maps of fully resolved {@link ArtifactRef} to the original {@link Dependency}
      * @throws ManipulationException if an error occurs
      */
-    public List<Map<ArtifactRef, Dependency>> getAllResolvedPluginDependencies(MavenSessionHandler session)
+    public List<Map<ArtifactRef, Dependency>> getAllResolvedPluginDependencies()
             throws ManipulationException {
         List<Map<ArtifactRef, Dependency>> allResolvedDependencies = new ArrayList<>();
 
@@ -581,12 +569,11 @@ public class Project {
      * in the Model as it is the same object, if you wish to remove or add items to the Model then you must use
      * {@link #getModel()}
      *
-     * @param session MavenSessionHandler, used by {@link PropertyResolver}
      * @return a list of fully resolved {@link ArtifactRef} to the original {@link Dependency} (that were within
      *         DependencyManagement)
      * @throws ManipulationException if an error occurs
      */
-    public Map<ArtifactRef, Dependency> getResolvedManagedDependencies(MavenSessionHandler session)
+    public Map<ArtifactRef, Dependency> getResolvedManagedDependencies()
             throws ManipulationException {
         Map<ArtifactRef, Dependency> resolvedManagedDependencies = new HashMap<>();
 

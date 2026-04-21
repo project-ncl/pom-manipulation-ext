@@ -251,8 +251,8 @@ public class DependencyManipulator extends CommonManipulator implements Manipula
             if (cState.getStrictDependencyPluginPropertyValidation() > 0) {
                 logger.info("Iterating to validate dependency updates...");
                 for (final Project p : versionPropertyUpdateMap.keySet()) {
-                    validateDependenciesUpdatedProperty(cState, p, p.getResolvedDependencies(session));
-                    for (final Map<ArtifactRef, Dependency> dependencies : p.getResolvedProfileDependencies(session)
+                    validateDependenciesUpdatedProperty(cState, p, p.getResolvedDependencies());
+                    for (final Map<ArtifactRef, Dependency> dependencies : p.getResolvedProfileDependencies()
                             .values()) {
                         validateDependenciesUpdatedProperty(cState, p, dependencies);
                     }
@@ -384,13 +384,13 @@ public class DependencyManipulator extends CommonManipulator implements Manipula
 
             final Map<ArtifactRef, String> nonMatchingVersionOverrides = applyOverrides(
                     project,
-                    project.getResolvedManagedDependencies(session),
+                    project.getResolvedManagedDependencies(),
                     explicitOverrides,
                     originalOverrides);
 
             applyExplicitOverrides(
                     project,
-                    project.getResolvedManagedDependencies(session),
+                    project.getResolvedManagedDependencies(),
                     explicitOverrides,
                     explicitVersionPropertyUpdateMap);
 
@@ -441,27 +441,27 @@ public class DependencyManipulator extends CommonManipulator implements Manipula
             logger.debug("Applying overrides to managed dependencies for: {}", projectGA);
             applyOverrides(
                     project,
-                    project.getResolvedManagedDependencies(session),
+                    project.getResolvedManagedDependencies(),
                     explicitOverrides,
                     originalOverrides);
             applyExplicitOverrides(
                     project,
-                    project.getResolvedManagedDependencies(session),
+                    project.getResolvedManagedDependencies(),
                     explicitOverrides,
                     explicitVersionPropertyUpdateMap);
         }
 
         logger.debug("Applying overrides to concrete dependencies for: {}", projectGA);
         // Apply overrides to project direct dependencies
-        applyOverrides(project, project.getResolvedDependencies(session), explicitOverrides, originalOverrides);
+        applyOverrides(project, project.getResolvedDependencies(), explicitOverrides, originalOverrides);
         applyExplicitOverrides(
                 project,
-                project.getResolvedDependencies(session),
+                project.getResolvedDependencies(),
                 explicitOverrides,
                 explicitVersionPropertyUpdateMap);
 
-        final Map<Profile, Map<ArtifactRef, Dependency>> pd = project.getResolvedProfileDependencies(session);
-        final Map<Profile, Map<ArtifactRef, Dependency>> pmd = project.getResolvedProfileManagedDependencies(session);
+        final Map<Profile, Map<ArtifactRef, Dependency>> pd = project.getResolvedProfileDependencies();
+        final Map<Profile, Map<ArtifactRef, Dependency>> pmd = project.getResolvedProfileManagedDependencies();
 
         for (final Map<ArtifactRef, Dependency> dependencies : pd.values()) {
             applyOverrides(project, dependencies, explicitOverrides, originalOverrides);
@@ -474,15 +474,15 @@ public class DependencyManipulator extends CommonManipulator implements Manipula
         }
 
         // Apply dependency changes to dependencies that occur within plugins.
-        final Map<ProjectVersionRef, Plugin> resolvedPlugins = project.getAllResolvedPlugins(session);
+        final Map<ProjectVersionRef, Plugin> resolvedPlugins = project.getAllResolvedPlugins();
         applyPlugins(project, resolvedPlugins, explicitOverrides, originalOverrides);
         applyExplicitOverrides(project, resolvedPlugins, explicitOverrides, explicitVersionPropertyUpdateMap);
 
-        final Map<ProjectVersionRef, Plugin> resolvedManagedPlugins = project.getResolvedManagedPlugins(session);
+        final Map<ProjectVersionRef, Plugin> resolvedManagedPlugins = project.getResolvedManagedPlugins();
         applyPlugins(project, resolvedManagedPlugins, explicitOverrides, originalOverrides);
         applyExplicitOverrides(project, resolvedManagedPlugins, explicitOverrides, explicitVersionPropertyUpdateMap);
 
-        for (Map<ProjectVersionRef, Plugin> resolvedProfilePlugins : project.getAllResolvedProfilePlugins(session)
+        for (Map<ProjectVersionRef, Plugin> resolvedProfilePlugins : project.getAllResolvedProfilePlugins()
                 .values()) {
             applyPlugins(project, resolvedProfilePlugins, explicitOverrides, originalOverrides);
             applyExplicitOverrides(
@@ -492,7 +492,7 @@ public class DependencyManipulator extends CommonManipulator implements Manipula
                     explicitVersionPropertyUpdateMap);
         }
         for (Map<ProjectVersionRef, Plugin> resolvedManagedProfilePlugins : project
-                .getResolvedProfileManagedPlugins(session)
+                .getResolvedProfileManagedPlugins()
                 .values()) {
             applyPlugins(project, resolvedManagedProfilePlugins, explicitOverrides, originalOverrides);
             applyExplicitOverrides(
@@ -503,7 +503,7 @@ public class DependencyManipulator extends CommonManipulator implements Manipula
         }
 
         // This handles dependencies of plugins themselves.
-        final List<Map<ArtifactRef, Dependency>> pluginDependencies = project.getAllResolvedPluginDependencies(session);
+        final List<Map<ArtifactRef, Dependency>> pluginDependencies = project.getAllResolvedPluginDependencies();
         for (Map<ArtifactRef, Dependency> depMap : pluginDependencies) {
             applyOverrides(project, depMap, explicitOverrides, originalOverrides);
             applyExplicitOverrides(project, depMap, explicitOverrides, explicitVersionPropertyUpdateMap);

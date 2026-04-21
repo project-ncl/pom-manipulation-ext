@@ -88,7 +88,7 @@ public class PropertyInterpolatorTest {
         final Model model = TestUtils.resolveModelResource(RESOURCE_BASE, "infinispan-bom-8.2.0.Final.pom");
         final Project project = new Project(model);
 
-        Map<ArtifactRef, Dependency> deps = project.getResolvedManagedDependencies(new ManipulationSession());
+        Map<ArtifactRef, Dependency> deps = project.getResolvedManagedDependencies();
 
         assertEquals(66, deps.size());
     }
