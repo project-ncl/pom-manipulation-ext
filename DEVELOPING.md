@@ -329,30 +329,11 @@ libraries without somehow gaining access to that `SNAPSHOT` BOM.
 #### Check for Improperly Formatted License Headers
 
 Each source file, along with `pom.xml` and test resource files, should have a header comment that reflects the license
-of the project. We're using the [license-maven-plugin](https://mycila.mathieu.photography/license-maven-plugin/) for
-this purpose. It reformats license headers when you use the formatting profile (`-Pformatting`) and verifies their
+of the project. We're using the [license-maven-plugin](https://mathieu.carbou.me/license-maven-plugin/) for
+this purpose. It reformats license headers when you run `mvn com.mycila:license-maven-plugin:check` and verifies their
 presence and correctness during the project release as part of the release build profile. If any of the license
 headers are missing or incorrect, the verification step will fail the build leaving you with a release to rollback
-before you can correct the problem and try again.
-
-So, before you try to run the actual release, perform the following steps:
-
-```
-#!/bin/bash
-
-# We don't need tests, but may need module dependency assemblies, etc.
-mvn -Pformatting clean install -DskipTests=true
-
-# Check whether any files were updated
-git status | grep 'modified:'
-changed=$?
-
-# Only necessary if files changed
-if [ $changed != 0 ]; then
-    git add .
-    git commit -am "Fix license headers"
-fi
-```
+before you can correct the problem and try again. To correct the format run `mvn com.mycila:license-maven-plugin:format`.
 
 ### Run the Release
 
