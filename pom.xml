@@ -20,9 +20,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.redhat.rcm</groupId>
-    <artifactId>redhat-releng-tools</artifactId>
-    <version>12</version>
+    <groupId>org.jboss</groupId>
+    <artifactId>jboss-parent</artifactId>
+    <version>53</version>
   </parent>
 
   <groupId>org.jboss.pnc.maven-manipulator</groupId>
@@ -72,10 +72,18 @@
 
   <properties>
     <projectOwner>Red Hat, Inc.</projectOwner>
+    <projectEmail>ncross@redhat.com</projectEmail>
 
     <javaVersion>1.8</javaVersion>
     <javaTestVersion>${javaVersion}</javaTestVersion>
     <addJarIndex>false</addJarIndex>
+
+    <!-- Override jboss-parent compiler settings to match project requirements -->
+    <maven.compiler.source>${javaVersion}</maven.compiler.source>
+    <maven.compiler.target>${javaVersion}</maven.compiler.target>
+
+    <!-- Central publishing configuration -->
+    <central.autoPublish>false</central.autoPublish>
 
     <mavenVersion>3.9.14</mavenVersion>
     <atlasVersion>1.2.2</atlasVersion>
@@ -622,13 +630,21 @@
         <plugin>
           <groupId>com.mycila</groupId>
           <artifactId>license-maven-plugin</artifactId>
+          <version>5.0.0</version>
           <configuration>
-            <excludes combine.children="append">
-              <exclude>ide-config/eclipse.importorder</exclude>
-              <exclude>**/commonjava/maven/ext/common/ExceptionHelper.java</exclude>
-              <exclude>**/src/test/resources/org.jboss.pnc.mavenmanipulator/io/pom.xml</exclude>
-              <exclude>**/src/test/resources/gavs.txt</exclude>
-            </excludes>
+            <properties>
+              <owner>${projectOwner}</owner>
+            </properties>
+            <licenseSets>
+              <licenseSet>
+                <header>com/mycila/maven/plugin/license/templates/APACHE-2-noemail.txt</header>
+                <excludes combine.children="append">
+                  <exclude>**/commonjava/maven/ext/common/ExceptionHelper.java</exclude>
+                  <exclude>**/src/test/resources/org.jboss.pnc.mavenmanipulator/io/pom.xml</exclude>
+                  <exclude>**/src/test/resources/gavs.txt</exclude>
+                </excludes>
+              </licenseSet>
+            </licenseSets>
           </configuration>
         </plugin>
         <plugin>
@@ -744,6 +760,22 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>enforce-java-version</id>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireJavaVersion>
+                  <version>[11,)</version>
+                  <message>To build this project JDK 11 (or greater) is required. Please install it.</message>
+                </requireJavaVersion>
+              </rules>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -866,6 +898,41 @@
             <groupId>com.diffplug.spotless</groupId>
             <artifactId>spotless-maven-plugin</artifactId>
             <version>3.1.0</version>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>central-release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.mycila</groupId>
+            <artifactId>license-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>check-license-headers</id>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <phase>verify</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <configuration>
+              <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+            </configuration>
           </plugin>
         </plugins>
       </build>

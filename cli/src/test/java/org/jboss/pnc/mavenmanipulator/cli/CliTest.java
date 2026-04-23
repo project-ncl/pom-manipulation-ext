@@ -325,7 +325,7 @@ public class CliTest {
                 .replaceAll("org.jboss.pnc.maven-manipulator:pom-manipulation-.*\\n", "");
         System.out.println(cliOutput);
 
-        assertTrue(cliOutput.contains("Found 86"));
+        assertTrue(cliOutput.contains("Found 87"));
         assertTrue(
                 cliOutput.matches(
                         "(?s).*"
@@ -340,7 +340,7 @@ public class CliTest {
                                 + "com.jayway.jsonpath:json-path:2.[.\\d+]+\\s+                                    jar                                     compile             \n"
                                 + "com.konghq:unirest-java:3.[.\\d+]+\\s+                                          jar                                     compile             \n"
                                 + "com.konghq:unirest-objectmapper-jackson:3.[.\\d+]+\\s+                          jar                                     compile             \n"
-                                + "com.redhat.rcm:redhat-releng-tools:12\\s+                                       pom                                     compile             \n"
+                                + "com.mycila:license-maven-plugin:[.\\d+]+\\s+                                    maven-plugin                                                \n"
                                 + "com.redhat.resilience.otel:opentelemetry-ext-cli-java:1.[.\\d+]+\\s+            jar                                     compile             \n"
                                 + "com.soebes.maven.plugins:iterator-maven-plugin:0.[.\\d+]+\\s+                   maven-plugin                                                \n"
                                 + "com.squareup:javapoet:1.[.\\d+]+\\s+                                            jar                                     compile             \n"
@@ -392,6 +392,7 @@ public class CliTest {
                                 + "org.goots.hiderdoclet:doclet:1.1                                                jar                                     provided            \n"
                                 + "org.hamcrest:hamcrest-all:1.3                                                   jar                                     test                \n"
                                 + "org.jacoco:jacoco-maven-plugin:0.8[.\\d+]+\\s+                                  maven-plugin                                                \n"
+                                + "org.jboss:jboss-parent:\\d+\\s+                                                 pom                                     compile             \n"
                                 + "org.jboss.byteman:byteman-bmunit:4[.\\d+]+\\s+                                  jar                                     test                \n"
                                 + "org.jboss.da:reports-model:2.[.\\d+]+\\s+                                       jar                                     compile             \n"
                                 + "org.jdom:jdom2:2.[.\\d+]+\\s+                                                   jar                                     compile             \n"

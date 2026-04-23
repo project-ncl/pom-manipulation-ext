@@ -138,7 +138,7 @@ at improving reproducibility and reducing the confusion of a variable build envi
 Integration/functional tests are not run in the default build. To run them, you can use one of the following profiles:
 
 * `run-its`
-* `release` (this is used when we release projects)
+* `central-release` (this is used when we release projects; includes license header checking and integration tests)
 
 Dependency versions are kept in the root POM for the project inside the `dependencyManagement` section (*not* in the
 normal `dependencies` section). Declare the most commonly used scope for the dependency inside the project if it's not
@@ -357,12 +357,12 @@ fi
 ### Run the Release
 
 ```
-mvn clean release:prepare release:perform -Prelease
+mvn clean release:prepare release:perform -Pcentral-release
 ```
 
 Or, if you have a GPG profile in your `$HOME/.m2/settings.xml`:
 ```
-mvn clean release:prepare release:perform -Prelease -Pgpg
+mvn clean release:prepare release:perform -Pcentral-release -Pgpg
 ```
 
 **Note**: Due to quirks with the Maven release plugin, to avoid running the integration tests for both `prepare` and `perform`
