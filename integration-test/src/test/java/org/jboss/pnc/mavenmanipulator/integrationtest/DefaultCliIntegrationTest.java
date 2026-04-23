@@ -92,7 +92,8 @@ public class DefaultCliIntegrationTest {
         boolean result = false;
         File t1 = new File(
                 DEFAULT_MVN_PARAMS.get("maven.repo.local"),
-                "org" + File.separator + "commonjava" + File.separator + "maven" + File.separator + "ext");
+                "org" + File.separator + "jboss" + File.separator + "pnc" + File.separator + "maven-manipulator"
+                        + File.separator + "integration-test");
         if (t1.exists()) {
             File t2 = new File(t1, test.getName());
             File[] directories = t2.listFiles(File::isDirectory);
