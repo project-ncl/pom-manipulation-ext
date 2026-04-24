@@ -56,7 +56,7 @@ public abstract class BaseScriptUtils extends Script implements MavenBaseScript 
     public void inlineProperty(Project currentProject, ProjectRef groupArtifact) throws ManipulationException {
         logger.debug("Inlining property for {} with reference {}", currentProject, groupArtifact);
         try {
-            currentProject.getResolvedManagedDependencies(getSession())
+            currentProject.getResolvedManagedDependencies()
                     .entrySet()
                     .stream()
                     .filter(
@@ -73,7 +73,7 @@ public abstract class BaseScriptUtils extends Script implements MavenBaseScript 
                                                 currentProject.getInheritedList(),
                                                 a.getValue().getVersion()));
                     });
-            currentProject.getResolvedDependencies(getSession())
+            currentProject.getResolvedDependencies()
                     .entrySet()
                     .stream()
                     .filter(
@@ -90,7 +90,7 @@ public abstract class BaseScriptUtils extends Script implements MavenBaseScript 
                                                 currentProject.getInheritedList(),
                                                 a.getValue().getVersion()));
                     });
-            currentProject.getResolvedManagedPlugins(getSession())
+            currentProject.getResolvedManagedPlugins()
                     .entrySet()
                     .stream()
                     .filter(
@@ -107,7 +107,7 @@ public abstract class BaseScriptUtils extends Script implements MavenBaseScript 
                                                 currentProject.getInheritedList(),
                                                 a.getValue().getVersion()));
                     });
-            currentProject.getResolvedPlugins(getSession())
+            currentProject.getResolvedPlugins()
                     .entrySet()
                     .stream()
                     .filter(
@@ -141,7 +141,7 @@ public abstract class BaseScriptUtils extends Script implements MavenBaseScript 
     public void inlineProperty(Project currentProject, String propertyKey) throws ManipulationException {
         logger.debug("Inlining property for {} with reference {}", currentProject, propertyKey);
         try {
-            currentProject.getResolvedManagedDependencies(getSession())
+            currentProject.getResolvedManagedDependencies()
                     .entrySet()
                     .stream()
                     .filter(a -> a.getValue().getVersion().equals("${" + propertyKey + "}"))
@@ -154,7 +154,7 @@ public abstract class BaseScriptUtils extends Script implements MavenBaseScript 
                                                 currentProject.getInheritedList(),
                                                 a.getValue().getVersion()));
                     });
-            currentProject.getResolvedDependencies(getSession())
+            currentProject.getResolvedDependencies()
                     .entrySet()
                     .stream()
                     .filter(a -> a.getValue().getVersion().equals("${" + propertyKey + "}"))
@@ -167,7 +167,7 @@ public abstract class BaseScriptUtils extends Script implements MavenBaseScript 
                                                 currentProject.getInheritedList(),
                                                 a.getValue().getVersion()));
                     });
-            currentProject.getResolvedManagedPlugins(getSession())
+            currentProject.getResolvedManagedPlugins()
                     .entrySet()
                     .stream()
                     .filter(
@@ -182,7 +182,7 @@ public abstract class BaseScriptUtils extends Script implements MavenBaseScript 
                                                 currentProject.getInheritedList(),
                                                 a.getValue().getVersion()));
                     });
-            currentProject.getResolvedPlugins(getSession())
+            currentProject.getResolvedPlugins()
                     .entrySet()
                     .stream()
                     .filter(a -> a.getValue().getVersion().equals("${" + propertyKey + "}"))

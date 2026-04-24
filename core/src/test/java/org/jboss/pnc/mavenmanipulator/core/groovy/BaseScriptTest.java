@@ -74,7 +74,7 @@ public class BaseScriptTest {
         final File projectroot = new File(ROOT_DIRECTORY.toFile(), "pom.xml");
 
         PomIO pomIO = new PomIO();
-        List<Project> projects = pomIO.parseProject(projectroot);
+        List<Project> projects = pomIO.parseProject(null, projectroot);
         ManipulationSession ms = TestUtils.createSession(null, projectroot);
 
         Project root = projects.stream().filter(p -> p.getProjectParent() == null).findAny().orElse(null);
@@ -98,7 +98,7 @@ public class BaseScriptTest {
         final File projectroot = new File(ROOT_DIRECTORY.toFile(), "pom.xml");
 
         PomIO pomIO = new PomIO();
-        List<Project> projects = pomIO.parseProject(projectroot);
+        List<Project> projects = pomIO.parseProject(null, projectroot);
         ManipulationSession ms = TestUtils.createSession(null, projectroot);
 
         Project root = projects.stream().filter(p -> p.getProjectParent() == null).findAny().orElse(null);
@@ -129,8 +129,8 @@ public class BaseScriptTest {
         PomIO pomIO = new PomIO();
         FileIO fileIO = new FileIO(temporaryFolder.newFolder());
 
-        List<Project> projects = pomIO.parseProject(projectroot);
         ManipulationSession ms = TestUtils.createSession(null, projectroot);
+        List<Project> projects = pomIO.parseProject(ms, projectroot);
 
         Project root = projects.stream()
                 .filter(p -> p.getProjectParent() == null)
@@ -198,7 +198,7 @@ public class BaseScriptTest {
 
         assertEquals(
                 "1.18.20.0",
-                root.getResolvedPlugins(bs.getSession())
+                root.getResolvedPlugins()
                         .entrySet()
                         .stream()
                         .filter(d -> d.getKey().getArtifactId().equals(pluginArtifact.getArtifactId()))
@@ -212,7 +212,7 @@ public class BaseScriptTest {
 
         assertEquals(
                 "3.5.1",
-                root.getResolvedManagedPlugins(bs.getSession())
+                root.getResolvedManagedPlugins()
                         .entrySet()
                         .stream()
                         .filter(d -> d.getKey().getArtifactId().equals(dependencyPluginArtifact.getArtifactId()))
@@ -228,7 +228,7 @@ public class BaseScriptTest {
         final File groovy = TestUtils.resolveFileResource("", "PropertyOverride.groovy");
         final File projectroot = new File(ROOT_DIRECTORY.toFile(), "pom.xml");
 
-        List<Project> projects = new PomIO().parseProject(projectroot);
+        List<Project> projects = new PomIO().parseProject(null, projectroot);
 
         Properties userProperties = new Properties();
         userProperties.setProperty("versionIncrementalSuffix", "rebuild");
@@ -267,7 +267,7 @@ public class BaseScriptTest {
         FileUtils.copyFileToDirectory(pom, tmpFolder);
 
         final File projectroot = new File(tmpFolder, "pom.xml");
-        List<Project> projects = new PomIO().parseProject(projectroot);
+        List<Project> projects = new PomIO().parseProject(null, projectroot);
 
         Properties userProperties = new Properties();
         userProperties.setProperty("versionIncrementalSuffix", "rebuild");

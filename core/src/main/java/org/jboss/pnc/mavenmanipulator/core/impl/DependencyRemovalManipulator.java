@@ -98,20 +98,20 @@ public class DependencyRemovalManipulator
 
         List<ProjectRef> dependenciesToRemove = state.getDependencyRemoval();
         boolean result = scanDependencies(
-                project.getAllResolvedDependencies(session),
+                project.getAllResolvedDependencies(),
                 dependenciesToRemove,
                 model.getDependencies());
 
         if (model.getDependencyManagement() != null &&
                 scanDependencies(
-                        project.getResolvedManagedDependencies(session),
+                        project.getResolvedManagedDependencies(),
                         dependenciesToRemove,
                         model.getDependencyManagement().getDependencies())) {
             result = true;
         }
 
-        final Map<Profile, Map<ArtifactRef, Dependency>> pd = project.getAllResolvedProfileDependencies(session);
-        final Map<Profile, Map<ArtifactRef, Dependency>> pmd = project.getResolvedProfileManagedDependencies(session);
+        final Map<Profile, Map<ArtifactRef, Dependency>> pd = project.getAllResolvedProfileDependencies();
+        final Map<Profile, Map<ArtifactRef, Dependency>> pmd = project.getResolvedProfileManagedDependencies();
         for (final Entry<Profile, Map<ArtifactRef, Dependency>> entry : pd.entrySet()) {
             final Profile profile = entry.getKey();
             final Map<ArtifactRef, Dependency> resolvedDependencies = entry.getValue();

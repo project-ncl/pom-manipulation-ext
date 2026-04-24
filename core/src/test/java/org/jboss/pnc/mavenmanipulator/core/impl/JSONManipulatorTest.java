@@ -66,7 +66,7 @@ public class JSONManipulatorTest {
 
         File target = tf.newFile();
         FileUtils.copyFile(npmFile, target);
-        Project project = new Project(target, TestUtils.getDummyModel());
+        Project project = new Project(null, target, TestUtils.getDummyModel());
 
         jsonManipulator.internalApplyChanges(project, new JSONState.JSONOperation(target.getName(), modifyPath, null));
     }
@@ -77,7 +77,7 @@ public class JSONManipulatorTest {
 
         File target = tf.newFile();
         FileUtils.copyFile(pluginFile, target);
-        Project project = new Project(target, TestUtils.getDummyModel());
+        Project project = new Project(null, target, TestUtils.getDummyModel());
 
         jsonManipulator.internalApplyChanges(
                 project,

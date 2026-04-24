@@ -151,13 +151,13 @@ public class RepositoryInjectionManipulator
             for (ProjectRef p : gaToApply) {
                 if (p.getArtifactId().contains("*") && p.getGroupId().equals(project.getGroupId())) {
                     result = true;
-                } else if (p.equals(project.getKey().asProjectRef())) {
+                } else if (p.equals(project.getResolvedKey().asProjectRef())) {
                     result = true;
                 }
             }
             logger.debug(
                     "Checking project {} against possible GAs {} and found match {}",
-                    project.getKey().asProjectRef(),
+                    project.getResolvedKey().asProjectRef(),
                     gaToApply,
                     result);
         } else if (project.isInheritanceRoot()) {

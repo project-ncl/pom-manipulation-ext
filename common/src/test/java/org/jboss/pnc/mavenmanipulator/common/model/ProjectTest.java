@@ -33,7 +33,7 @@ public class ProjectTest {
 
     @Test(expected = ManipulationException.class)
     public void createProjectWithNullModel() throws ManipulationException {
-        new Project(null, null);
+        new Project(null, null, null);
     }
 
     @Test

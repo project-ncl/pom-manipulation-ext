@@ -41,8 +41,8 @@ public final class ProfileUtils {
     public static List<Profile> getProfiles(MavenSessionHandler session, Model model) {
         final List<Profile> result = new ArrayList<>();
         final List<Profile> profiles = model.getProfiles();
-        final boolean scanActiveProfiles = Boolean
-                .parseBoolean(session.getUserProperties().getProperty(PROFILE_SCANNING, PROFILE_SCANNING_DEFAULT));
+        final boolean scanActiveProfiles = (session != null && Boolean
+                .parseBoolean(session.getUserProperties().getProperty(PROFILE_SCANNING, PROFILE_SCANNING_DEFAULT)));
 
         if (profiles != null) {
             if (scanActiveProfiles) {

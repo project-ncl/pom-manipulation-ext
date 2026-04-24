@@ -142,8 +142,8 @@ public class PluginManipulator extends CommonManipulator implements Manipulator 
             if (cState.getStrictDependencyPluginPropertyValidation() > 0) {
                 logger.info("Iterating to validate plugin updates...");
                 for (final Project p : versionPropertyUpdateMap.keySet()) {
-                    validatePluginsUpdatedProperty(cState, p, p.getResolvedPlugins(session));
-                    for (final Map<ProjectVersionRef, Plugin> dependencies : p.getResolvedProfilePlugins(session)
+                    validatePluginsUpdatedProperty(cState, p, p.getResolvedPlugins());
+                    for (final Map<ProjectVersionRef, Plugin> dependencies : p.getResolvedProfilePlugins()
                             .values()) {
                         validatePluginsUpdatedProperty(cState, p, dependencies);
                     }
@@ -291,23 +291,23 @@ public class PluginManipulator extends CommonManipulator implements Manipulator 
             }
 
             // Override plugin management versions
-            applyOverrides(project, PluginType.LocalPM, project.getResolvedManagedPlugins(session), overrides);
+            applyOverrides(project, PluginType.LocalPM, project.getResolvedManagedPlugins(), overrides);
         }
 
-        applyOverrides(project, PluginType.LocalP, project.getResolvedPlugins(session), overrides);
+        applyOverrides(project, PluginType.LocalP, project.getResolvedPlugins(), overrides);
         applyExplicitOverrides(
                 project,
-                project.getResolvedPlugins(session),
+                project.getResolvedPlugins(),
                 explicitOverrides,
                 explicitVersionPropertyUpdateMap);
         applyExplicitOverrides(
                 project,
-                project.getResolvedManagedPlugins(session),
+                project.getResolvedManagedPlugins(),
                 explicitOverrides,
                 explicitVersionPropertyUpdateMap);
 
-        final Map<Profile, Map<ProjectVersionRef, Plugin>> pd = project.getResolvedProfilePlugins(session);
-        final Map<Profile, Map<ProjectVersionRef, Plugin>> pmd = project.getResolvedProfileManagedPlugins(session);
+        final Map<Profile, Map<ProjectVersionRef, Plugin>> pd = project.getResolvedProfilePlugins();
+        final Map<Profile, Map<ProjectVersionRef, Plugin>> pmd = project.getResolvedProfileManagedPlugins();
 
         logger.debug("Processing profiles with plugin management");
         for (final Map<ProjectVersionRef, Plugin> plugins : pmd.values()) {

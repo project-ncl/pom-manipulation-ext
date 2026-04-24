@@ -86,9 +86,9 @@ public class PropertyInterpolatorTest {
     @Test
     public void testResolveProjectDependencies() throws Exception {
         final Model model = TestUtils.resolveModelResource(RESOURCE_BASE, "infinispan-bom-8.2.0.Final.pom");
-        final Project project = new Project(model);
+        final Project project = new Project(new ManipulationSession(), model.getPomFile(), model);
 
-        Map<ArtifactRef, Dependency> deps = project.getResolvedManagedDependencies(new ManipulationSession());
+        Map<ArtifactRef, Dependency> deps = project.getResolvedManagedDependencies();
 
         assertEquals(66, deps.size());
     }

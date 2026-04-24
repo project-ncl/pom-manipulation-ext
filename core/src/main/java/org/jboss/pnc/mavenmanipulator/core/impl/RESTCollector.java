@@ -91,13 +91,16 @@ public class RESTCollector
         for (final Project project : projects) {
             if (isEmpty(override)) {
                 // Strip SNAPSHOT and handle OSGi and alternate suffixes from the version for matching.
+                ProjectVersionRef pvr = project.getResolvedKey();
                 restLookupProjectVersionParamList.add(
                         new SimpleProjectVersionRef(
-                                project.getKey().asProjectRef(),
+                                pvr.asProjectRef(),
                                 handlePotentialSnapshotVersion(
                                         vs,
                                         Version.getOsgiVersion(
-                                                VersionCalculator.handleAlternate(vs, project.getVersion())))));
+                                                VersionCalculator.handleAlternate(
+                                                        vs,
+                                                        pvr.getVersionString())))));
             } else if (project.isExecutionRoot()) {
                 // We want to manually override the version ; therefore ignore what is in the project and calculate potential
                 // matches for that instead.
@@ -233,10 +236,10 @@ public class RESTCollector
                     localDeps.add(new SimpleScopedArtifactRef(parent, new SimpleTypeAndClassifier("pom", null), null));
                 }
 
-                recordDependencies(session, localDeps, project.getResolvedManagedDependencies(session));
-                recordDependencies(session, localDeps, project.getResolvedDependencies(session));
-                recordPlugins(session, localDeps, project.getResolvedManagedPlugins(session));
-                recordPlugins(session, localDeps, project.getResolvedPlugins(session));
+                recordDependencies(session, localDeps, project.getResolvedManagedDependencies());
+                recordDependencies(session, localDeps, project.getResolvedDependencies());
+                recordPlugins(session, localDeps, project.getResolvedManagedPlugins());
+                recordPlugins(session, localDeps, project.getResolvedPlugins());
 
                 List<Profile> profiles = project.getModel().getProfiles();
                 if (profiles != null) {
@@ -247,22 +250,22 @@ public class RESTCollector
                         recordDependencies(
                                 session,
                                 localDeps,
-                                project.getResolvedProfileManagedDependencies(session)
+                                project.getResolvedProfileManagedDependencies()
                                         .getOrDefault(p, Collections.emptyMap()));
                         recordDependencies(
                                 session,
                                 localDeps,
-                                project.getResolvedProfileDependencies(session)
+                                project.getResolvedProfileDependencies()
                                         .getOrDefault(p, Collections.emptyMap()));
                         recordPlugins(
                                 session,
                                 localDeps,
-                                project.getResolvedProfileManagedPlugins(session)
+                                project.getResolvedProfileManagedPlugins()
                                         .getOrDefault(p, Collections.emptyMap()));
                         recordPlugins(
                                 session,
                                 localDeps,
-                                project.getResolvedProfilePlugins(session).getOrDefault(p, Collections.emptyMap()));
+                                project.getResolvedProfilePlugins().getOrDefault(p, Collections.emptyMap()));
 
                     }
                 }

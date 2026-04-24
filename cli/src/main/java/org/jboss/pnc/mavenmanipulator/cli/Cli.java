@@ -282,7 +282,7 @@ public class Cli implements Callable<Integer> {
                 List<ArtifactRef> ts = RESTCollector
                         .establishAllDependencies(
                                 session,
-                                pomIO.parseProject(session.getPom()),
+                                pomIO.parseProject(session, session.getPom()),
                                 profiles)
                         .stream()
                         .sorted()

@@ -111,23 +111,23 @@ public class SuffixManipulator
                 }
             }
 
-            processDependencies(suffixStripPattern, project, project.getResolvedDependencies(session));
-            processDependencies(suffixStripPattern, project, project.getResolvedManagedDependencies(session));
-            processPlugins(suffixStripPattern, project, project.getResolvedPlugins(session));
-            processPlugins(suffixStripPattern, project, project.getResolvedManagedPlugins(session));
+            processDependencies(suffixStripPattern, project, project.getResolvedDependencies());
+            processDependencies(suffixStripPattern, project, project.getResolvedManagedDependencies());
+            processPlugins(suffixStripPattern, project, project.getResolvedPlugins());
+            processPlugins(suffixStripPattern, project, project.getResolvedManagedPlugins());
 
             List<Profile> profiles = ProfileUtils.getProfiles(session, project.getModel());
             for (Profile p : profiles) {
                 processDependencies(
                         suffixStripPattern,
                         project,
-                        project.getResolvedProfileDependencies(session).get(p));
+                        project.getResolvedProfileDependencies().get(p));
                 processDependencies(
                         suffixStripPattern,
                         project,
-                        project.getResolvedProfileManagedDependencies(session).get(p));
-                processPlugins(suffixStripPattern, project, project.getResolvedProfilePlugins(session).get(p));
-                processPlugins(suffixStripPattern, project, project.getResolvedProfileManagedPlugins(session).get(p));
+                        project.getResolvedProfileManagedDependencies().get(p));
+                processPlugins(suffixStripPattern, project, project.getResolvedProfilePlugins().get(p));
+                processPlugins(suffixStripPattern, project, project.getResolvedProfileManagedPlugins().get(p));
             }
         }
         return changed;

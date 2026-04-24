@@ -128,9 +128,9 @@ public class RelocationManipulator
             result = updateDependencies(
                     project,
                     dependencyRelocations,
-                    project.getResolvedManagedDependencies(session));
+                    project.getResolvedManagedDependencies());
         }
-        result |= updateDependencies(project, dependencyRelocations, project.getAllResolvedDependencies(session));
+        result |= updateDependencies(project, dependencyRelocations, project.getAllResolvedDependencies());
 
         for (final Profile profile : ProfileUtils.getProfiles(session, model)) {
             dependencyManagement = profile.getDependencyManagement();
@@ -138,12 +138,12 @@ public class RelocationManipulator
                 result |= updateDependencies(
                         project,
                         dependencyRelocations,
-                        project.getResolvedProfileManagedDependencies(session).get(profile));
+                        project.getResolvedProfileManagedDependencies().get(profile));
             }
             result |= updateDependencies(
                     project,
                     dependencyRelocations,
-                    project.getAllResolvedProfileDependencies(session).get(profile));
+                    project.getAllResolvedProfileDependencies().get(profile));
 
         }
 
@@ -151,28 +151,28 @@ public class RelocationManipulator
                 pluginRelocations,
                 dependencyRelocations,
                 project,
-                project.getResolvedManagedPlugins(session));
+                project.getResolvedManagedPlugins());
 
         result |= updatePlugins(
                 pluginRelocations,
                 dependencyRelocations,
                 project,
-                project.getAllResolvedPlugins(session));
+                project.getAllResolvedPlugins());
 
-        for (Profile profile : project.getAllResolvedProfilePlugins(session).keySet()) {
+        for (Profile profile : project.getAllResolvedProfilePlugins().keySet()) {
             result |= updatePlugins(
                     pluginRelocations,
                     dependencyRelocations,
                     project,
-                    project.getAllResolvedProfilePlugins(session).get(profile));
+                    project.getAllResolvedProfilePlugins().get(profile));
         }
 
-        for (Profile profile : project.getResolvedProfileManagedPlugins(session).keySet()) {
+        for (Profile profile : project.getResolvedProfileManagedPlugins().keySet()) {
             result |= updatePlugins(
                     pluginRelocations,
                     dependencyRelocations,
                     project,
-                    project.getResolvedProfileManagedPlugins(session).get(profile));
+                    project.getResolvedProfileManagedPlugins().get(profile));
         }
 
         return result;
