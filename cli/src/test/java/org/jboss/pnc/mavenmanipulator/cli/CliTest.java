@@ -463,6 +463,10 @@ public class CliTest {
         assertTrue(systemOutRule.getLog().contains("Running manipulator"));
 
         systemOutRule.clearLog();
+        File marker = new File(folder, "target/pom-manip-ext-marker.txt");
+        if (marker.exists()) {
+            marker.delete();
+        }
 
         c = new Cli();
         c.run(

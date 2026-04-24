@@ -41,17 +41,26 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        maven-version: [3.3.9, 3.5.4, 3.6.3, 3.8.7, 3.9.0, 3.9.8]
+        maven-version: [3.6.3, 3.8.7, 3.9.0, 3.9.8]
         java-version: ['11']
-        # Use include to add a specific Maven/JDK combination
+        build-command: ['mvn -B -V clean install -Prun-its']
+        # Use include to add a specific Maven/JDK/Build-command combination
         include:
+          - maven-version: 3.3.9
+            java-version: '11'
+            build-command: "mvn -B -V clean install -Prun-its -Pearly-maven"
+          - maven-version: 3.5.4
+            java-version: '11'
+            build-command: "mvn -B -V clean install -Prun-its -Pearly-maven"
           - maven-version: 3.9.11
             java-version: '17'
+            build-command: "mvn -B -V clean install -Prun-its"
           - maven-version: 3.9.15
             java-version: '17'
+            build-command: "mvn -B -V clean install -Prun-its"
     uses: project-ncl/shared-github-actions/.github/workflows/maven-ci.yml@ef31e53140344cac0421b7211cc0940182409106 # v0.0.16
     with:
-      build_command: "mvn -B -V clean install -Prun-its"
+      build_command: ${{ matrix.build-command }}
       java_version: ${{ matrix.java-version }}
       maven_version: ${{ matrix.maven-version }}
   codecov:
