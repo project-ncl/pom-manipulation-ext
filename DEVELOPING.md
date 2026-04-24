@@ -138,7 +138,7 @@ at improving reproducibility and reducing the confusion of a variable build envi
 Integration/functional tests are not run in the default build. To run them, you can use one of the following profiles:
 
 * `run-its`
-* `release` (this is used when we release projects)
+* `central-release` (this is used when we release projects; includes license header checking and integration tests)
 
 Dependency versions are kept in the root POM for the project inside the `dependencyManagement` section (*not* in the
 normal `dependencies` section). Declare the most commonly used scope for the dependency inside the project if it's not
@@ -329,40 +329,21 @@ libraries without somehow gaining access to that `SNAPSHOT` BOM.
 #### Check for Improperly Formatted License Headers
 
 Each source file, along with `pom.xml` and test resource files, should have a header comment that reflects the license
-of the project. We're using the [license-maven-plugin](https://mycila.mathieu.photography/license-maven-plugin/) for
-this purpose. It reformats license headers when you use the formatting profile (`-Pformatting`) and verifies their
+of the project. We're using the [license-maven-plugin](https://mathieu.carbou.me/license-maven-plugin/) for
+this purpose. It reformats license headers when you run `mvn com.mycila:license-maven-plugin:check` and verifies their
 presence and correctness during the project release as part of the release build profile. If any of the license
 headers are missing or incorrect, the verification step will fail the build leaving you with a release to rollback
-before you can correct the problem and try again.
-
-So, before you try to run the actual release, perform the following steps:
-
-```
-#!/bin/bash
-
-# We don't need tests, but may need module dependency assemblies, etc.
-mvn -Pformatting clean install -DskipTests=true
-
-# Check whether any files were updated
-git status | grep 'modified:'
-changed=$?
-
-# Only necessary if files changed
-if [ $changed != 0 ]; then
-    git add .
-    git commit -am "Fix license headers"
-fi
-```
+before you can correct the problem and try again. To correct the format run `mvn com.mycila:license-maven-plugin:format`.
 
 ### Run the Release
 
 ```
-mvn clean release:prepare release:perform -Prelease
+mvn clean release:prepare release:perform -Pcentral-release
 ```
 
 Or, if you have a GPG profile in your `$HOME/.m2/settings.xml`:
 ```
-mvn clean release:prepare release:perform -Prelease -Pgpg
+mvn clean release:prepare release:perform -Pcentral-release -Pgpg
 ```
 
 **Note**: Due to quirks with the Maven release plugin, to avoid running the integration tests for both `prepare` and `perform`

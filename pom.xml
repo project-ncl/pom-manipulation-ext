@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2012 Red Hat, Inc.
+    Copyright © 2012 Red Hat, Inc.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
     You may obtain a copy of the License at
 
-            http://www.apache.org/licenses/LICENSE-2.0
+        http://www.apache.org/licenses/LICENSE-2.0
 
     Unless required by applicable law or agreed to in writing, software
     distributed under the License is distributed on an "AS IS" BASIS,
@@ -20,9 +20,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.redhat.rcm</groupId>
-    <artifactId>redhat-releng-tools</artifactId>
-    <version>12</version>
+    <groupId>org.jboss</groupId>
+    <artifactId>jboss-parent</artifactId>
+    <version>53</version>
   </parent>
 
   <groupId>org.jboss.pnc.maven-manipulator</groupId>
@@ -72,10 +72,23 @@
 
   <properties>
     <projectOwner>Red Hat, Inc.</projectOwner>
+    <projectEmail>ncross@redhat.com</projectEmail>
 
     <javaVersion>1.8</javaVersion>
     <javaTestVersion>${javaVersion}</javaTestVersion>
     <addJarIndex>false</addJarIndex>
+
+    <!-- Override jboss-parent compiler settings to match project requirements -->
+    <maven.compiler.source>${javaVersion}</maven.compiler.source>
+    <maven.compiler.target>${javaVersion}</maven.compiler.target>
+    <maven.compiler.testTarget>${javaVersion}</maven.compiler.testTarget>
+    <maven.compiler.testSource>${javaVersion}</maven.compiler.testSource>
+    <maven.compiler.release>8</maven.compiler.release>
+    <maven.compiler.testRelease>8</maven.compiler.testRelease>
+
+    <!-- Override enforcer requirements -->
+    <maven.min.version>3.3.9</maven.min.version>
+    <jdk.min.version>11</jdk.min.version>
 
     <mavenVersion>3.9.14</mavenVersion>
     <atlasVersion>1.2.2</atlasVersion>
@@ -622,13 +635,21 @@
         <plugin>
           <groupId>com.mycila</groupId>
           <artifactId>license-maven-plugin</artifactId>
+          <version>5.0.0</version>
           <configuration>
-            <excludes combine.children="append">
-              <exclude>ide-config/eclipse.importorder</exclude>
-              <exclude>**/commonjava/maven/ext/common/ExceptionHelper.java</exclude>
-              <exclude>**/src/test/resources/org.jboss.pnc.mavenmanipulator/io/pom.xml</exclude>
-              <exclude>**/src/test/resources/gavs.txt</exclude>
-            </excludes>
+            <properties>
+              <owner>${projectOwner}</owner>
+            </properties>
+            <licenseSets>
+              <licenseSet>
+                <header>com/mycila/maven/plugin/license/templates/APACHE-2-noemail.txt</header>
+                <excludes>
+                  <exclude>**/commonjava/maven/ext/common/ExceptionHelper.java</exclude>
+                  <exclude>**/src/test/resources/org.jboss.pnc.mavenmanipulator/io/pom.xml</exclude>
+                  <exclude>**/src/test/resources/gavs.txt</exclude>
+                </excludes>
+              </licenseSet>
+            </licenseSets>
           </configuration>
         </plugin>
         <plugin>
@@ -742,10 +763,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-      </plugin>
-      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>animal-sniffer-maven-plugin</artifactId>
         <executions>
@@ -827,6 +844,15 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <publishingServerId>central-publisher</publishingServerId>
+          <autoPublish>false</autoPublish>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
@@ -869,6 +895,60 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+    <profile>
+      <id>central-release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.mycila</groupId>
+            <artifactId>license-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>check-license-headers</id>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+                <phase>verify</phase>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>jboss-release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <configuration>
+              <skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>early-maven</id>
+      <properties>
+        <!-- Downgrade from parent to ensure it works with all maven versions -->
+        <version.assembly.plugin>3.6.0</version.assembly.plugin>
+        <version.buildnumber.plugin>3.0.0</version.buildnumber.plugin>
+        <version.clean.plugin>3.3.2</version.clean.plugin>
+        <version.compiler.plugin>3.12.1</version.compiler.plugin>
+        <version.enforcer.plugin>3.4.1</version.enforcer.plugin>
+        <version.install.plugin>3.1.1</version.install.plugin>
+        <version.gpg.plugin>3.2.4</version.gpg.plugin>
+        <version.deploy.plugin>3.1.1</version.deploy.plugin>
+        <version.jar.plugin>3.3.0</version.jar.plugin>
+        <version.javadoc.plugin>3.6.3</version.javadoc.plugin>
+        <version.resources.plugin>3.3.1</version.resources.plugin>
+        <version.source.plugin>3.3.1</version.source.plugin>
+        <version.surefire>3.2.5</version.surefire>
+      </properties>
     </profile>
   </profiles>
 </project>
