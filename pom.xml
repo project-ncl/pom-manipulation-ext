@@ -634,7 +634,8 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>animal-sniffer-maven-plugin</artifactId>
-          <version>1.27</version>
+          <!-- Versions after 1.23 require Maven 3.6.3 -->
+          <version>1.23</version>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
