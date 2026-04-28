@@ -1,0 +1,28 @@
+name: Mend CLI scan for Maven
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 22 * * 0"
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+  pull-requests: write
+  security-events: write
+
+jobs:
+  call-maven-mend-ci:
+    uses: project-ncl/shared-github-actions/.github/workflows/maven-mend-ci.yml@399b7f3d1274fdae4cc55f0b07925ee7f2aabf41 # main
+    with:
+      SCA: true
+      SAST: true
+    secrets:
+      MEND_URL: ${{ secrets.MEND_URL }}
+      MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
+      MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
+      MEND_ORGNAME: ${{ secrets.MEND_ORGNAME }}
+      MEND_PRODUCTNAME: ${{ secrets.MEND_PRODUCTNAME }}
