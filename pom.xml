@@ -90,7 +90,7 @@
     <maven.min.version>3.3.9</maven.min.version>
     <jdk.min.version>11</jdk.min.version>
 
-    <mavenVersion>3.9.14</mavenVersion>
+    <mavenVersion>3.9.15</mavenVersion>
     <atlasVersion>1.2.2</atlasVersion>
     <daVersion>2.6.9</daVersion>
     <galleyVersion>1.22</galleyVersion>
