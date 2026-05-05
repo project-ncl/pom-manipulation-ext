@@ -70,10 +70,9 @@ import org.jboss.pnc.mavenmanipulator.core.util.PropertiesUtils;
 import org.jboss.pnc.mavenmanipulator.io.ConfigIO;
 import org.jboss.pnc.mavenmanipulator.io.PomIO;
 import org.jboss.pnc.mavenmanipulator.io.rest.RestException;
+import org.jboss.pnc.otel.OTelCLIHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.redhat.resilience.otel.OTelCLIHelper;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;

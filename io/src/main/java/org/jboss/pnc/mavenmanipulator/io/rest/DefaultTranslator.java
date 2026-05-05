@@ -39,10 +39,9 @@ import org.jboss.pnc.mavenmanipulator.common.json.ErrorMessage;
 import org.jboss.pnc.mavenmanipulator.common.util.GAVUtils;
 import org.jboss.pnc.mavenmanipulator.common.util.ListUtils;
 import org.jboss.pnc.mavenmanipulator.common.util.PMEObjectMapper;
+import org.jboss.pnc.otel.OTelCLIHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.redhat.resilience.otel.OTelCLIHelper;
 
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanContext;

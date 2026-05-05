@@ -242,7 +242,7 @@
                   <include>com.jayway.jsonpath:json-path</include>
                   <include>com.konghq:unirest-java</include>
                   <include>com.konghq:unirest-objectmapper-jackson</include>
-                  <include>com.redhat.resilience.otel:opentelemetry-ext-cli-java</include>
+                  <include>org.jboss.pnc.otel:opentelemetry-ext-cli-java</include>
                   <include>commons-codec:commons-codec</include>
                   <include>commons-io:commons-io</include>
                   <include>commons-jxpath:commons-jxpath</include>
