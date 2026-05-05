@@ -110,6 +110,8 @@
     <jacksonVersion>2.21.2</jacksonVersion>
     <argLine/>
     <surefireSecurityManager/>
+
+    <tagNameFormat>@{project.artifactId}-@{project.version}</tagNameFormat>
   </properties>
 
   <dependencyManagement>
