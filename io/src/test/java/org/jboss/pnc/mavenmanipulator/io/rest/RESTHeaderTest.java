@@ -34,11 +34,10 @@ import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 import org.jboss.pnc.mavenmanipulator.io.rest.rule.MockServer;
+import org.jboss.pnc.otel.OTelCLIHelper;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
-
-import com.redhat.resilience.otel.OTelCLIHelper;
 
 public class RESTHeaderTest {
     @Rule
