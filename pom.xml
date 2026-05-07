@@ -812,7 +812,7 @@
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
         <!-- Currently the CI uses JDK11 so can't upgrade this to 3.0.0 -->
-        <version>2.46.1</version>
+        <version>3.4.0</version>
         <configuration>
           <pom>
             <sortPom>
@@ -893,7 +893,7 @@
           <plugin>
             <groupId>com.diffplug.spotless</groupId>
             <artifactId>spotless-maven-plugin</artifactId>
-            <version>3.1.0</version>
+            <version>3.4.0</version>
           </plugin>
         </plugins>
       </build>
