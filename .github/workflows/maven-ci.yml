@@ -58,7 +58,7 @@ jobs:
           - maven-version: 3.9.15
             java-version: '17'
             build-command: "mvn -B -V clean install -Prun-its"
-    uses: project-ncl/shared-github-actions/.github/workflows/maven-ci.yml@ef31e53140344cac0421b7211cc0940182409106 # v0.0.16
+    uses: project-ncl/shared-github-actions/.github/workflows/maven-ci.yml@2d927763b5bcdd30dead156c32649470cc2b2aa3 # v0.0.17
     with:
       build_command: ${{ matrix.build-command }}
       java_version: ${{ matrix.java-version }}
