@@ -113,6 +113,8 @@
 
     <spotlessVersion>3.4.0</spotlessVersion>
 
+    <central.autoPublish>false</central.autoPublish>
+    <signTag>false</signTag>
     <tagNameFormat>@{project.artifactId}-@{project.version}</tagNameFormat>
   </properties>
 
@@ -853,7 +855,6 @@
         <extensions>true</extensions>
         <configuration>
           <publishingServerId>central-publisher</publishingServerId>
-          <autoPublish>false</autoPublish>
         </configuration>
       </plugin>
     </plugins>
