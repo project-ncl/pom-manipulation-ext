@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.jboss.pnc.maven-manipulator</groupId>
     <artifactId>pom-manipulation-parent</artifactId>
-    <version>5.3-SNAPSHOT</version>
+    <version>5.3</version>
   </parent>
 
   <artifactId>pom-manipulation-core</artifactId>
@@ -249,7 +249,7 @@
           <dependency>
             <groupId>org.jboss.pnc.maven-manipulator</groupId>
             <artifactId>pom-manipulation-annotation</artifactId>
-            <version>5.3-SNAPSHOT</version>
+            <version>5.3</version>
             <classifier>processor</classifier>
           </dependency>
         </dependencies>
