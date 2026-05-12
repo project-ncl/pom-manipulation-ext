@@ -309,7 +309,7 @@
                   </goals>
                   <localRepositoryPath>${localRepositoryUrlExt}</localRepositoryPath>
                   <mavenHome>${it.maven.home}</mavenHome>
-                  <cloneProjectsTo />
+                  <cloneProjectsTo/>
                   <setupIncludes>
                     <setupInclude>setup/*/pom.xml</setupInclude>
                   </setupIncludes>
