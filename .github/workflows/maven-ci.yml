@@ -64,7 +64,7 @@ jobs:
             java-version: '17'
             build-command: "mvn -B -V clean install -Prun-its"
             upload_artifacts: true
-    uses: project-ncl/shared-github-actions/.github/workflows/maven-ci.yml@dc16c38747e72ec04165d5e5e0177e85d21bc5c8 # main
+    uses: project-ncl/shared-github-actions/.github/workflows/maven-ci.yml@e6fb4adb3ef1a2053b060b3dff8e4e21724f51ec # main
     with:
       build_command: ${{ matrix.build-command }}
       java_version: ${{ matrix.java-version }}
