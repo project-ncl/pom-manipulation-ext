@@ -23,6 +23,8 @@ jobs:
     with:
       SCA: true
       SAST: true
+      SCA_EXCLUDES: "integration-test/**"
+      SAST_EXCLUDES: "integration-test/"
       triggering_run_id: ${{ github.event.workflow_run.id }}
       pr_feedback: true
     secrets:
