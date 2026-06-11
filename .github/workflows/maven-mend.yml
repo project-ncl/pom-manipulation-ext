@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   build:
-    uses: project-ncl/shared-github-actions/.github/workflows/maven-ci.yml@51306b121a5682b56c30bca0837821284b760a51 # main
+    uses: project-ncl/shared-github-actions/.github/workflows/maven-ci.yml@70502d0c707f7d7abb41b02af80fb094a022a760 # main
     with:
       java_version: "17"
       build_command: "mvn -B -V clean install -Prun-its"
