@@ -20,7 +20,7 @@ def pom = new XmlSlurper().parse( pomFile )
 
 pom.build.plugins.children().each{
     if (it.artifactId == "project-sources-maven-plugin" ){
-        assert it.version == '2.0'
+        assert it.version == '2.2'
         assert it.groupId == 'org.jboss.pnc'
     }
 }
