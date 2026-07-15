@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.jboss.pnc.maven-manipulator</groupId>
     <artifactId>pom-manipulation-parent</artifactId>
-    <version>5.4</version>
+    <version>5.5-SNAPSHOT</version>
   </parent>
 
   <artifactId>pom-manipulation-ext</artifactId>
