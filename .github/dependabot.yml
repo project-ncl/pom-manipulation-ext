@@ -16,7 +16,7 @@ updates:
       # https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference#cooldown-
       exclude:
         - "org.jboss.da:*"
-        - "org.jboss.pnc:*"
+        - "org.jboss.pnc*:*"        # match org.jboss.pnc:xyz and org.jboss.pnc.group:xyz
   - package-ecosystem: "github-actions" # Also update Github actions
     directory: "/"
     schedule:
