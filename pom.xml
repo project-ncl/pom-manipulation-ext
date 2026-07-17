@@ -27,7 +27,7 @@
 
   <groupId>org.jboss.pnc.maven-manipulator</groupId>
   <artifactId>pom-manipulation-parent</artifactId>
-  <version>5.5-SNAPSHOT</version>
+  <version>5.5</version>
   <packaging>pom</packaging>
 
   <name>POM Manipulation Extension for Maven</name>
@@ -66,7 +66,7 @@
   <scm>
     <connection>scm:git:https://github.com/project-ncl/pom-manipulation-ext.git</connection>
     <developerConnection>scm:git:git@github.com:project-ncl/pom-manipulation-ext.git</developerConnection>
-    <tag>pom-manipulation-parent-5.0</tag>
+    <tag>pom-manipulation-parent-5.5</tag>
     <url>https://github.com/project-ncl/pom-manipulation-ext</url>
   </scm>
 
@@ -123,66 +123,66 @@
       <dependency>
         <groupId>org.jboss.pnc.maven-manipulator</groupId>
         <artifactId>pom-manipulation-annotation</artifactId>
-        <version>5.5-SNAPSHOT</version>
+        <version>5.5</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>org.jboss.pnc.maven-manipulator</groupId>
         <artifactId>pom-manipulation-common-lite</artifactId>
-        <version>5.5-SNAPSHOT</version>
+        <version>5.5</version>
       </dependency>
       <dependency>
         <groupId>org.jboss.pnc.maven-manipulator</groupId>
         <artifactId>pom-manipulation-common</artifactId>
-        <version>5.5-SNAPSHOT</version>
+        <version>5.5</version>
       </dependency>
       <dependency>
         <groupId>org.jboss.pnc.maven-manipulator</groupId>
         <artifactId>pom-manipulation-cli</artifactId>
-        <version>5.5-SNAPSHOT</version>
+        <version>5.5</version>
       </dependency>
       <dependency>
         <groupId>org.jboss.pnc.maven-manipulator</groupId>
         <artifactId>pom-manipulation-cli</artifactId>
-        <version>5.5-SNAPSHOT</version>
+        <version>5.5</version>
         <classifier>minimal</classifier>
       </dependency>
       <dependency>
         <groupId>org.jboss.pnc.maven-manipulator</groupId>
         <artifactId>pom-manipulation-core</artifactId>
-        <version>5.5-SNAPSHOT</version>
+        <version>5.5</version>
       </dependency>
       <dependency>
         <groupId>org.jboss.pnc.maven-manipulator</groupId>
         <artifactId>pom-manipulation-core</artifactId>
-        <version>5.5-SNAPSHOT</version>
+        <version>5.5</version>
         <type>test-jar</type>
       </dependency>
       <dependency>
         <groupId>org.jboss.pnc.maven-manipulator</groupId>
         <artifactId>pom-manipulation-ext</artifactId>
-        <version>5.5-SNAPSHOT</version>
+        <version>5.5</version>
       </dependency>
       <dependency>
         <groupId>org.jboss.pnc.maven-manipulator</groupId>
         <artifactId>pom-manipulation-io</artifactId>
-        <version>5.5-SNAPSHOT</version>
+        <version>5.5</version>
       </dependency>
       <dependency>
         <groupId>org.jboss.pnc.maven-manipulator</groupId>
         <artifactId>pom-manipulation-io</artifactId>
-        <version>5.5-SNAPSHOT</version>
+        <version>5.5</version>
         <type>test-jar</type>
       </dependency>
       <dependency>
         <groupId>org.jboss.pnc.maven-manipulator</groupId>
         <artifactId>pom-manipulation-integration-test</artifactId>
-        <version>5.5-SNAPSHOT</version>
+        <version>5.5</version>
       </dependency>
       <dependency>
         <groupId>org.jboss.pnc.maven-manipulator</groupId>
         <artifactId>pom-manipulation-integration-test</artifactId>
-        <version>5.5-SNAPSHOT</version>
+        <version>5.5</version>
         <type>test-jar</type>
       </dependency>
 
