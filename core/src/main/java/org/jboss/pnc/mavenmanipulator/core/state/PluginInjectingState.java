@@ -44,7 +44,7 @@ public class PluginInjectingState
     private static final String PROJECT_SOURCES_PLUGIN_VERSION_PROPERTY = "projectSrcVersion";
 
     /** The default plugin version to use in case no alternative version is specified on the command line. */
-    private static final String DEFAULT_PROJECT_SOURCES_PLUGIN_VERSION = "2.2";
+    private static final String DEFAULT_PROJECT_SOURCES_PLUGIN_VERSION = "2.3";
 
     private boolean projectsourcesEnabled;
 
