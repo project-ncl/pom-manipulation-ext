@@ -9,5 +9,5 @@ on:
 jobs:
 
   validate:
-    uses: project-ncl/shared-github-actions/.github/workflows/validate-gh-action.yml@0fd979fcdd90cf1b62e6410221d64efd6b470865 # v0.0.21
+    uses: project-ncl/shared-github-actions/.github/workflows/validate-gh-action.yml@a27e6fba6b28bbb96881ec096e9c8ea5a538f481 # v0.0.22
 
