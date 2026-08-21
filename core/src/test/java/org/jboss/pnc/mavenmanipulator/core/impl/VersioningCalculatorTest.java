@@ -715,6 +715,81 @@ public class VersioningCalculatorTest {
     }
 
     @Test
+    public void incrementExistingSerialSuffixWithPaddingLW1()
+            throws Exception {
+        final Properties props = new Properties();
+
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "rhlw");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+        setupSession(props, "1.2.0-rhlw-00001", "1.2.0-rhlw-00002");
+
+        final String v = "1.2.0.rhlw-00003";
+
+        final String result = calculate(v);
+        assertThat(result, equalTo(v));
+    }
+
+    @Test
+    public void incrementExistingSerialSuffixWithPaddingLWN1()
+            throws Exception {
+        final Properties props = new Properties();
+
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "n");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+        setupSession(props, "1.2.0-rhlw-00002", "1.2.0-rhlw-00002");
+
+        final String v = "1.2.0.rhlw-00002-n-00001";
+
+        final String result = calculate(v);
+        assertThat(result, equalTo(v));
+    }
+
+    @Test
+    public void incrementExistingSerialSuffixWithPaddingLWN2()
+            throws Exception {
+        final Properties props = new Properties();
+
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "n");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+        setupSession(props, "1.2.0-rhlw-00002-n-00001", "1.2.0-rhlw-00002-n-00002");
+
+        final String v = "1.2.0.rhlw-00002-n-00003";
+        final String result = calculate(v);
+        System.err.println("### Got version " + result);
+        assertThat(result, equalTo(v));
+    }
+
+    @Test
+    public void incrementExistingSerialSuffixWithPaddingLWN3()
+            throws Exception {
+        final Properties props = new Properties();
+
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "n");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+        setupSession(props, "1.2.0-rhlw-00001-n-00001", "1.2.0-rhlw-00002-n-00002");
+
+        final String v = "1.2.0.rhlw-00001-n-00002";
+        final String result = calculate(v);
+        System.err.println("### Got version " + result);
+        assertThat(result, equalTo(v));
+    }
+
+    @Test
+    public void incrementExistingSerialSuffixWithPaddingLWN4()
+            throws Exception {
+        final Properties props = new Properties();
+
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "n");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+        setupSession(props);
+
+        final String v = "1.2.0.rhlw-00001-n-00001";
+        final String result = calculate(v);
+        System.err.println("### Got version " + result);
+        assertThat(result, equalTo(v));
+    }
+
+    @Test
     public void incrementExistingSuffixWithPadding()
             throws Exception {
         final Properties props = new Properties();
@@ -1170,6 +1245,53 @@ public class VersioningCalculatorTest {
 
         final String result = vc.calculate("org.jboss", "bar", origVersion, state);
         System.out.println(state);
+        assertThat(result, equalTo(newVersion));
+    }
+
+    @Test
+    public void incrementUsingCustomCalculatorLWNFreshVersion()
+            throws Exception {
+        // Fresh-version path: POM contains 1.2.3.Final-rhlw-00042 (the arbitrary rhlw build number
+        // assigned by DA). versionIncrementalSuffix=n means PME must append -n-00001 as the first
+        // rebuild counter. No existing n-candidates in the repository.
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "n");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+
+        final VersioningState state = setupSession(props);
+        final String origVersion = "1.2.3.Final-rhlw-00042";
+        final String newVersion = "1.2.3.Final-rhlw-00042-n-00001";
+
+        VersionCalculator vc = new VersionCalculator(null);
+
+        final String result = vc.calculate("org.jboss", "bar", origVersion, state);
+        assertThat(result, equalTo(newVersion));
+    }
+
+    @Test
+    public void incrementUsingCustomCalculatorLWNFreshVersionWithRESTMetadata()
+            throws Exception {
+        // Fresh-version path with REST metadata: DA has already built rhlw-00042-n-00001 and
+        // rhlw-00042-n-00002 for this GA. PME must produce n-00003.
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "n");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+
+        final VersioningState state = setupSession(props);
+        final String origVersion = "1.2.3.Final-rhlw-00042";
+        final String newVersion = "1.2.3.Final-rhlw-00042-n-00003";
+
+        final ProjectVersionRef projectVersionRef = SimpleProjectVersionRef.parse("org.jboss:bar:" + origVersion);
+        final Map<ProjectRef, Set<String>> metadata = new HashMap<>();
+        final Set<String> candidates = new HashSet<>();
+        candidates.add("1.2.3.Final-rhlw-00042-n-00001");
+        candidates.add("1.2.3.Final-rhlw-00042-n-00002");
+        metadata.put(projectVersionRef.asProjectRef(), candidates);
+        state.setRESTMetadata(metadata);
+
+        VersionCalculator vc = new VersionCalculator(null);
+
+        final String result = vc.calculate("org.jboss", "bar", origVersion, state);
         assertThat(result, equalTo(newVersion));
     }
 
