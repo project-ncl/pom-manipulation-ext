@@ -48,6 +48,7 @@ import org.apache.maven.shared.release.transform.jdom2.JDomModelETLFactory;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
 import org.commonjava.maven.galley.maven.parse.PomPeek;
+import org.jboss.pnc.mavenmanipulator.annotation.ConfigValue;
 import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.jdom.JDOMModelConverter;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
@@ -69,6 +70,18 @@ public class PomIO {
     // TODO: Remove this if no side affects reported in 2022.
     public static final String PARSE_POM_TEMPLATES = "parsePomTemplates";
 
+    /**
+     * Configuration property to suppress the manifest comment that is normally added to the execution root POM.
+     * When set to {@code true}, the "Modified by POM Manipulation Extension for Maven" comment will not be
+     * added to the rewritten POM file.
+     * <p>
+     * Property name: {@value}
+     * <p>
+     * Default value: {@code false}
+     */
+    @ConfigValue(docIndex = "configuration.html#pom-io")
+    public static final String SUPPRESS_MANIFEST_COMMENT = "suppressManifestComment";
+
     private static final String MODIFIED_BY = "Modified by POM Manipulation Extension for Maven";
 
     private static final Logger logger = LoggerFactory.getLogger(PomIO.class);
@@ -78,18 +91,22 @@ public class PomIO {
 
     private final JDOMModelConverter jdomModelConverter = new JDOMModelConverter();
 
+    private final MavenSessionHandler handler;
+
     private final boolean parsePomTemplates;
 
     private String manifestComment;
 
     @Inject
     public PomIO(MavenSessionHandler handler) {
+        this.handler = handler;
         parsePomTemplates = Boolean.parseBoolean(
                 handler.getUserProperties().getProperty(PARSE_POM_TEMPLATES, "true"));
     }
 
     // Test use only.
     public PomIO() {
+        this.handler = null;
         parsePomTemplates = true;
     }
 
@@ -273,7 +290,10 @@ public class PomIO {
 
             jdomModelConverter.convertModelToJDOM(model, doc);
 
-            if (project.isExecutionRoot()) {
+            boolean suppressManifestComment = handler != null && Boolean.parseBoolean(
+                    handler.getUserProperties().getProperty(SUPPRESS_MANIFEST_COMMENT, "false"));
+
+            if (project.isExecutionRoot() && !suppressManifestComment) {
                 // Previously it was possible to add a comment outside of the root element (which maven3-model-jdom-support handled)
                 // but the release plugin code only takes account of code within the root element and everything else is handled separately.
                 //

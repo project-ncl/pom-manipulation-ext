@@ -25,12 +25,17 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.model.Model;
+import org.apache.maven.settings.Settings;
+import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
 import org.jboss.pnc.mavenmanipulator.common.model.Project;
+import org.jboss.pnc.mavenmanipulator.common.session.MavenSessionHandler;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -190,5 +195,74 @@ public class PomIOTest {
         pomIO.rewritePOMs(changed);
         s = FileUtils.readFileToString(targetFile, StandardCharsets.UTF_8);
         assertEquals(1, StringUtils.countMatches(s, "Modified by POM Manipulation Extension"));
+    }
+
+    @Test
+    public void testSuppressManifestComment()
+            throws Exception {
+        URL resource = PomIOTest.class.getResource(filename);
+        assertNotNull(resource);
+        File pom = new File(resource.getFile());
+        assertTrue(pom.exists());
+
+        File targetFile = folder.newFile("target.xml");
+        FileUtils.copyFile(pom, targetFile);
+
+        Properties userProps = new Properties();
+        userProps.setProperty(PomIO.SUPPRESS_MANIFEST_COMMENT, "true");
+
+        MavenSessionHandler mockHandler = new MavenSessionHandler() {
+            @Override
+            public Properties getUserProperties() {
+                return userProps;
+            }
+
+            @Override
+            public List<ArtifactRepository> getRemoteRepositories() {
+                return null;
+            }
+
+            @Override
+            public File getPom() throws ManipulationException {
+                return null;
+            }
+
+            @Override
+            public File getTargetDir() {
+                return null;
+            }
+
+            @Override
+            public ArtifactRepository getLocalRepository() {
+                return null;
+            }
+
+            @Override
+            public List<String> getActiveProfiles() {
+                return null;
+            }
+
+            @Override
+            public Settings getSettings() {
+                return null;
+            }
+
+            @Override
+            public List<String> getExcludedScopes() {
+                return null;
+            }
+        };
+
+        PomIO suppressPomIO = new PomIO(mockHandler);
+
+        Project project = suppressPomIO.parseProject(null, targetFile).get(0);
+        project.setExecutionRoot();
+
+        HashSet<Project> changed = new HashSet<>();
+        changed.add(project);
+        suppressPomIO.rewritePOMs(changed);
+
+        String s = FileUtils.readFileToString(targetFile, StandardCharsets.UTF_8);
+        assertEquals(0, StringUtils.countMatches(s, "Modified by POM Manipulation Extension"));
     }
 }
