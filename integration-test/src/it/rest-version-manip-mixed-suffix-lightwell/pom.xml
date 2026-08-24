@@ -22,8 +22,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.jboss.pnc.maven-manipulator.integration-test</groupId>
-  <artifactId>rest-version-manip-mixed-suffix-timestamp</artifactId>
-  <version>1.0.0</version>
+  <artifactId>rest-version-manip-mixed-suffix-lightwell</artifactId>
+  <version>1.0.0.rhlw-00003</version>
   <packaging>pom</packaging>
 
   <name>Module to test REST manipulation of project version only</name>

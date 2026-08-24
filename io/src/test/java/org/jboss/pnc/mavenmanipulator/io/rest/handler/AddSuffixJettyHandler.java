@@ -55,6 +55,8 @@ public class AddSuffixJettyHandler
 
     public static final String MIXED_SUFFIX = "temporary-" + DEFAULT_SUFFIX;
 
+    public static final String MIXED_LW_SUFFIX = "temporary-n-1";
+
     public static final String TIMESTAMP_SUFFIX = "t20180920-163311-423-" + DEFAULT_SUFFIX;
 
     private final Logger logger = LoggerFactory.getLogger(AddSuffixJettyHandler.class);
