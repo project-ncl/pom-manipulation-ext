@@ -102,7 +102,7 @@
     <slf4jVersion>2.0.18</slf4jVersion>
     <logbackVersion>1.5.37</logbackVersion>
     <docletVersion>1.1</docletVersion>
-    <lombokPluginVersion>1.18.20.0</lombokPluginVersion>
+    <lombokVersion>1.18.44</lombokVersion>
     <!-- Cannot update beyond 3.5.1 as this is the last version that supports Maven < 3.6.3 (MSHADE-464) -->
     <shadePluginVersion>3.5.1</shadePluginVersion>
     <mavenReleaseVersion>3.3.1</mavenReleaseVersion>
@@ -513,7 +513,7 @@
       <dependency>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
-        <version>1.18.44</version>
+        <version>${lombokVersion}</version>
         <scope>provided</scope>
       </dependency>
 
@@ -675,11 +675,6 @@
           <version>5.2</version>
         </plugin>
         <plugin>
-          <groupId>org.projectlombok</groupId>
-          <artifactId>lombok-maven-plugin</artifactId>
-          <version>${lombokPluginVersion}</version>
-        </plugin>
-        <plugin>
           <groupId>org.eclipse.sisu</groupId>
           <artifactId>sisu-maven-plugin</artifactId>
           <version>${sisuVersion}</version>
@@ -691,7 +686,14 @@
       <plugin>
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok-maven-plugin</artifactId>
-        <version>${lombokPluginVersion}</version>
+        <version>1.18.20.0</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombokVersion}</version>
+          </dependency>
+        </dependencies>
         <executions>
           <execution>
             <id>delombok</id>
