@@ -163,7 +163,16 @@ will be activated. It will read trace information from the environment as descri
     more information about Groovy script invocation stages, see the [Groovy Script Injection](guide/groovy.html)
     section of this guide.
   * In-memory POM models are written back to disk after all manipulators have executed. It is possible to modify the POM
-    at any time before this by accessing its in-memory model via `Project.getModel()`.
+    at any time before this by accessing its in-memory model via `Project.getModel()`. By default, when PME rewrites a POM
+    it adds a comment to the execution root POM file indicating it was modified, e.g.:
+```xml
+    <!-- Modified by POM Manipulation Extension for Maven (version) -->
+```
+       To suppress this comment, set `suppressManifestComment` to `true`:
+
+```
+    mvn install -DsuppressManifestComment=true
+```
   * The Groovy manipulators can safely modify non-model files on disk at any time.
 
 Below are links to more specific information about configuring sets of features in PME:

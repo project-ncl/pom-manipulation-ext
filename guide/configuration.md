@@ -51,13 +51,3 @@ Any other configuration sections are ignored by PME.
 ### Properties
 
 The file should be in a standard [java properties file format](https://docs.oracle.com/javase/tutorial/essential/environment/properties.html). Note that certain characters may need to be escaped (See [here](https://docs.oracle.com/javase/8/docs/api/java/util/Properties.html#load-java.io.Reader-) ).
-
-### POM IO
-
-By default, when PME rewrites a POM it adds a comment to the execution root POM file indicating it was modified, e.g.:
-
-    <!-- Modified by POM Manipulation Extension for Maven (version) -->
-
-To suppress this comment, set `suppressManifestComment` to `true`:
-
-    mvn install -DsuppressManifestComment=true
