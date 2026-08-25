@@ -58,6 +58,7 @@ title: "Index of Properties"
   * [restURL](dep-manip.html#rest-endpoint)
   * [scanActiveProfiles](misc.html#profile-handling)
   * [strictAlignment](dep-manip.html#strict-mode-version-alignment)
+  * [suppressManifestComment](configuration.html#pom-io)
   * [strictAlignmentIgnoreSuffix](dep-manip.html#strict-mode-version-alignment)
   * [strictPropertyValidation](dep-manip.html#strict-property-validation)
   * [strictViolationFails](dep-manip.html#strict-mode-version-alignment)
