@@ -67,9 +67,6 @@ import org.slf4j.LoggerFactory;
 @Named
 @Singleton
 public class PomIO {
-    // TODO: Remove this if no side affects reported in 2022.
-    public static final String PARSE_POM_TEMPLATES = "parsePomTemplates";
-
     /**
      * Configuration property to suppress the manifest comment that is normally added to the execution root POM.
      * When set to {@code true}, the "Modified by POM Manipulation Extension for Maven" comment will not be
@@ -93,21 +90,16 @@ public class PomIO {
 
     private final MavenSessionHandler handler;
 
-    private final boolean parsePomTemplates;
-
     private String manifestComment;
 
     @Inject
     public PomIO(MavenSessionHandler handler) {
         this.handler = handler;
-        parsePomTemplates = Boolean.parseBoolean(
-                handler.getUserProperties().getProperty(PARSE_POM_TEMPLATES, "true"));
     }
 
     // Test use only.
     public PomIO() {
         this.handler = null;
-        parsePomTemplates = true;
     }
 
     /**
@@ -348,64 +340,55 @@ public class PomIO {
 
                 final PomPeek peek = new PomPeek(pom);
 
-                // Deprecated : we now default to scanning every XML file even templated
-                // ones but the if block provides a fallback if there are issues.
-                //
-                // Effectively either parse_pom_templates [default to true] ||
-                //      parse_pom_templates overridden to false so key MUST be NOT null
-                if (parsePomTemplates || peek.getKey() != null) {
-                    peeked.add(peek);
+                peeked.add(peek);
 
-                    final File dir = pom.getParentFile();
+                final File dir = pom.getParentFile();
 
-                    final String relPath = peek.getParentRelativePath();
-                    if (relPath != null) {
-                        logger.debug("Found parent relativePath: {} in pom: {}", relPath, pom);
+                final String relPath = peek.getParentRelativePath();
+                if (relPath != null) {
+                    logger.debug("Found parent relativePath: {} in pom: {}", relPath, pom);
 
-                        File parent = new File(dir, relPath);
-                        if (parent.isDirectory()) {
-                            parent = new File(parent, "pom.xml");
+                    File parent = new File(dir, relPath);
+                    if (parent.isDirectory()) {
+                        parent = new File(parent, "pom.xml");
+                    }
+
+                    parent = parent.getCanonicalFile();
+                    if (parent.getParentFile()
+                            .getCanonicalPath()
+                            .startsWith(topDir) && parent.exists() && !seen.contains(parent)
+                            && !pendingPoms.contains(parent)) {
+                        topLevelParent = parent;
+
+                        logger.debug("Possible top-level parent {}", parent);
+                        pendingPoms.add(parent);
+                    } else {
+                        logger.debug(
+                                "Skipping reference to non-existent parent relativePath: '{}' in: {}",
+                                relPath,
+                                pom);
+                    }
+                }
+
+                final Set<String> modules = peek.getModules();
+                if (modules != null && !modules.isEmpty()) {
+                    for (final String module : modules) {
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Found module: {} in pom: {}", module, pom);
                         }
 
-                        parent = parent.getCanonicalFile();
-                        if (parent.getParentFile()
-                                .getCanonicalPath()
-                                .startsWith(topDir) && parent.exists() && !seen.contains(parent)
-                                && !pendingPoms.contains(parent)) {
-                            topLevelParent = parent;
+                        File modPom = new File(dir, module);
+                        if (modPom.isDirectory()) {
+                            modPom = new File(modPom, "pom.xml");
+                        }
 
-                            logger.debug("Possible top-level parent {}", parent);
-                            pendingPoms.add(parent);
+                        if (modPom.exists() && !seen.contains(modPom)
+                                && !pendingPoms.contains(modPom)) {
+                            pendingPoms.addLast(modPom);
                         } else {
-                            logger.debug(
-                                    "Skipping reference to non-existent parent relativePath: '{}' in: {}",
-                                    relPath,
-                                    pom);
+                            logger.debug("Skipping reference to non-existent module: '{}' in: {}", module, pom);
                         }
                     }
-
-                    final Set<String> modules = peek.getModules();
-                    if (modules != null && !modules.isEmpty()) {
-                        for (final String module : modules) {
-                            if (logger.isDebugEnabled()) {
-                                logger.debug("Found module: {} in pom: {}", module, pom);
-                            }
-
-                            File modPom = new File(dir, module);
-                            if (modPom.isDirectory()) {
-                                modPom = new File(modPom, "pom.xml");
-                            }
-
-                            if (modPom.exists() && !seen.contains(modPom)
-                                    && !pendingPoms.contains(modPom)) {
-                                pendingPoms.addLast(modPom);
-                            } else {
-                                logger.debug("Skipping reference to non-existent module: '{}' in: {}", module, pom);
-                            }
-                        }
-                    }
-                } else {
-                    logger.debug("Skipping {} as its a template file.", pom);
                 }
             }
 

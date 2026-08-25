@@ -17,7 +17,6 @@ package org.jboss.pnc.mavenmanipulator.core.util;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.List;
@@ -29,15 +28,11 @@ import org.jboss.pnc.mavenmanipulator.core.fixture.TestUtils;
 import org.jboss.pnc.mavenmanipulator.io.PomIO;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.junit.rules.TemporaryFolder;
 
 public class PomIOTest {
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
-
-    @Rule
-    public final SystemOutRule systemOutRule = new SystemOutRule().enableLog().muteForSuccessfulTests();
 
     @Test
     public void testVerifyParsePomTemplatesDefault() throws Exception {
@@ -50,21 +45,6 @@ public class PomIOTest {
         List<Project> projects = pomIO.parseProject(null, projectroot);
         assertEquals(1, projects.size());
         assertEquals("${one}", projects.get(0).getGroupId());
-    }
-
-    @Test
-    public void testVerifyParsePomTemplatesFalse() throws Exception {
-        final File projectroot = folder.newFile();
-        final File resource = TestUtils.resolveFileResource("", "pom-variables.xml");
-        assertNotNull(resource);
-        FileUtils.copyFile(resource, projectroot);
-
-        Properties p = new Properties();
-        p.put(PomIO.PARSE_POM_TEMPLATES, "false");
-        PomIO pomIO = new PomIO(TestUtils.createSessionAndManager(p, projectroot).getSession());
-        List<Project> projects = pomIO.parseProject(null, projectroot);
-        assertEquals(0, projects.size());
-        assertTrue(systemOutRule.getLog().contains("PomPeek - Could not peek at POM coordinate for"));
     }
 
     @Test
