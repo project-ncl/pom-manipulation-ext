@@ -107,6 +107,8 @@
     <shadePluginVersion>3.5.1</shadePluginVersion>
     <mavenReleaseVersion>3.3.1</mavenReleaseVersion>
 
+    <version.animal-sniffer>1.27</version.animal-sniffer>
+
     <jacksonVersion>2.22.1</jacksonVersion>
     <argLine/>
     <surefireSecurityManager/>
@@ -661,8 +663,7 @@
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>animal-sniffer-maven-plugin</artifactId>
-          <!-- Versions after 1.27 require Maven 3.6.3 -->
-          <version>1.27</version>
+          <version>${version.animal-sniffer}</version>
         </plugin>
         <plugin>
           <groupId>org.jacoco</groupId>
@@ -924,6 +925,7 @@
       <id>early-maven</id>
       <properties>
         <!-- Downgrade from parent to ensure it works with all maven versions -->
+        <version.animal-sniffer>1.23</version.animal-sniffer>
         <version.assembly.plugin>3.6.0</version.assembly.plugin>
         <version.buildnumber.plugin>3.0.0</version.buildnumber.plugin>
         <version.clean.plugin>3.3.2</version.clean.plugin>
