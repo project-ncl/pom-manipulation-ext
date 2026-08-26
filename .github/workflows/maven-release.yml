@@ -17,7 +17,7 @@ jobs:
       with:
         java_version: 17
         ref_to_release: ${{ inputs.ref_to_release }}
-        release_command: 'mvn -B -V release:prepare release:perform -Plicense-header-check -DlocalCheckout=true -DpushChanges=false -DcompletionGoals="spotless:apply"'
+        release_command: 'mvn -B -V release:prepare release:perform -Pcentral-release -Plicense-header-check -DlocalCheckout=true -DpushChanges=false -DcompletionGoals="spotless:apply"'
       secrets:
         SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
         SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
