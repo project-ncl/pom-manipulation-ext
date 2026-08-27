@@ -8,7 +8,7 @@ on:
 
 jobs:
     call-snapshot-job:
-      uses: project-ncl/shared-github-actions/.github/workflows/maven-snapshot.yml@a27e6fba6b28bbb96881ec096e9c8ea5a538f481 # v0.0.22
+      uses: project-ncl/shared-github-actions/.github/workflows/maven-snapshot.yml@646d9b629925d6405fb06ed1476aefd6b2cdca86 # v0.0.23
       with:
         project_name: 'project-ncl/pom-manipulation-ext'
         java_version: 17
