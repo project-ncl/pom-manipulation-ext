@@ -30,6 +30,8 @@ import javax.inject.Named;
 
 import org.apache.commons.io.FileUtils;
 import org.jboss.pnc.mavenmanipulator.common.exception.ManipulationException;
+import org.jboss.pnc.mavenmanipulator.common.json.PME;
+import org.jboss.pnc.mavenmanipulator.common.util.JSONUtils;
 import org.jboss.pnc.mavenmanipulator.core.fixture.PlexusTestRunner;
 import org.jboss.pnc.mavenmanipulator.core.fixture.TestUtils;
 import org.jboss.pnc.mavenmanipulator.core.impl.Manipulator;
@@ -86,6 +88,75 @@ public class ManipulationManagerTest {
         assertTrue(
                 systemRule.getLog().contains("Disabling strictPropertyValidation as dependencyOverrides are enabled"));
         assertEquals(0, (int) commonState.getStrictDependencyPluginPropertyValidation());
+    }
+
+    @Test
+    public void testReportJsonUnchanged_disabledByDefault()
+            throws IOException, ManipulationException {
+        final File root = folder.newFolder();
+        final File base = TestUtils.resolveFileResource("groovy-project-removal", "");
+        FileUtils.copyDirectory(base, root);
+        final File projectRoot = new File(root, "pom.xml");
+
+        // No versionIncrementalSuffix → nothing changes; flag not set → default false
+        Properties p = new Properties();
+        TestUtils.SMContainer smc = TestUtils.createSessionAndManager(p, projectRoot);
+        smc.getManager().scanAndApply(smc.getSession());
+
+        final File reportFile = new File(root, "target/" + ManipulationManager.REPORT_JSON_DEFAULT);
+        assertFalse("JSON report must NOT be written when reportJsonUnchanged is false", reportFile.exists());
+    }
+
+    @Test
+    public void testReportJsonUnchanged_writesFileWhenEnabled()
+            throws IOException, ManipulationException {
+        final File root = folder.newFolder();
+        final File base = TestUtils.resolveFileResource("groovy-project-removal", "");
+        FileUtils.copyDirectory(base, root);
+        final File projectRoot = new File(root, "pom.xml");
+
+        // No versionIncrementalSuffix → nothing changes; flag enabled
+        Properties p = new Properties();
+        p.setProperty(ManipulationManager.REPORT_JSON_UNCHANGED, "true");
+
+        TestUtils.SMContainer smc = TestUtils.createSessionAndManager(p, projectRoot);
+        smc.getManager().scanAndApply(smc.getSession());
+
+        final File reportFile = new File(root, "target/" + ManipulationManager.REPORT_JSON_DEFAULT);
+        assertTrue("JSON report must be written when reportJsonUnchanged is true", reportFile.exists());
+
+        final PME pme = JSONUtils.fileToJSON(reportFile);
+        assertEquals("com.example", pme.getGav().getGroupId());
+        assertEquals("groovy-project-removal", pme.getGav().getArtifactId());
+        assertEquals("1.0.0", pme.getGav().getVersion());
+        assertEquals("com.example:groovy-project-removal:1.0.0", pme.getGav().getOriginalGAV());
+        assertTrue("modules list must be empty for unchanged project", pme.getModules().isEmpty());
+    }
+
+    @Test
+    public void testReportJsonUnchanged_resolvesVersionProperty()
+            throws IOException, ManipulationException {
+        final File root = folder.newFolder();
+        final File resource = TestUtils.resolveFileResource("", "pom-version-property.xml");
+        final File projectRoot = new File(root, "pom.xml");
+        FileUtils.copyFile(resource, projectRoot);
+
+        // No versionIncrementalSuffix → nothing changes; flag enabled
+        Properties p = new Properties();
+        p.setProperty(ManipulationManager.REPORT_JSON_UNCHANGED, "true");
+
+        TestUtils.SMContainer smc = TestUtils.createSessionAndManager(p, projectRoot);
+        smc.getManager().scanAndApply(smc.getSession());
+
+        final File reportFile = new File(root, "target/" + ManipulationManager.REPORT_JSON_DEFAULT);
+        assertTrue("JSON report must be written when reportJsonUnchanged is true", reportFile.exists());
+
+        final PME pme = JSONUtils.fileToJSON(reportFile);
+        // ${myVersion} must be resolved to its declared value "2.0.0", not left as a literal expression
+        assertEquals("com.example", pme.getGav().getGroupId());
+        assertEquals("version-property-project", pme.getGav().getArtifactId());
+        assertEquals("2.0.0", pme.getGav().getVersion());
+        assertEquals("com.example:version-property-project:2.0.0", pme.getGav().getOriginalGAV());
     }
 
     @Test

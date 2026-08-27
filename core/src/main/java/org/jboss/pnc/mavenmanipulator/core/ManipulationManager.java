@@ -93,6 +93,9 @@ public class ManipulationManager {
     @ConfigValue(docIndex = "../index.html#summary-logging")
     public static final String REPORT_JSON_OUTPUT_FILE = "reportJSONOutputFile";
 
+    @ConfigValue(docIndex = "../index.html#summary-logging")
+    public static final String REPORT_JSON_UNCHANGED = "reportJsonUnchanged";
+
     @ConfigValue(docIndex = "../index.html#deprecated-and-unknown-properties")
     public static final String DEPRECATED_PROPERTIES = "enabledDeprecatedProperties";
 
@@ -264,14 +267,7 @@ public class ManipulationManager {
                     File reportFile = new File(reportTxtOutputFile);
                     FileUtils.writeStringToFile(reportFile, report, StandardCharsets.UTF_8);
                 }
-                final String reportJsonOutputFile = session.getUserProperties()
-                        .getProperty(
-                                REPORT_JSON_OUTPUT_FILE,
-                                session.getTargetDir() + File.separator + REPORT_JSON_DEFAULT);
-
-                try (FileWriter writer = new FileWriter(reportJsonOutputFile)) {
-                    writer.write(JSONUtils.jsonToString(jsonReport));
-                }
+                writeJsonReport(session);
 
                 if (Boolean.parseBoolean(session.getUserProperties().getProperty(REWRITE_CHANGED, "true"))) {
                     logger.debug("Maven-Manipulation-Extension: Rewrite changed");
@@ -282,6 +278,19 @@ public class ManipulationManager {
                 logger.error("Unable to create marker or result file", e);
                 throw new ManipulationException("Marker/result file creation failed", e);
             }
+        } else if (Boolean.parseBoolean(
+                session.getUserProperties().getProperty(REPORT_JSON_UNCHANGED, "false"))) {
+            logger.info(
+                    "Maven-Manipulation-Extension: No changes; writing JSON report for unchanged project.");
+            jsonReport.getGav().setPVR(originalExecutionRoot.getResolvedKey());
+            jsonReport.getGav().setOriginalGAV(originalExecutionRoot.getResolvedKey().toString());
+            try {
+                session.getTargetDir().mkdir();
+                writeJsonReport(session);
+            } catch (IOException e) {
+                logger.error("Unable to create result file", e);
+                throw new ManipulationException("Result file creation failed", e);
+            }
         }
 
         // Ensure shutdown of GalleyInfrastructure Executor Service
@@ -290,6 +299,16 @@ public class ManipulationManager {
         }
 
         logger.info("Maven-Manipulation-Extension: Finished.");
+    }
+
+    private void writeJsonReport(final ManipulationSession session) throws IOException {
+        final String reportJsonOutputFile = session.getUserProperties()
+                .getProperty(
+                        REPORT_JSON_OUTPUT_FILE,
+                        session.getTargetDir() + File.separator + REPORT_JSON_DEFAULT);
+        try (FileWriter writer = new FileWriter(reportJsonOutputFile)) {
+            writer.write(JSONUtils.jsonToString(jsonReport));
+        }
     }
 
     @SuppressWarnings({ "unchecked", "deprecation" })
