@@ -117,7 +117,8 @@ directory (next to the marker file above).
 Finally, it will also output the comparator summary as a JSON file. The file's path will always be relative to the
 execution root `target` directory (next to the marker file above). By default, the file will be named
 `alignmentReport.json`. However, the name of this file may be changed by setting the `reportJSONOutputFile` property to
-an alternate name for the file.
+an alternate name for the file. By default this file is only written if PME made changes; set `reportJsonUnchanged=true`
+to write the JSON report regardless of whether any changes were made.
 
 ```json
 {
