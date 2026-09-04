@@ -17,6 +17,7 @@ package org.jboss.pnc.mavenmanipulator.core.impl;
 
 import static org.jboss.pnc.mavenmanipulator.core.fixture.TestUtils.createSession;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -106,5 +107,60 @@ public class PluginManipulatorTest {
         // The version should have been set to the REST override value.
         Plugin aligned = model.getBuild().getPluginManagement().getPlugins().get(0);
         assertEquals("2.6.0.rhlw-00002", aligned.getVersion());
+    }
+
+    /**
+     * Verifies that with {@code strictAlignment=true} (the production default) a plugin declared
+     * without {@code <groupId>}/{@code <version>} does not throw a NullPointerException either.
+     * In this mode the strict-version check receives {@code null} as the old value, which causes
+     * {@link org.jboss.pnc.mavenmanipulator.core.util.PropertiesUtils#checkStrictValue} to return
+     * {@code false}. Because {@code failOnStrictViolation} defaults to {@code false} the override
+     * is simply skipped (the plugin version remains {@code null}), but no exception is thrown.
+     */
+    @Test
+    public void pluginWithoutVersionDoesNotThrowNPEWithStrictAlignment() throws ManipulationException {
+        // Arrange: strictAlignment=true is the default, so we only need pluginSource=REST.
+        Properties props = new Properties();
+        props.setProperty("pluginSource", "REST");
+        // strictAlignment defaults to true — explicitly set it here for clarity.
+        props.setProperty("strictAlignment", "true");
+        ManipulationSession session = createSession(props);
+
+        PluginManipulator manipulator = new PluginManipulator(null);
+        manipulator.init(session);
+
+        Map<ArtifactRef, String> restOverrides = new HashMap<>();
+        restOverrides.put(
+                SimpleArtifactRef.parse("org.apache.maven.plugins:maven-jar-plugin:2.6.0.rhlw-00002"),
+                "2.6.0.rhlw-00002");
+        session.getState(PluginState.class).setRemoteRESTOverrides(restOverrides);
+
+        Model model = new Model();
+        model.setGroupId("org.apache.httpcomponents");
+        model.setArtifactId("httpcomponents-parent");
+        model.setVersion("14");
+
+        Plugin plugin = new Plugin();
+        plugin.setArtifactId("maven-jar-plugin");
+        // No groupId and no version — same trigger as the first test.
+
+        PluginManagement pm = new PluginManagement();
+        pm.addPlugin(plugin);
+
+        Build build = new Build();
+        build.setPluginManagement(pm);
+        model.setBuild(build);
+
+        Project project = new Project(model);
+        project.setInheritanceRoot(true);
+
+        // Act: must not throw NullPointerException.
+        List<Project> projects = Collections.singletonList(project);
+        manipulator.applyChanges(projects);
+
+        // Assert: the strict-version check sees oldValue=null and skips the override,
+        // so the plugin version stays null — but no NPE was thrown.
+        Plugin aligned = model.getBuild().getPluginManagement().getPlugins().get(0);
+        assertNull(aligned.getVersion());
     }
 }
