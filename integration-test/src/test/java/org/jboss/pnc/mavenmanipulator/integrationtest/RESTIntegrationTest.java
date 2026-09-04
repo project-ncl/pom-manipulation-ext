@@ -97,6 +97,13 @@ public class RESTIntegrationTest {
     }
 
     @Test
+    public void testRESTVersionManipEnforcePrefixLightwell() throws Exception {
+        handler.setSuffix(AddSuffixJettyHandler.MIXED_LW_SUFFIX);
+        String test = getDefaultTestLocation("rest-version-manip-enforce-prefix-lightwell");
+        runLikeInvoker(test, mockServer.getUrl());
+    }
+
+    @Test
     public void testRESTVersionManipMixedTimestamp() throws Exception {
         handler.setSuffix(AddSuffixJettyHandler.TIMESTAMP_SUFFIX);
         String test = getDefaultTestLocation("rest-version-manip-mixed-suffix-timestamp");

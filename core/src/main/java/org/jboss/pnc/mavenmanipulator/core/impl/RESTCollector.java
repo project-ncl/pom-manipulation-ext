@@ -95,12 +95,14 @@ public class RESTCollector
                 restLookupProjectVersionParamList.add(
                         new SimpleProjectVersionRef(
                                 pvr.asProjectRef(),
-                                handlePotentialSnapshotVersion(
+                                VersionCalculator.enforceVersionPrefix(
                                         vs,
-                                        Version.getOsgiVersion(
-                                                VersionCalculator.handleAlternate(
-                                                        vs,
-                                                        pvr.getVersionString())))));
+                                        handlePotentialSnapshotVersion(
+                                                vs,
+                                                Version.getOsgiVersion(
+                                                        VersionCalculator.handleAlternate(
+                                                                vs,
+                                                                pvr.getVersionString()))))));
             } else if (project.isExecutionRoot()) {
                 // We want to manually override the version ; therefore ignore what is in the project and calculate potential
                 // matches for that instead.

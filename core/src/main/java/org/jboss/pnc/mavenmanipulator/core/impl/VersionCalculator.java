@@ -15,6 +15,7 @@
  */
 package org.jboss.pnc.mavenmanipulator.core.impl;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.jboss.pnc.mavenmanipulator.common.Version.findHighestMatchingBuildNumber;
 import static org.jboss.pnc.mavenmanipulator.core.util.IdUtils.gav;
 
@@ -215,6 +216,8 @@ public class VersionCalculator {
 
         if (override != null) {
             newVersion = override;
+        } else {
+            newVersion = enforceVersionPrefix(state, newVersion);
         }
 
         if (staticSuffix != null) {
@@ -323,5 +326,37 @@ public class VersionCalculator {
             }
         }
         return version;
+    }
+
+    /**
+     * Ensures the given version contains the reference configured via {@code enforceVersionPrefix}.
+     * When the configured reference is found anywhere in the version (preceded by {@code .} or {@code -}
+     * and followed by {@code -} and one or more digits) the version is returned unchanged. When the
+     * reference is absent it is appended using {@link Version#appendQualifierSuffix}, producing the
+     * zero-padded form determined by {@code versionIncrementalSuffixPadding}.
+     *
+     * <p>
+     * When {@code enforceVersionPrefix} is not set, or when {@code versionOverride} takes
+     * precedence, this method is a no-op.
+     *
+     * @param state the current VersioningState
+     * @param version the version to normalise
+     * @return the normalised version
+     */
+    public static String enforceVersionPrefix(VersioningState state, String version) {
+        final String reference = state.getEnforceVersionPrefix();
+        if (isEmpty(reference)) {
+            return version;
+        }
+        // Match the reference preceded by '.' or '-' and followed by '-' and one or more digits,
+        // anywhere in the version string — the match need not be terminal.
+        final Pattern alreadyPresent = Pattern.compile(
+                "(?:[.-])" + Pattern.quote(reference) + "-[0-9]+");
+        if (alreadyPresent.matcher(version).find()) {
+            return version;
+        }
+        final int padding = state.getIncrementalSerialSuffixPadding();
+        final String paddedZero = StringUtils.leftPad("0", padding, '0');
+        return Version.appendQualifierSuffix(version, reference + "-" + paddedZero);
     }
 }
