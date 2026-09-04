@@ -378,8 +378,9 @@ public class PluginManipulator extends CommonManipulator implements Manipulator 
                 String oldValue = pluginsByGA.get(override.getKey()).getVersionString();
                 plugin = plugins.get(pluginsByGA.get(override.getKey()));
 
-                if (plugin.getVersion().equals(Version.PROJECT_VERSION)
-                        || (plugin.getVersion().contains("$") && project.getVersion().equals(oldValue))) {
+                if (plugin.getVersion() != null && plugin.getVersion().equals(Version.PROJECT_VERSION)
+                        || (plugin.getVersion() != null && plugin.getVersion().contains("$")
+                                && project.getVersion().equals(oldValue))) {
                     logger.warn(
                             "Plugin {} for {} references ${project.version} so skipping.",
                             plugin.getId(),
