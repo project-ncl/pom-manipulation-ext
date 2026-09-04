@@ -66,6 +66,9 @@ public class VersioningState
     @ConfigValue(docIndex = "project-version-manip.html#version-modification")
     public static final String VERSION_MODIFICATION = "versionModification";
 
+    @ConfigValue(docIndex = "project-version-manip.html#enforce-prefix")
+    public static final String ENFORCE_VERSION_PREFIX = "enforceVersionPrefix";
+
     /**
      * @return the version suffix to be appended to the project version.
      */
@@ -117,6 +120,14 @@ public class VersioningState
     private Map<ProjectRef, Set<String>> restMetaData;
 
     /**
+     * When configured, source versions that do not already carry this reference are normalised before
+     * REST lookups and version calculation.
+     *
+     * @return the enforced version prefix/reference, or {@code null} if not configured
+     */
+    private String enforceVersionPrefix;
+
+    /**
      * @return true if version modification is enabled
      */
     private boolean versionModification;
@@ -133,6 +144,7 @@ public class VersioningState
         preserveSnapshot = Boolean.parseBoolean(userProps.getProperty(VERSION_SUFFIX_SNAPSHOT_SYSPROP));
         osgi = Boolean.parseBoolean(userProps.getProperty(VERSION_OSGI_SYSPROP, "true"));
         override = userProps.getProperty(VERSION_OVERRIDE_SYSPROP);
+        enforceVersionPrefix = userProps.getProperty(ENFORCE_VERSION_PREFIX);
         versionModification = Boolean.parseBoolean(userProps.getProperty(VERSION_MODIFICATION, "true"));
 
         // Provide an alternative list of versionSuffixes split via a comma separator. Defaults to 'redhat' IF the current rebuild suffix is not that.
@@ -162,7 +174,9 @@ public class VersioningState
      */
     @Override
     public boolean isEnabled() {
-        return versionModification && (incrementalSerialSuffix != null || suffix != null || override != null);
+        return versionModification
+                && (incrementalSerialSuffix != null || suffix != null || override != null
+                        || enforceVersionPrefix != null);
     }
 
     public void setRESTMetadata(Map<ProjectRef, Set<String>> versionStates) {

@@ -1295,6 +1295,180 @@ public class VersioningCalculatorTest {
         assertThat(result, equalTo(newVersion));
     }
 
+    // -----------------------------------------------------------------------
+    // enforceVersionPrefix tests
+    // -----------------------------------------------------------------------
+
+    @Test
+    public void enforceVersionPrefix_propertyAbsent_unchanged()
+            throws Exception {
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "n");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+
+        final VersioningState state = new VersioningState(props);
+        assertEquals("1.2.0.Final-n-00001", VersionCalculator.enforceVersionPrefix(state, "1.2.0.Final-n-00001"));
+        assertEquals("1.2.0.Final", VersionCalculator.enforceVersionPrefix(state, "1.2.0.Final"));
+    }
+
+    @Test
+    public void enforceVersionPrefix_missingReference_appendedWithPadding()
+            throws Exception {
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.ENFORCE_VERSION_PREFIX, "rhlw");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+
+        final VersioningState state = new VersioningState(props);
+        assertEquals("1.2.0.Final-rhlw-00000", VersionCalculator.enforceVersionPrefix(state, "1.2.0.Final"));
+    }
+
+    @Test
+    public void enforceVersionPrefix_numericVersionMissingReference_appendedWithDot()
+            throws Exception {
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.ENFORCE_VERSION_PREFIX, "rhlw");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+
+        final VersioningState state = new VersioningState(props);
+        // Numeric versions use dot delimiter
+        final String result = VersionCalculator.enforceVersionPrefix(state, "1.2.0");
+        assertEquals("1.2.0.rhlw-00000", result);
+    }
+
+    @Test
+    public void enforceVersionPrefix_existingReferenceOneDigit_unchanged()
+            throws Exception {
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.ENFORCE_VERSION_PREFIX, "rhlw");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+
+        final VersioningState state = new VersioningState(props);
+        assertEquals("1.2.0.Final-rhlw-1", VersionCalculator.enforceVersionPrefix(state, "1.2.0.Final-rhlw-1"));
+    }
+
+    @Test
+    public void enforceVersionPrefix_existingReferenceDefaultFiveDigits_unchanged()
+            throws Exception {
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.ENFORCE_VERSION_PREFIX, "rhlw");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+
+        final VersioningState state = new VersioningState(props);
+        assertEquals(
+                "1.2.0.Final-rhlw-00003",
+                VersionCalculator.enforceVersionPrefix(state, "1.2.0.Final-rhlw-00003"));
+    }
+
+    @Test
+    public void enforceVersionPrefix_existingReferenceNumericVersion_unchanged()
+            throws Exception {
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.ENFORCE_VERSION_PREFIX, "rhlw");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+
+        final VersioningState state = new VersioningState(props);
+        assertEquals("1.5.rhlw-00001", VersionCalculator.enforceVersionPrefix(state, "1.5.rhlw-00001"));
+        assertEquals("1.6.7.Final.rhlw-00001", VersionCalculator.enforceVersionPrefix(state, "1.6.7.Final.rhlw-00001"));
+    }
+
+    @Test
+    public void enforceVersionPrefix_existingReferenceVariableDigitLength_unchanged()
+            throws Exception {
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.ENFORCE_VERSION_PREFIX, "rhlw");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+
+        final VersioningState state = new VersioningState(props);
+        // Six digits — regex must not be fixed-width
+        assertEquals(
+                "1.2.0.Final-rhlw-123456",
+                VersionCalculator.enforceVersionPrefix(state, "1.2.0.Final-rhlw-123456"));
+    }
+
+    @Test
+    public void enforceVersionPrefix_referenceBeforeAnotherQualifier_unchanged()
+            throws Exception {
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.ENFORCE_VERSION_PREFIX, "rhlw");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+
+        final VersioningState state = new VersioningState(props);
+        // Reference occurs before another qualifier; version is already complete
+        assertEquals(
+                "1.2.5.rhlw-00000-n-00001",
+                VersionCalculator.enforceVersionPrefix(state, "1.2.5.rhlw-00000-n-00001"));
+    }
+
+    @Test
+    public void enforceVersionPrefix_withIncrementalSuffix_useNormalisedBaseForCandidateLookup()
+            throws Exception {
+        // Verifies that the enforced base is used for candidate matching so that an unrelated
+        // REST candidate is not selected.
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.ENFORCE_VERSION_PREFIX, "rhlw");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "n");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+
+        final VersioningState state = setupSession(props);
+
+        // REST metadata keyed by the GA used in the calculate() call below
+        final ProjectRef projectRef = new SimpleProjectRef(GROUP_ID, ARTIFACT_ID);
+        final Map<ProjectRef, Set<String>> metadata = new HashMap<>();
+        final Set<String> candidates = new HashSet<>();
+        candidates.add("1.0.0.Final-rhlw-00000-n-00001");
+        metadata.put(projectRef, candidates);
+        state.setRESTMetadata(metadata);
+
+        VersionCalculator vc = new VersionCalculator(null);
+        // Input is raw version without rhlw reference
+        final String result = vc.calculate(GROUP_ID, ARTIFACT_ID, "1.0.0.Final", state);
+        // After enforcement -> 1.0.0.Final-rhlw-00000, then n suffix -> candidate found -> n-00002
+        assertEquals("1.0.0.Final-rhlw-00000-n-00002", result);
+    }
+
+    @Test
+    public void enforceVersionPrefix_interactionWithIncrementalSuffix_nSuffix()
+            throws Exception {
+        // Mirrors the Lightwell case from d75b605c: input already has rhlw, so enforcement is a no-op
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.ENFORCE_VERSION_PREFIX, "rhlw");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "n");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+
+        final VersioningState state = setupSession(props);
+        VersionCalculator vc = new VersionCalculator(null);
+
+        final String result = vc.calculate(GROUP_ID, ARTIFACT_ID, "1.2.3.Final-rhlw-00042", state);
+        assertEquals("1.2.3.Final-rhlw-00042-n-00001", result);
+    }
+
+    @Test
+    public void enforceVersionPrefix_overrideTakesPrecedence()
+            throws Exception {
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.ENFORCE_VERSION_PREFIX, "rhlw");
+        props.setProperty(VersioningState.VERSION_OVERRIDE_SYSPROP, "9.9.9.override");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+
+        final VersioningState state = setupSession(props);
+        VersionCalculator vc = new VersionCalculator(null);
+
+        final String result = vc.calculate(GROUP_ID, ARTIFACT_ID, "1.0.0.Final", state);
+        assertEquals("9.9.9.override", result);
+    }
+
+    @Test
+    public void enforceVersionPrefix_activatesVersionManipulationAlone()
+            throws Exception {
+        // enforceVersionPrefix alone should activate versioning (isEnabled returns true)
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.ENFORCE_VERSION_PREFIX, "rhlw");
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_PADDING_SYSPROP, "5");
+
+        final VersioningState state = new VersioningState(props);
+        assertThat(state.isEnabled(), equalTo(true));
+    }
+
     private byte[] setupMetadataVersions(final String... versions)
             throws IOException {
         final Metadata md = new Metadata();
