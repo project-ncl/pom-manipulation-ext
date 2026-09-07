@@ -14,6 +14,7 @@ title: "Index of Properties"
   * [dependencySource](dep-manip.html#dependency-source)
   * [enabledDeprecatedProperties](../index.html#deprecated-and-unknown-properties)
   * [enforceProjectVersion](misc.html#projectversion-expression-replacement)
+  * [enforceVersionPrefix](project-version-manip.html#enforce-version-prefix)
   * [enforceSkip](plugin.html#install-and-deploy-skip-flag-alignment)
   * [excludedScopes](dep-manip.html#scope-exclusion)
   * [groovyScripts](groovy.html)
