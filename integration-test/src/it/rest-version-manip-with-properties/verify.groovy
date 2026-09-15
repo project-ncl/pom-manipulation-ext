@@ -37,7 +37,7 @@ pom.properties.each {
     {
         passed++
     }
-    if ( it.text().contains ("2.7.2.3-fuse-redhat-1"))
+    if ( it.text().contains ("2.7.2.3-fuse-redhat-2"))
     {
         passed++
     }
@@ -52,5 +52,5 @@ assert buildLog.getText().contains("Passing 1 Project GAVs into the REST client 
 File json = new File( basedir, "target/alignmentReport.json")
 assert json.exists()
 assert !json.text.contains('"version" : "${project-version}"')
-assert json.text.contains('"version" : "2.7.2.3-fuse-redhat-1"')
+assert json.text.contains('"version" : "2.7.2.3-fuse-redhat-2"')
 assert json.text.contains('"artifactId" : "rest-version-manip-with-properties"')

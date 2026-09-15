@@ -265,4 +265,55 @@ public class PomIOTest {
         String s = FileUtils.readFileToString(targetFile, StandardCharsets.UTF_8);
         assertEquals(0, StringUtils.countMatches(s, "Modified by POM Manipulation Extension"));
     }
+
+    @Test
+    public void testPropertyArtifactIdResolved()
+            throws Exception {
+        String pomContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<project>\n"
+                + "  <modelVersion>4.0.0</modelVersion>\n"
+                + "  <groupId>org.example</groupId>\n"
+                + "  <artifactId>${myArtifact}</artifactId>\n"
+                + "  <version>1.0</version>\n"
+                + "  <packaging>pom</packaging>\n"
+                + "  <properties>\n"
+                + "    <myArtifact>my-real-artifact</myArtifact>\n"
+                + "  </properties>\n"
+                + "</project>\n";
+
+        File tmpPom = folder.newFile("pom-property-artifactid.xml");
+        FileUtils.writeStringToFile(tmpPom, pomContent, StandardCharsets.UTF_8);
+
+        List<Project> projects = pomIO.parseProject(null, tmpPom);
+
+        assertEquals(1, projects.size());
+        assertEquals("my-real-artifact", projects.get(0).getArtifactId());
+        assertEquals("my-real-artifact", projects.get(0).getKey().getArtifactId());
+    }
+
+    @Test
+    public void testPropertyArtifactIdUnresolvableWarns()
+            throws Exception {
+        String pomContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                + "<project>\n"
+                + "  <modelVersion>4.0.0</modelVersion>\n"
+                + "  <groupId>org.example</groupId>\n"
+                + "  <artifactId>${myArtifact}</artifactId>\n"
+                + "  <version>1.0</version>\n"
+                + "  <packaging>pom</packaging>\n"
+                + "</project>\n";
+
+        File tmpPom = folder.newFile("pom-unresolvable-artifactid.xml");
+        FileUtils.writeStringToFile(tmpPom, pomContent, StandardCharsets.UTF_8);
+
+        List<Project> projects = pomIO.parseProject(null, tmpPom);
+
+        // The raw expression is passed through unchanged when it cannot be resolved.
+        assertEquals(1, projects.size());
+        assertEquals("${myArtifact}", projects.get(0).getArtifactId());
+
+        // PME must have emitted a warning naming both the POM path and the expression.
+        assertTrue(systemOutRule.getLog().contains("${myArtifact}"));
+        assertTrue(systemOutRule.getLog().contains(tmpPom.getPath()));
+    }
 }

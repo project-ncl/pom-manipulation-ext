@@ -153,6 +153,8 @@ public class PomIO {
                 continue;
             }
 
+            resolveCoordinateProperties(raw, pom);
+
             final Project project = new Project(session, pom, raw);
             projectToParent.put(project, peek.getParentKey());
             project.setInheritanceRoot(peek.isInheritanceRoot());
@@ -435,5 +437,98 @@ public class PomIO {
             }
         }
         return false;
+    }
+
+    /**
+     * Resolve any Maven property expression in {@code <artifactId>} or {@code <groupId>} against the
+     * properties declared in the <em>same</em> POM's {@code <properties>} block.
+     *
+     * <p>
+     * Maven explicitly warns that using a property expression for a coordinate is unsupported and may
+     * be dropped in a future version. This method handles the common case (property defined in the same
+     * file) so that every downstream consumer — {@link Project#getKey()}, {@code IdUtils.ga()},
+     * {@code VersionCalculator}, all manipulators — sees a constant coordinate instead of a raw
+     * {@code ${...}} expression.
+     *
+     * <p>
+     * Only {@code artifactId} and {@code groupId} are processed. {@code version} is deliberately
+     * excluded because {@code ${revision}} and similar CI-Friendly version expressions are legitimate
+     * and are handled separately by the version resolution pipeline.
+     *
+     * <p>
+     * The mutation is applied to the in-memory {@link Model} only. The write path
+     * ({@link org.apache.maven.shared.release.transform.jdom2.JDomModelETL}) re-reads the raw XML file
+     * from disk, so the literal {@code ${...}} expression in the POM on disk is never modified.
+     *
+     * @param model the raw model just parsed by {@link MavenXpp3Reader}
+     * @param pom the POM file (used only for log messages)
+     */
+    private static void resolveCoordinateProperties(final Model model, final File pom) {
+        String artifactId = model.getArtifactId();
+        if (containsExpression(artifactId)) {
+            String resolved = resolveFromProperties(artifactId, model);
+            if (resolved != null) {
+                logger.warn(
+                        "POM {} uses property expression '{}' for <artifactId>; resolved to '{}' for PME "
+                                + "processing. Maven itself warns this pattern is unsupported and may be "
+                                + "dropped in a future Maven version.",
+                        pom,
+                        artifactId,
+                        resolved);
+                model.setArtifactId(resolved);
+            } else {
+                logger.warn(
+                        "POM {} uses property expression '{}' for <artifactId> but the property is not "
+                                + "defined in the same POM's <properties> block (it may be inherited from a "
+                                + "parent). PME will use the raw expression as-is; this may produce incorrect "
+                                + "output. Maven itself warns that using property expressions for coordinates "
+                                + "is unsupported and may be dropped in a future Maven version.",
+                        pom,
+                        artifactId);
+            }
+        }
+
+        String groupId = model.getGroupId();
+        if (containsExpression(groupId)) {
+            String resolved = resolveFromProperties(groupId, model);
+            if (resolved != null) {
+                logger.warn(
+                        "POM {} uses property expression '{}' for <groupId>; resolved to '{}' for PME "
+                                + "processing. Maven itself warns this pattern is unsupported and may be "
+                                + "dropped in a future Maven version.",
+                        pom,
+                        groupId,
+                        resolved);
+                model.setGroupId(resolved);
+            } else {
+                logger.warn(
+                        "POM {} uses property expression '{}' for <groupId> but the property is not "
+                                + "defined in the same POM's <properties> block (it may be inherited from a "
+                                + "parent). PME will use the raw expression as-is; this may produce incorrect "
+                                + "output. Maven itself warns that using property expressions for coordinates "
+                                + "is unsupported and may be dropped in a future Maven version.",
+                        pom,
+                        groupId);
+            }
+        }
+    }
+
+    /** Returns {@code true} if {@code value} is a single {@code ${...}} expression. */
+    private static boolean containsExpression(final String value) {
+        return value != null && value.contains("${");
+    }
+
+    /**
+     * Attempt to resolve a single {@code ${key}} expression against {@code model.getProperties()}.
+     * Returns the resolved value if the property is present, or {@code null} if it is not.
+     */
+    private static String resolveFromProperties(final String expression, final Model model) {
+        int start = expression.indexOf("${");
+        int end = expression.indexOf('}', start);
+        if (start < 0 || end < 0) {
+            return null;
+        }
+        String key = expression.substring(start + 2, end);
+        return model.getProperties().getProperty(key);
     }
 }

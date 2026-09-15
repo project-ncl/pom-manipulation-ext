@@ -209,4 +209,10 @@ public class RESTIntegrationTest {
         String test = getDefaultTestLocation("rest-version-manip-with-properties");
         runLikeInvoker(test, mockServer.getUrl());
     }
+
+    @Test
+    public void testRESTVersionManipPropertyArtifactId() throws Exception {
+        String test = getDefaultTestLocation("rest-version-manip-property-artifactid");
+        runLikeInvoker(test, mockServer.getUrl());
+    }
 }
