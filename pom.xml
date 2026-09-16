@@ -102,7 +102,7 @@
     <slf4jVersion>2.0.19</slf4jVersion>
     <logbackVersion>1.6.3</logbackVersion>
     <docletVersion>1.1</docletVersion>
-    <lombokVersion>1.18.44</lombokVersion>
+    <lombokVersion>1.18.48</lombokVersion>
     <!-- Cannot update beyond 3.5.1 as this is the last version that supports Maven < 3.6.3 (MSHADE-464) -->
     <shadePluginVersion>3.5.1</shadePluginVersion>
     <mavenReleaseVersion>3.3.1</mavenReleaseVersion>
