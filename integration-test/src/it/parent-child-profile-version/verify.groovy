@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import groovy.xml.XmlSlurper
+
 def pomFile = new File( basedir, 'pom.xml' )
 def pomChildFile = new File( basedir, 'child1/pom.xml' )
 System.out.println( "Slurping POM: ${pomFile.getAbsolutePath()} and ${pomChildFile.getAbsolutePath()}" )

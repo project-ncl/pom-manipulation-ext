@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import groovy.xml.XmlSlurper
+
 
 // The input POM has version 1.0.0.Final (no rhlw reference).
 // With enforceVersionPrefix=rhlw, versionIncrementalSuffix=n, versionIncrementalSuffixPadding=5:

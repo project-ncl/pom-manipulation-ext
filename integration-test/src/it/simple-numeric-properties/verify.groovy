@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import groovy.xml.XmlSlurper
+
 System.out.println( "Checking parent output..." )
 
 def pomFile = new File( basedir, 'pom.xml' )
