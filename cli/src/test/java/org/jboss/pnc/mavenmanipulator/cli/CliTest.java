@@ -393,7 +393,7 @@ public class CliTest {
                                 + "org.jacoco:jacoco-maven-plugin:0.8[.\\d+]+\\s+                                  maven-plugin                                                \n"
                                 + "org.jboss:jboss-parent:\\d+\\s+                                                 pom                                     compile             \n"
                                 + "org.jboss.byteman:byteman-bmunit:4[.\\d+]+\\s+                                  jar                                     test                \n"
-                                + "org.jboss.da:reports-model:2.[.\\d+]+\\s+                                       jar                                     compile             \n"
+                                + "org.jboss.da:reports-model:[.\\d+]+\\s+                                         jar                                     compile             \n"
                                 + "org.jboss.pnc.otel:opentelemetry-ext-cli-java:2.[.\\d+]+\\s+                    jar                                     compile             \n"
                                 + "org.jdom:jdom2:2.[.\\d+]+\\s+                                                   jar                                     compile             \n"
                                 + "org.projectlombok:lombok:1.[.\\d+]+\\s+                                         jar                                     provided            \n"
