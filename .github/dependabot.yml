@@ -17,6 +17,9 @@ updates:
       exclude:
         - "org.jboss.da:*"
         - "org.jboss.pnc*:*"        # match org.jboss.pnc:xyz and org.jboss.pnc.group:xyz
+    ignore:
+      - dependency-name: "org.codehaus.plexus:plexus-xml"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: "github-actions" # Also update Github actions
     directory: "/"
     schedule:
