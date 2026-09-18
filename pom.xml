@@ -91,7 +91,7 @@
     <jdk.min.version>11</jdk.min.version>
 
     <mavenVersion>3.9.16</mavenVersion>
-    <atlasVersion>1.2.2</atlasVersion>
+    <atlasVersion>1.2.3</atlasVersion>
     <daVersion>3.0.8</daVersion>
     <galleyVersion>1.22</galleyVersion>
     <sisuVersion>0.9.0.M4</sisuVersion>
