@@ -30,9 +30,11 @@ import java.net.UnknownHostException;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.maven.model.Dependency;
 import org.codehaus.plexus.DefaultContainerConfiguration;
 import org.codehaus.plexus.DefaultPlexusContainer;
 import org.codehaus.plexus.PlexusConstants;
@@ -160,25 +162,38 @@ public class BaseScriptTest {
             // else pass
         }
 
+        String atlasVersion = root.getModel().getProperties().getProperty("atlasVersion");
+        String resolvedAtlasVersion = root.getModel()
+                .getDependencyManagement()
+                .getDependencies()
+                .stream()
+                .filter(d -> d.getArtifactId().equals("atlas-identities"))
+                .findFirst()
+                .orElseThrow(Exception::new)
+                .getVersion();
+        assertFalse("Placeholder should have been resolved", resolvedAtlasVersion.contains("$"));
+        assertEquals("Resolved version should match POM atlasVersion property", atlasVersion, resolvedAtlasVersion);
+
+        String galleyVersion = root.getModel().getProperties().getProperty("galleyVersion");
+        List<Dependency> galleyDeps = root.getModel()
+                .getDependencyManagement()
+                .getDependencies()
+                .stream()
+                .filter(d -> d.getGroupId().equals("org.commonjava.maven.galley"))
+                .collect(Collectors.toList());
+        galleyDeps.forEach(
+                d -> assertFalse(
+                        "Placeholder should have been resolved for " + d.getArtifactId(),
+                        d.getVersion().contains("$")));
         assertEquals(
-                "1.2.2",
-                root.getModel()
-                        .getDependencyManagement()
-                        .getDependencies()
-                        .stream()
-                        .filter(d -> d.getArtifactId().equals("atlas-identities"))
+                "All galley deps should resolve to galleyVersion property",
+                galleyVersion,
+                galleyDeps.stream()
+                        .map(Dependency::getVersion)
+                        .distinct()
                         .findFirst()
-                        .orElseThrow(Exception::new)
-                        .getVersion());
-        assertEquals(
-                5,
-                root.getModel()
-                        .getDependencyManagement()
-                        .getDependencies()
-                        .stream()
-                        .filter(d -> d.getGroupId().equals("org.commonjava.maven.galley"))
-                        .filter(d -> d.getVersion().equals("1.22"))
-                        .count());
+                        .orElseThrow(Exception::new));
+        assertEquals("Expected 5 galley managed dependencies", 5, galleyDeps.size());
 
         bs.inlineProperty(root, "jacksonVersion");
 
