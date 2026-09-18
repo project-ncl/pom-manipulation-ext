@@ -325,7 +325,7 @@ public class CliTest {
                 .replaceAll("org.jboss.pnc.maven-manipulator:pom-manipulation-.*\\n", "");
         System.out.println(cliOutput);
 
-        assertTrue(cliOutput.contains("Found 87"));
+        assertTrue(cliOutput.contains("Found 86"));
         assertTrue(
                 cliOutput.matches(
                         "(?s).*"
@@ -360,7 +360,6 @@ public class CliTest {
                                 + "org.apache.maven:maven-settings:3.[.\\d+]+\\s+                                  jar                                     provided            \n"
                                 + "org.apache.maven:maven-settings-builder:3.[.\\d+]+\\s+                          jar                                     provided            \n"
                                 + "org.apache.maven.plugins:maven-assembly-plugin:2.2-beta-5                       maven-plugin                                                \n"
-                                + "org.apache.maven.plugins:maven-dependency-plugin:3.[.\\d+]+\\s+                 maven-plugin                                                \n"
                                 + "org.apache.maven.plugins:maven-invoker-plugin:3.[.\\d+]+\\s+                    maven-plugin                                                \n"
                                 + "org.apache.maven.plugins:maven-jar-plugin:2.4                                   maven-plugin                                                \n"
                                 + "org.apache.maven.plugins:maven-project-info-reports-plugin:3.[.\\d+]+\\s+       maven-plugin                                                \n"

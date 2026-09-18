@@ -604,11 +604,6 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-dependency-plugin</artifactId>
-          <version>3.11.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-invoker-plugin</artifactId>
           <version>${invokerVersion}</version>
         </plugin>
@@ -934,6 +929,7 @@
         <version.enforcer.plugin>3.4.1</version.enforcer.plugin>
         <version.install.plugin>3.1.1</version.install.plugin>
         <version.gpg.plugin>3.2.4</version.gpg.plugin>
+        <version.dependency.plugin>3.2.0</version.dependency.plugin>
         <version.deploy.plugin>3.1.1</version.deploy.plugin>
         <version.jar.plugin>3.3.0</version.jar.plugin>
         <version.javadoc.plugin>3.6.3</version.javadoc.plugin>
