@@ -107,6 +107,12 @@ public class ProjectComparatorTest {
         List<Project> projectOriginal = pomIO.parseProject(session, projectroot);
         List<Project> projectNew = pomIO.parseProject(session, projectroot);
 
+        String galleyVersion = projectOriginal.stream()
+                .filter(p -> p.getModel().getProperties().containsKey("galleyVersion"))
+                .map(p -> p.getModel().getProperties().getProperty("galleyVersion"))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("galleyVersion property not found in project model"));
+
         projectNew.forEach(project -> project.getModel().setVersion(project.getVersion() + "-redhat-1"));
         projectNew.forEach(project -> {
             if (project.getModel().getDependencyManagement() != null) {
@@ -140,8 +146,8 @@ public class ProjectComparatorTest {
         assertFalse(result.contains("Non-Aligned Managed plugins"));
 
         String jsonString = JSONUtils.jsonToString(json);
-        assertTrue(jsonString.contains("org.commonjava.maven.galley:galley-maven:1.22\" : {"));
-        assertTrue(jsonString.contains("\"version\" : \"1.22-redhat-1\""));
+        assertTrue(jsonString.contains("org.commonjava.maven.galley:galley-maven:" + galleyVersion + "\" : {"));
+        assertTrue(jsonString.contains("\"version\" : \"" + galleyVersion + "-redhat-1\""));
     }
 
     @Test
