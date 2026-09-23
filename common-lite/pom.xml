@@ -64,10 +64,15 @@
     <dependency>
       <groupId>org.jboss.da</groupId>
       <artifactId>reports-model</artifactId>
+      <!-- reports-model 3.0.8+ ships a Jandex index; so allow commons-validator but exclude everything else -->
       <exclusions>
         <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
+          <groupId>org.jboss.pnc</groupId>
+          <artifactId>pnc-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>jakarta.validation</groupId>
+          <artifactId>jakarta.validation-api</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
