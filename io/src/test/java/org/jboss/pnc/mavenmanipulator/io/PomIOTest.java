@@ -292,6 +292,110 @@ public class PomIOTest {
     }
 
     @Test
+    public void testModuleReachedViaRelativePathAndViaParentTraversalIsNotDuplicated()
+            throws Exception {
+        // Reproduces a reactor where an intermediate aggregator (child) references a leaf aggregator
+        // via a "../" module path, and the leaf's own child declares an explicit <relativePath> back
+        // to the leaf. Both routes resolve to the same physical POMs, but one route retains a literal
+        // "../" in its File path while the parent-relativePath climb canonicalises it. Without
+        // canonicalising module paths too, peekAtPomHierarchy treats these as different files and
+        // parses "leaf" and "leafChild" twice, giving two independent Project/Model instances for the
+        // same POM - so a manipulation applied to one instance silently fails to persist.
+        File root = folder.newFolder("root");
+        File child = new File(root, "child");
+        File leaf = new File(root, "leaf");
+        File leafChild = new File(leaf, "leafChild");
+        assertTrue(child.mkdirs());
+        assertTrue(leafChild.mkdirs());
+
+        FileUtils.writeStringToFile(
+                new File(root, "pom.xml"),
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                        + "<project>\n"
+                        + "  <modelVersion>4.0.0</modelVersion>\n"
+                        + "  <groupId>org.example</groupId>\n"
+                        + "  <artifactId>root</artifactId>\n"
+                        + "  <version>1.0</version>\n"
+                        + "  <packaging>pom</packaging>\n"
+                        + "  <modules>\n"
+                        + "    <module>child</module>\n"
+                        + "  </modules>\n"
+                        + "</project>\n",
+                StandardCharsets.UTF_8);
+
+        // Intermediate aggregator whose leaf lives as a sibling directory at the repo root,
+        // referenced with a "../" path - mirroring how e.g. kroxylicious-runtime-plugins
+        // reaches kroxylicious-filters.
+        FileUtils.writeStringToFile(
+                new File(child, "pom.xml"),
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                        + "<project>\n"
+                        + "  <modelVersion>4.0.0</modelVersion>\n"
+                        + "  <parent>\n"
+                        + "    <groupId>org.example</groupId>\n"
+                        + "    <artifactId>root</artifactId>\n"
+                        + "    <version>1.0</version>\n"
+                        + "  </parent>\n"
+                        + "  <artifactId>child</artifactId>\n"
+                        + "  <packaging>pom</packaging>\n"
+                        + "  <modules>\n"
+                        + "    <module>../leaf</module>\n"
+                        + "  </modules>\n"
+                        + "</project>\n",
+                StandardCharsets.UTF_8);
+
+        FileUtils.writeStringToFile(
+                new File(leaf, "pom.xml"),
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                        + "<project>\n"
+                        + "  <modelVersion>4.0.0</modelVersion>\n"
+                        + "  <parent>\n"
+                        + "    <groupId>org.example</groupId>\n"
+                        + "    <artifactId>root</artifactId>\n"
+                        + "    <version>1.0</version>\n"
+                        + "  </parent>\n"
+                        + "  <artifactId>leaf</artifactId>\n"
+                        + "  <packaging>pom</packaging>\n"
+                        + "  <modules>\n"
+                        + "    <module>leafChild</module>\n"
+                        + "  </modules>\n"
+                        + "</project>\n",
+                StandardCharsets.UTF_8);
+
+        // Explicit relativePath back to its parent - this triggers PomIO's parent-climb logic,
+        // which canonicalises the path and (before the fix) re-discovers "leaf" via a different,
+        // canonical File than the one already queued via the "../" module route.
+        FileUtils.writeStringToFile(
+                new File(leafChild, "pom.xml"),
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                        + "<project>\n"
+                        + "  <modelVersion>4.0.0</modelVersion>\n"
+                        + "  <parent>\n"
+                        + "    <groupId>org.example</groupId>\n"
+                        + "    <artifactId>leaf</artifactId>\n"
+                        + "    <version>1.0</version>\n"
+                        + "    <relativePath>../pom.xml</relativePath>\n"
+                        + "  </parent>\n"
+                        + "  <artifactId>leafChild</artifactId>\n"
+                        + "  <packaging>jar</packaging>\n"
+                        + "</project>\n",
+                StandardCharsets.UTF_8);
+
+        List<Project> projects = pomIO.parseProject(null, new File(root, "pom.xml"));
+
+        assertEquals(
+                "leaf must only be parsed once, regardless of whether it is reached via a"
+                        + " \"../\" module path or a relativePath parent climb",
+                1,
+                projects.stream().filter(p -> "leaf".equals(p.getArtifactId())).count());
+        assertEquals(
+                "leafChild must only be parsed once",
+                1,
+                projects.stream().filter(p -> "leafChild".equals(p.getArtifactId())).count());
+        assertEquals(4, projects.size());
+    }
+
+    @Test
     public void testPropertyArtifactIdUnresolvableWarns()
             throws Exception {
         String pomContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"

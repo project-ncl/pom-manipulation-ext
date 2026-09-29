@@ -383,6 +383,10 @@ public class PomIO {
                         if (modPom.isDirectory()) {
                             modPom = new File(modPom, "pom.xml");
                         }
+                        // Canonicalise so a module reached via a "../" path (e.g. from an
+                        // intermediate aggregator) is recognised as the same POM already seen
+                        // or queued via a direct/relativePath route, avoiding double-processing.
+                        modPom = modPom.getCanonicalFile();
 
                         if (modPom.exists() && !seen.contains(modPom)
                                 && !pendingPoms.contains(modPom)) {
