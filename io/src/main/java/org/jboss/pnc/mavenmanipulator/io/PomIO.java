@@ -320,15 +320,17 @@ public class PomIO {
         }
     }
 
-    private List<PomPeek> peekAtPomHierarchy(final File topPom)
+    private List<PomPeek> peekAtPomHierarchy(File topPom)
             throws ManipulationException {
         final List<PomPeek> peeked = new ArrayList<>();
 
         try {
-            final LinkedList<File> pendingPoms = new LinkedList<>();
-            pendingPoms.add(topPom.getCanonicalFile());
+            topPom = topPom.getCanonicalFile();
 
-            final String topDir = topPom.getCanonicalFile().getParentFile().getCanonicalPath();
+            final LinkedList<File> pendingPoms = new LinkedList<>();
+            pendingPoms.add(topPom);
+
+            final String topDir = topPom.getParentFile().getCanonicalPath();
 
             final Set<File> seen = new HashSet<>();
 
