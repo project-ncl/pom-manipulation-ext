@@ -109,7 +109,7 @@
 
     <version.animal-sniffer>1.28</version.animal-sniffer>
 
-    <jacksonVersion>2.22.2</jacksonVersion>
+    <jacksonVersion>2.22.3</jacksonVersion>
     <argLine/>
     <surefireSecurityManager/>
 
