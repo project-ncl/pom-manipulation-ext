@@ -116,7 +116,6 @@
     <spotlessVersion>3.10.2</spotlessVersion>
     <invokerVersion>3.10.1</invokerVersion>
 
-    <central.autoPublish>false</central.autoPublish>
     <signTag>false</signTag>
     <tagNameFormat>@{project.artifactId}-@{project.version}</tagNameFormat>
   </properties>
@@ -847,14 +846,6 @@
             <phase>compile</phase>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.sonatype.central</groupId>
-        <artifactId>central-publishing-maven-plugin</artifactId>
-        <extensions>true</extensions>
-        <configuration>
-          <publishingServerId>central-publisher</publishingServerId>
-        </configuration>
       </plugin>
     </plugins>
   </build>
