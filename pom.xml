@@ -22,7 +22,7 @@
   <parent>
     <groupId>org.jboss</groupId>
     <artifactId>jboss-parent</artifactId>
-    <version>53</version>
+    <version>54</version>
   </parent>
 
   <groupId>org.jboss.pnc.maven-manipulator</groupId>
@@ -593,7 +593,7 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
           <configuration>
-            <releaseProfiles>run-its</releaseProfiles>
+            <releaseProfiles>run-its,central-release</releaseProfiles>
           </configuration>
         </plugin>
         <plugin>
