@@ -1054,6 +1054,22 @@ public class VersioningCalculatorTest {
     }
 
     @Test
+    public void alphaNumericSuffixBaseOSGiRedhat()
+            throws Exception {
+        final Properties props = new Properties();
+
+        props.setProperty(VersioningState.VERSION_SUFFIX_SYSPROP, "redhat-00001");
+        props.setProperty(VersioningState.VERSION_OSGI_SYSPROP, "true");
+        setupSession(props);
+
+        final String v = "4.9";
+        final String ns = ".redhat-00001";
+
+        final String result = calculate(v);
+        assertThat(result, equalTo(v + ".0" + ns));
+    }
+
+    @Test
     public void alphaNumericSuffixBaseWithSnapshot()
             throws Exception {
         final Properties props = new Properties();
@@ -1467,6 +1483,87 @@ public class VersioningCalculatorTest {
 
         final VersioningState state = new VersioningState(props);
         assertThat(state.isEnabled(), equalTo(true));
+    }
+
+    @Test
+    public void handlePotentialSnapshotVersion_stripsSnapshot()
+            throws Exception {
+        ProjectRef ref = new SimpleProjectRef("test", "art");
+        assertEquals("1.0", VersionCalculator.handlePotentialSnapshotVersion(false, ref, "1.0-SNAPSHOT"));
+        assertEquals("1.0.0.GA", VersionCalculator.handlePotentialSnapshotVersion(false, ref, "1.0.0.GA"));
+    }
+
+    @Test
+    public void handlePotentialSnapshotVersion_preservesSnapshotWhenFlagTrue()
+            throws Exception {
+        ProjectRef ref = new SimpleProjectRef("test", "art");
+        assertEquals("1.0-SNAPSHOT", VersionCalculator.handlePotentialSnapshotVersion(true, ref, "1.0-SNAPSHOT"));
+        assertEquals("-SNAPSHOT", VersionCalculator.handlePotentialSnapshotVersion(true, ref, "-SNAPSHOT"));
+    }
+
+    @Test
+    public void handlePotentialSnapshotVersion_emptyInputReturnsEmpty()
+            throws Exception {
+        ProjectRef ref = new SimpleProjectRef("test", "art");
+        assertEquals("", VersionCalculator.handlePotentialSnapshotVersion(false, ref, ""));
+        assertEquals("", VersionCalculator.handlePotentialSnapshotVersion(true, ref, ""));
+    }
+
+    @Test(expected = ManipulationException.class)
+    public void handlePotentialSnapshotVersion_throwsOnDashSnapshot()
+            throws Exception {
+        VersionCalculator.handlePotentialSnapshotVersion(false, new SimpleProjectRef("test", "art"), "-SNAPSHOT");
+    }
+
+    @Test(expected = ManipulationException.class)
+    public void handlePotentialSnapshotVersion_throwsOnUnderscoreSnapshot()
+            throws Exception {
+        VersionCalculator.handlePotentialSnapshotVersion(false, new SimpleProjectRef("test", "art"), "_SNAPSHOT");
+    }
+
+    @Test(expected = ManipulationException.class)
+    public void handlePotentialSnapshotVersion_throwsOnDotSnapshot()
+            throws Exception {
+        VersionCalculator.handlePotentialSnapshotVersion(false, new SimpleProjectRef("test", "art"), ".SNAPSHOT");
+    }
+
+    @Test(expected = ManipulationException.class)
+    public void handlePotentialSnapshotVersion_throwsOnBareSnapshot()
+            throws Exception {
+        VersionCalculator.handlePotentialSnapshotVersion(false, new SimpleProjectRef("test", "art"), "SNAPSHOT");
+    }
+
+    @Test(expected = ManipulationException.class)
+    public void handlePotentialSnapshotVersion_throwsOnLowerCaseSnapshot()
+            throws Exception {
+        VersionCalculator.handlePotentialSnapshotVersion(false, new SimpleProjectRef("test", "art"), "-snapshot");
+    }
+
+    @Test
+    public void calculate_throwsWhenEmptyAfterSnapshotRemoval()
+            throws Exception {
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.INCREMENT_SERIAL_SUFFIX_SYSPROP, "redhat");
+        setupSession(props);
+
+        try {
+            calculate("-SNAPSHOT");
+            org.junit.Assert.fail("Expected ManipulationException");
+        } catch (ManipulationException e) {
+            assertThat(e.getMessage().contains("has no base component after SNAPSHOT removal"), equalTo(true));
+        }
+    }
+
+    @Test
+    public void calculate_succeedsWhenPreserveSnapshotWithDashSnapshot()
+            throws Exception {
+        final Properties props = new Properties();
+        props.setProperty(VersioningState.VERSION_SUFFIX_SNAPSHOT_SYSPROP, "true");
+        props.setProperty(VersioningState.VERSION_SUFFIX_SYSPROP, "redhat-1");
+        setupSession(props);
+
+        final String result = calculate("-SNAPSHOT");
+        assertThat(result, equalTo(".redhat-1-SNAPSHOT"));
     }
 
     private byte[] setupMetadataVersions(final String... versions)

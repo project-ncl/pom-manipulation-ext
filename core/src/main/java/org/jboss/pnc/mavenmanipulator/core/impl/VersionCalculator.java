@@ -206,6 +206,15 @@ public class VersionCalculator {
                     artifactId);
         }
 
+        if (!state.isPreserveSnapshot() && Version.removeSnapshot(version).isEmpty()) {
+            throw new ManipulationException(
+                    "Version '{}' for {}:{} has no base component after SNAPSHOT removal; "
+                            + "cannot produce a valid suffixed version",
+                    version,
+                    groupId,
+                    artifactId);
+        }
+
         String newVersion = version;
 
         if (state.getSuffixAlternatives().size() > 0) {
@@ -358,5 +367,33 @@ public class VersionCalculator {
         final int padding = state.getIncrementalSerialSuffixPadding();
         final String paddedZero = StringUtils.leftPad("0", padding, '0');
         return Version.appendQualifierSuffix(version, reference + "-" + paddedZero);
+    }
+
+    /**
+     * Strips SNAPSHOT from the version unless it is to be preserved, and throws if the
+     * result would be an empty string (e.g. input was "-SNAPSHOT").
+     *
+     * @param preserveSnapshot if true the version is returned untouched
+     * @param projectRef the project ref (group:artifact) for use in error messages
+     * @param version the version string to process
+     * @return the processed version string; never empty unless the input was empty
+     * @throws ManipulationException if snapshot removal leaves an empty version stem
+     */
+    public static String handlePotentialSnapshotVersion(
+            boolean preserveSnapshot,
+            ProjectRef projectRef,
+            String version)
+            throws ManipulationException {
+        if (preserveSnapshot) {
+            return version;
+        }
+        String stripped = Version.removeSnapshot(version);
+        if (stripped.isEmpty() && !version.isEmpty()) {
+            throw new ManipulationException(
+                    "Version '{}' of {} has no base component after SNAPSHOT removal; cannot build a valid version reference",
+                    version,
+                    projectRef);
+        }
+        return stripped;
     }
 }

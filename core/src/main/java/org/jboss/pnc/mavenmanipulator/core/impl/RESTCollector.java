@@ -35,6 +35,7 @@ import org.apache.maven.model.Profile;
 import org.commonjava.atlas.maven.ident.ref.ArtifactRef;
 import org.commonjava.atlas.maven.ident.ref.ProjectRef;
 import org.commonjava.atlas.maven.ident.ref.ProjectVersionRef;
+import org.commonjava.atlas.maven.ident.ref.SimpleProjectRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleProjectVersionRef;
 import org.commonjava.atlas.maven.ident.ref.SimpleTypeAndClassifier;
 import org.jboss.pnc.mavenmanipulator.common.Version;
@@ -97,8 +98,9 @@ public class RESTCollector
                                 pvr.asProjectRef(),
                                 VersionCalculator.enforceVersionPrefix(
                                         vs,
-                                        handlePotentialSnapshotVersion(
-                                                vs,
+                                        VersionCalculator.handlePotentialSnapshotVersion(
+                                                vs == null || vs.isPreserveSnapshot(),
+                                                pvr,
                                                 Version.getOsgiVersion(
                                                         VersionCalculator.handleAlternate(
                                                                 vs,
@@ -231,10 +233,15 @@ public class RESTCollector
             if (project.isInheritanceRoot() || scanAll
                     || activeModules.contains(project.getPom().getParentFile().getName())) {
                 if (project.getModelParent() != null) {
-                    SimpleProjectVersionRef parent = new SimpleProjectVersionRef(
+                    ProjectRef pr = new SimpleProjectRef(
                             project.getModelParent().getGroupId(),
-                            project.getModelParent().getArtifactId(),
-                            handlePotentialSnapshotVersion(vs, project.getModelParent().getVersion()));
+                            project.getModelParent().getArtifactId());
+                    SimpleProjectVersionRef parent = new SimpleProjectVersionRef(
+                            pr,
+                            VersionCalculator.handlePotentialSnapshotVersion(
+                                    vs == null || vs.isPreserveSnapshot(),
+                                    pr,
+                                    project.getModelParent().getVersion()));
                     localDeps.add(new SimpleScopedArtifactRef(parent, new SimpleTypeAndClassifier("pom", null), null));
                 }
 
@@ -286,7 +293,8 @@ public class RESTCollector
     private static void recordPlugins(
             ManipulationSession session,
             Set<ArtifactRef> deps,
-            Map<ProjectVersionRef, Plugin> plugins) {
+            Map<ProjectVersionRef, Plugin> plugins)
+            throws ManipulationException {
         final VersioningState vs = session.getState(VersioningState.class);
 
         for (ProjectVersionRef pvr : plugins.keySet()) {
@@ -294,7 +302,10 @@ public class RESTCollector
                     new SimpleScopedArtifactRef(
                             new SimpleProjectVersionRef(
                                     pvr.asProjectRef(),
-                                    handlePotentialSnapshotVersion(vs, pvr.getVersionString())),
+                                    VersionCalculator.handlePotentialSnapshotVersion(
+                                            vs == null || vs.isPreserveSnapshot(),
+                                            pvr,
+                                            pvr.getVersionString())),
                             new SimpleTypeAndClassifier("maven-plugin", null),
                             null));
         }
@@ -310,7 +321,8 @@ public class RESTCollector
     private static void recordDependencies(
             ManipulationSession session,
             Set<ArtifactRef> deps,
-            Map<ArtifactRef, Dependency> dependencies) {
+            Map<ArtifactRef, Dependency> dependencies)
+            throws ManipulationException {
         final VersioningState vs = session.getState(VersioningState.class);
         final RESTState state = session.getState(RESTState.class);
 
@@ -320,7 +332,10 @@ public class RESTCollector
             final SimpleScopedArtifactRef sa = new SimpleScopedArtifactRef(
                     new SimpleProjectVersionRef(
                             pvr.asProjectRef(),
-                            handlePotentialSnapshotVersion(vs, pvr.getVersionString())),
+                            VersionCalculator.handlePotentialSnapshotVersion(
+                                    vs == null || vs.isPreserveSnapshot(),
+                                    pvr,
+                                    pvr.getVersionString())),
                     new SimpleTypeAndClassifier(d.getType(), d.getClassifier()),
                     d.getScope());
 
@@ -343,10 +358,4 @@ public class RESTCollector
         }
     }
 
-    private static String handlePotentialSnapshotVersion(VersioningState vs, String version) {
-        if (vs != null && !vs.isPreserveSnapshot()) {
-            return Version.removeSnapshot(version);
-        }
-        return version;
-    }
 }
