@@ -325,7 +325,7 @@ public class CliTest {
                 .replaceAll("org.jboss.pnc.maven-manipulator:pom-manipulation-.*\\n", "");
         System.out.println(cliOutput);
 
-        assertTrue(cliOutput.contains("Found 86"));
+        assertTrue(cliOutput.contains("Found 84"));
         assertTrue(
                 cliOutput.matches(
                         "(?s).*"
@@ -335,8 +335,6 @@ public class CliTest {
                                 + "com.fasterxml.jackson:jackson-bom:2.[.\\d+]+\\s+                                pom                                     import              \n"
                                 + "com.github.olivergondza:maven-jdk-tools-wrapper:0.1                             jar                                     compile             \n"
                                 + "com.github.stefanbirkner:system-rules:1.[.\\d+]+\\s+                            jar                                     test                \n"
-                                + "com.google.guava:guava:33.[.\\d+]+-jre\\s+                                      jar                                     compile             \n"
-                                + "com.google.inject:guice:5.1.0                                                   jar                                     compile             \n"
                                 + "com.jayway.jsonpath:json-path:2.[.\\d+]+\\s+                                    jar                                     compile             \n"
                                 + "com.konghq:unirest-java:3.[.\\d+]+\\s+                                          jar                                     compile             \n"
                                 + "com.konghq:unirest-objectmapper-jackson:3.[.\\d+]+\\s+                          jar                                     compile             \n"
