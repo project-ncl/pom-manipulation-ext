@@ -2,7 +2,9 @@
 title: "XML Manipulation"
 ---
 
-### Overview
+# XML Manipulation
+
+## Overview
 
 PME offers the ability to modify one or many xml files in the repository prior to running the build.
 
@@ -15,7 +17,7 @@ PME offers the ability to modify one or many xml files in the repository prior t
 </table>
 
 
-### Configuration
+## Configuration
 
 The manipulator is controlled by the `xmlUpdate` property. The format is
 

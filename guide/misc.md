@@ -2,17 +2,19 @@
 title: Miscellaneous PME Manipulations
 ---
 
+# Miscellaneous PME Manipulations
+
 * Contents
 {:toc}
 
-### Overview
+## Overview
 
 In addition to the main [project-version](project-version-manip.html), [dependency](dep-manip.html), and [plugin](plugin-manip.html) manipulations, PME offers several smaller features. These feaures fall into two main categories:
 
 * POM Cleanup
 * Build Management
 
-### Profile Handling
+## Profile Handling
 
 PME will by default **only** scan those profiles that are active in the project. To disable this set `scanActiveProfiles` to false to scan all profiles.
 
@@ -39,15 +41,15 @@ The profile scanning will detect usage of properties, activeByDefault, environme
 </table>
 
 
-### POM Cleanup
+## POM Cleanup
 
-#### Version Range Resolving
+### Version Range Resolving
 
 PME will automatically resolve ranges in versions in plugins and dependencies. This is active by default and may be disabled by setting `resolveRanges` to false. It will replace the range by a suitable concrete version determined by resolving the remote metadata and finding the largest version that matches the range specification.
 
 **Note:** Currently ranges within properties are not supported.
 
-#### Repository And Reporting Removal
+### Repository And Reporting Removal
 
 If the property `repoReportingRemoval` (*Deprecated property `repo-reporting-removal` for versions **3.8.1 and prior***) is set, PME will remove all reporting and repository sections (including profiles) from the POM files (default: off).
 
@@ -68,7 +70,7 @@ If the property `repoRemovalBackup` (*Deprecated property `repo-removal-backup` 
 * `settings.xml` a backup of any removed sections will be created in the top level directory.
 * `<path to file>` a backup of any removed sections will be created in the specified file.
 
-#### `project.version` Expression Replacement
+### `project.version` Expression Replacement
 
 The extension will automatically replace occurences of the property expression `${project.version}` in POMs (of packaging type `pom`).
 
@@ -80,15 +82,15 @@ This behavior may be configured by setting the property `enforceProjectVersion` 
 
 As explained above, the default is `on`.
 
-### Build Management
+## Build Management
 
-#### Parent Injection
+### Parent Injection
 
 PME supports injection of a parent GAV declared explicitly defined by the user e.g.
 
     mvn install -DparentInjection=org.jboss:jboss-parent:11
 
-#### Profile Injection
+### Profile Injection
 
 PME supports injection of profiles declared in multiple remote comma separated POM files. Simply supply a remote management POM:
 
@@ -100,13 +102,13 @@ The extension will, for every profile in the remote POM files, replace or add it
 
 **Note:** If the POM is specified in the format `-DprofileInjection=org.foo:profile-injection:1.0-rebuild` i.e. a rebuild suffix is specified *but without a numeric portion* then PME will automatically replace the POM GAV with the latest suffix via a REST call. For instance, assuming the latest suffix is rebuild-3, the above will be replaced implicitly by `-DprofileInjection=org.foo:profile-injection:1.0-rebuild-3`.
 
-#### Profile Removal
+### Profile Removal
 
 PME supports removal of profiles as indicated by a comma separated list of profile IDs.
 
     mvn install -DprofileRemoval=profileOne,profileTwo
 
-#### Repository Injection
+### Repository Injection
 
 PME supports injection of remote repositories. Supply a remote repository management POM:
 
@@ -117,7 +119,7 @@ The extension will resolve a remote POM file and inject remote repositories to e
     repositoryInjectionPoms=org.commonjava.maven.ext.wildcard:*
 
 
-#### Property Override
+### Property Override
 
 PME may also be used to override properties prior to interpolating the model. Multiple property mappings can be overridden using a similar pattern to dependencies via a remote property management pom.
 

@@ -1,19 +1,14 @@
-safe: true
-defaults:
-  -
-    scope:
-      path: ""
-    values:
-      layout: "slate"
-      author: "Red Hat"
-
-siteTitle: "Red Hat"
-projectTitle: "PME"
 title: "POM Manipulation Extension"
-tagline: "Standardize Your Builds"
-owner: "Red Hat"
-ownerEmail: ncross@redhat.com
+description: "Standardize Your Builds"
 
 markdown: kramdown
-redcarpet:
-  extensions: ["tables", "autolink", "strikethrough", "space_after_headers", "with_toc_data", "fenced_code_blocks"]
+kramdown:
+  toc_levels: 2..6
+
+theme: jekyll-theme-slate
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "default"

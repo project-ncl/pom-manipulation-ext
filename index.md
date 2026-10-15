@@ -1,10 +1,13 @@
 ---
+title: "POM Manipulation Extension"
 ---
+
+# POM Manipulation Extension
 
 * Contents
 {:toc}
 
-### Overview
+## Overview
 
 POM Manipulation Extension (PME) is a Maven tool to align the versions in your POMs according to some external reference, sort of like a BOM but much more extensive and without the added baggage of a BOM declaration.
 
@@ -12,13 +15,13 @@ It is supplied as a core library, a Maven extension (in the sense of installing 
 
 PME excels in a cleanroom environment where large numbers of pre-existing projects must be rebuilt. To minimize the number of builds necessary, PME supports aligning dependency versions using an external BOM-like reference. However, it can also use a similar POM external reference to align plugin versions, and inject standardized plugin executions into project builds. Because in this scenario you're often rebuilding projects from existing release tags, PME also supports appending a rebuild version suffix, such as `rebuild-1`, where the actual rebuild number is automatically incremented beyond the highest rebuild number detected in the Maven repository.
 
-### Release Notes
+## Release Notes
 
 For a list of changes please see [here](https://github.com/project-ncl/pom-manipulation-ext/releases)
 
-### Installation
+## Installation
 
-#### Installation as CLI tool.
+### Installation as CLI tool.
 
 Obtain the jar from [here](https://repo1.maven.org/maven2/org/jboss/pnc/maven-manipulator/pom-manipulation-cli) and then it may be invoked as
 
@@ -47,7 +50,7 @@ It supports the following arguments
 * Log file output will be disabled if running inside a container image.
 
 
-#### Installation as an Extension
+### Installation as an Extension
 
 Installing PME is as simple as [grabbing the binary](https://repo1.maven.org/maven2/org/jboss/pnc/maven-manipulator/pom-manipulation-ext) and copying it to your `${MAVEN_HOME}/lib/ext` directory. Once PME is installed, Maven should output something like the following when run:
 
@@ -55,7 +58,7 @@ Installing PME is as simple as [grabbing the binary](https://repo1.maven.org/mav
 
 Uninstalling the extension is equally simple: just delete it from `${MAVEN_HOME}/lib/ext`.
 
-### Disabling the Extension
+## Disabling the Extension
 
 You can disable PME using the `manipulation.disable` property:
 
@@ -79,12 +82,12 @@ If you want to make it more permanent, you could add it to your `settings.xml`:
 </settings>
 ```
 
-#### Disabling writing changes
+### Disabling writing changes
 
 By default PME will always write the changes it makes back to the pom files. It may be that a user wishes to use the tool
 as an extension but not write any changes back to disk. This may be achieved by setting `manipulationWriteChanged` to false.
 
-### Deprecated and Unknown Properties
+## Deprecated and Unknown Properties
 
 <table bgcolor="#ffff00">
 <tr>
@@ -98,7 +101,7 @@ If an unknown property is passed in the tool (whether in CLI or extension mode) 
 
 By default if a deprecated property is used the tool will detect it and throw an exception. If the user wishes to allow usage of deprecated properties set `enabledDeprecatedProperties` to true.
 
-### Extension Marker File
+## Extension Marker File
 
 When the extension runs it writes out a control marker file in the execution root `target` directory. This is named `pom-manip-ext-marker.txt`. If this marker file exists PME will not run a second time instead logging:
 
@@ -106,7 +109,7 @@ When the extension runs it writes out a control marker file in the execution roo
 
 Removing the target directory will allow PME to be run again.
 
-### Summary Logging
+## Summary Logging
 
 PME will output a summary of its changes at the end of the run. As well as reporting version, property, dependency and
 plugin alignment, it is also possible to report what _hasn't_ been aligned by setting the property
@@ -145,18 +148,18 @@ This JSON file may be read as POJO by using the [JSONUtils](https://github.com/p
 class which utilises the [json](https://github.com/project-ncl/pom-manipulation-ext/blob/main/common/src/main/java/org/jboss/pnc/mavenmanipulator/common/json)
 package.
 
-### Javadoc
+## Javadoc
 
 This is available [here](https://www.javadoc.io/doc/org.commonjava.maven.ext).
 
-### OpenTelemetry Instrumentation
+## OpenTelemetry Instrumentation
 
 If `OTEL_EXPORTER_OTLP_ENDPOINT` is defined (and optionally `OTEL_SERVICE_NAME`) then OpenTelemetry instrumentation
 will be activated. It will read trace information from the environment as described [here](https://github.com/jenkinsci/opentelemetry-plugin/blob/master/docs/job-traces.md#environment-variables-for-trace-context-propagation-and-integrations) and will propagate the information via headers in any REST calls.
 
-### Feature Guide
+## Feature Guide
 
-#### Operation
+### Operation
 
   * Maven POM files are read from disk into memory before all manipulators, including the Groovy manipulators. The one
     exception is the `PREPARSE` Groovy manipulator, which runs before the POM files are loaded into memory. Therefore,

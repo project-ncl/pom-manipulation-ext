@@ -2,11 +2,13 @@
 title: "Json Manipulation"
 ---
 
-### Overview
+# Json Manipulation
+
+## Overview
 
 PME offers the ability to modify one or many json files in the repository prior to running the build.
 
-### Configuration
+## Configuration
 
 The manipulator is controlled by the `jsonUpdate` property. The format is
 

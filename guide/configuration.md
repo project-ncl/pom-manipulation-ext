@@ -2,7 +2,9 @@
 title: "Configuration Files"
 ---
 
-### Overview
+# Configuration Files
+
+## Overview
 
 Normally all configuration is passed in via command line properties e.g.
 
@@ -16,7 +18,7 @@ However, PME also offers the ability to read a local configuration file. This fi
 
 **Note**: The command line will _override_ any configuration properties _unless_ the property `allowConfigFilePrecedence` is passed in and set to true.
 
-### Yaml
+## Yaml
 
 The format is as follows
 
@@ -30,7 +32,7 @@ other-configuration:
 
 Any other configuration sections are ignored by PME.
 
-### JSON
+## JSON
 
 The format is as follows
 
@@ -48,6 +50,6 @@ The format is as follows
 
 Any other configuration sections are ignored by PME.
 
-### Properties
+## Properties
 
 The file should be in a standard [java properties file format](https://docs.oracle.com/javase/tutorial/essential/environment/properties.html). Note that certain characters may need to be escaped (See [here](https://docs.oracle.com/javase/8/docs/api/java/util/Properties.html#load-java.io.Reader-) ).

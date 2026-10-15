@@ -1,0 +1,17 @@
+source "https://rubygems.org"
+
+# Local preview on Ruby 3.4+ (the github-pages gem cannot resolve on newer Rubies):
+#   bundle install --gemfile Gemfile.local
+#   BUNDLE_GEMFILE=Gemfile.local bundle exec jekyll serve --watch -V
+
+gem "jekyll", "~> 4.3"
+
+group :jekyll_plugins do
+  gem "jekyll-theme-slate"
+end
+
+gem "liquid", "~> 4.0.4"
+gem "csv"
+gem "base64"
+gem "bigdecimal"
+gem "webrick"

@@ -1,15 +1,14 @@
-
 # GH-Pages Branch
 
 This branch contains the github pages content for https://github.com/project-ncl/pom-manipulation-ext and the pages are hosted at https://project-ncl.github.io/pom-manipulation-ext
 
-It is possible to use Jekyll (https://help.github.com/articles/using-jekyll-with-pages) to preview the changes. Jekyll can be run with `jekyll serve --watch -V`
+The site uses Jekyll with the `jekyll-theme-slate` gem and a small override in `assets/css/style.scss`.
 
+To preview changes locally:
 
-## Slate
-Slate is responsive theme for GitHub Pages. [Fork it](https://github.com/jsncostello/slate/fork_select) and use it on your own site or generate one automatically using [GitHub Pages](http://pages.github.com).
+```bash
+bundle install --gemfile Gemfile.local
+BUNDLE_GEMFILE=Gemfile.local bundle exec jekyll serve --watch -V
+```
 
-Slate in use:
-![Slate](https://f.cloud.github.com/assets/416727/1730110/c72a2f96-62d3-11e3-9d6f-efc53e24aeb2.png)
-
-Slate is available under the MIT license.
+`Gemfile` mirrors the GitHub Pages build (`github-pages` gem). `Gemfile.local` is for local preview on newer Rubies, where the `github-pages` gem cannot be installed.

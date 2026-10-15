@@ -2,14 +2,16 @@
 title: Groovy Script Injection
 ---
 
+# Groovy Script Injection
+
 * Contents
 {:toc}
 
-### Overview
+## Overview
 
 PME offers the ability to run arbitrary groovy scripts on the sources prior to running the build. This allows PME to be extensible by the user and to process other files not just Maven POMs.
 
-### Configuration
+## Configuration
 
 If the property `-DgroovyScripts=<value>,....` is set, PME will load the remote Groovy script file.
 
@@ -55,7 +57,7 @@ The deployed file can then be used with e.g.
 
     mvn -DgroovyScripts=org.commonjava.maven.ext:depMgmt1:groovy:1.0 clean install
 
-### Groovy Scripts
+## Groovy Scripts
 
 Each groovy script will be run on the execution root (i.e. where Maven is invoked).
 
@@ -113,7 +115,7 @@ pme.getBaseDir()
 
 <b>NOTE</b> : Be careful not to use <code>pme.getProperties()</code> or <code>pme.getProject().getProperties()</code> as that actually calls the [Groovy language API](http://docs.groovy-lang.org/latest/html/api/org/codehaus/groovy/runtime/DefaultGroovyMethods.html#getProperties(java.lang.Object))
 
-#### Invocation stages
+### Invocation stages
 
 In the example script, we saw the use of the `@InvocationPoint` annotation which controls when the script is run. It
 takes a single argument, `invocationPoint`, with the type `InvocationStage`. The possible values for `InvocationStage`
@@ -140,7 +142,7 @@ back out to disk. To alter a POM file in memory, call <code>Project.getModel()</
 </tr>
 </table>
 
-### API
+## API
 
 The following API is available:
 
@@ -166,11 +168,11 @@ The following API is available:
 | [Map](https://docs.oracle.com/javase/7/docs/api/java/util/Map.html)<[ProjectVersionRef](https://github.com/Commonjava/atlas/blob/master/identities/src/main/java/org/commonjava/atlas/maven/ident/ref/ProjectVersionRef.java), [String](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html)> lookupProjectVersions([List](https://docs.oracle.com/javase/7/docs/api/java/util/List.html)<[Project](https://github.com/project-ncl/pom-manipulation-ext/blob/main/common/src/main/java/org/jboss/pnc/mavenmanipulator/common/model/Project.java)>) throws [RestException](https://github.com/project-ncl/pom-manipulation-ext/blob/main/io/src/main/java/org/jboss/pnc/mavenmanipulator/io/rest/RestException.java) | Lookup versions (e.g. for a project) ignoring DA suffix priority schemes returning the latest version. | 4.4 | `FIRST`, `LAST`     |
 | [Map](https://docs.oracle.com/javase/7/docs/api/java/util/Map.html)<[ProjectVersionRef](https://github.com/Commonjava/atlas/blob/master/identities/src/main/java/org/commonjava/atlas/maven/ident/ref/ProjectVersionRef.java), [String](https://docs.oracle.com/javase/7/docs/api/java/lang/String.html)> lookupVersions([List](https://docs.oracle.com/javase/7/docs/api/java/util/List.html)<[Project](https://github.com/project-ncl/pom-manipulation-ext/blob/main/common/src/main/java/org/jboss/pnc/mavenmanipulator/common/model/Project.java)>) throws [RestException](https://github.com/project-ncl/pom-manipulation-ext/blob/main/io/src/main/java/org/jboss/pnc/mavenmanipulator/io/rest/RestException.java) | Lookup versions respecting DA suffix priority schemes which will return the best matched version. | 4.4 | `FIRST`, `LAST`     |
 
-### Utility Functions
+## Utility Functions
 
 Currently, two main utility functions are provided:
 
-#### inlineProperty
+### inlineProperty
 
 This function is typically used to deal with the problem where an upstream may use a single property for several distinct SCM Builds. This can lead to issues, so by 'inlining' the property it can avoid them.
 
@@ -182,7 +184,7 @@ This function is typically used to deal with the problem where an upstream may u
 </tr>
 </table>
 
-#### overrideProjectVersion
+### overrideProjectVersion
 
 Occasionally upstream projects have circular dependencies in their build. This can typically happen if the first build creates a BOM that is used by multiple subsequent builds. If rebuilds (primarily with a suffix) occur then the versions can get out of sync and build errors arise. This function effectively 'locks' the subsequent builds to the suffix value of the first.
 
@@ -190,7 +192,7 @@ Occasionally upstream projects have circular dependencies in their build. This c
 
 The above diagram shows two different SCM builds. The first has a sub-module that is a BOM that references the following SCM builds. This BOM is imported into the parent's `dependencyManagement`. The second SCM build inherits this parent. If the first has been rebuilt twice (hence the `rebuild-2` suffix) then the BOM will refer to the incorrect version of SCM Build 2 (`1.0.rebuild-2` instead of `1.0.rebuild-1`). By using `overrideProjectVersion` it is possible to force SCM Build 2 to use suffix `rebuild-2` thereby making it have the correct version.
 
-### Example
+## Example
 
 A typical groovy script that alters a JSON file on disk might be:
 
@@ -238,8 +240,8 @@ def Processor sp = new Processor(basedir:pme.getBaseDir()))
 sp.execute()
 ```
 
-### Developing Groovy Scripts
+## Developing Groovy Scripts
 
 To make it easier to develop scripts for both PME (this project) and [GME](https://github.com/project-ncl/gradle-manipulator) an example project has been set up. The [manipulator-groovy-examples](https://github.com/project-ncl/manipulator-groovy-examples) provides a framework to develop and test such scripts.
 
-[circular]: ../images/circular.png "Circular Example"
+[circular]: ../assets/images/circular.png "Circular Example"
