@@ -30,7 +30,7 @@
   <name>POM Manipulation Integration Tests</name>
 
   <properties>
-    <it.maven.home>${project.build.directory}/apache-maven-${mavenVersion}</it.maven.home>
+    <it.maven.home>${project.build.directory}/apache-maven-${maven.version}</it.maven.home>
     <cliIter>cli</cliIter>
     <extIter>ext</extIter>
     <!--suppress UnresolvedMavenProperty -->
@@ -298,6 +298,7 @@
                 </goals>
                 <configuration>
                   <debug>true</debug>
+                  <reportsDirectory>${project.build.directory}/invoker-reports-ext</reportsDirectory>
                   <goals>
                     <goal>clean</goal>
                     <goal>package</goal>
@@ -320,6 +321,8 @@
                     <!-- Only run by JUnit as they are linked -->
                     <pomExclude>circular-*/pom.xml</pomExclude>
                     <pomExclude>groovy-manipulator-first-http/pom.xml</pomExclude>
+                    <!-- Run separately by integration-test-pom-extension execution -->
+                    <pomExclude>pom-extension/pom.xml</pomExclude>
                   </pomExcludes>
                   <projectsDirectory>${project.build.directory}/it-${extIter}</projectsDirectory>
                   <preBuildHookScript>setup</preBuildHookScript>
@@ -336,6 +339,7 @@
                 </goals>
                 <configuration>
                   <debug>true</debug>
+                  <reportsDirectory>${project.build.directory}/invoker-reports-pom-ext</reportsDirectory>
                   <goals>
                     <goal>package</goal>
                   </goals>
@@ -362,7 +366,7 @@
                 <buildDirectory>${project.build.directory}</buildDirectory>
                 <maven.home>${it.maven.home}</maven.home>
                 <localRepositoryPath>${localRepositoryUrlCli}</localRepositoryPath>
-                <mavenVersion>${mavenVersion}</mavenVersion>
+                <mavenVersion>${maven.version}</mavenVersion>
               </systemPropertyVariables>
             </configuration>
           </plugin>

@@ -325,7 +325,9 @@ public class CliTest {
                 .replaceAll("org.jboss.pnc.maven-manipulator:pom-manipulation-.*\\n", "");
         System.out.println(cliOutput);
 
-        assertTrue(cliOutput.contains("Found 84"));
+        // apache-maven (the integration-test Maven distribution) is versioned by ${maven.version}, which PME can't
+        // resolve, so it is deliberately omitted from the output.
+        assertTrue(cliOutput.contains("Found 83"));
         assertTrue(
                 cliOutput.matches(
                         "(?s).*"
@@ -349,7 +351,6 @@ public class CliTest {
                                 + "org.apache.commons:commons-lang3:3.[.\\d+]+\\s+                                 jar                                     compile             \n"
                                 + "org.apache.httpcomponents:httpclient:4.[.\\d+]+\\s+                             jar                                     compile             \n"
                                 + "org.apache.ivy:ivy:[.\\d+]+\\s+                                                 jar                                     compile             \n"
-                                + "org.apache.maven:apache-maven:3.[.\\d+]+\\s+                                    zip                 bin                 test                \n"
                                 + "org.apache.maven:maven-artifact:3.[.\\d+]+\\s+                                  jar                                     provided            \n"
                                 + "org.apache.maven:maven-compat:3.[.\\d+]+\\s+                                    jar                                     provided            \n"
                                 + "org.apache.maven:maven-core:3.[.\\d+]+\\s+                                      jar                                     provided            \n"
