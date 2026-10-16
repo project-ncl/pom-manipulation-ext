@@ -327,7 +327,7 @@ public class CliTest {
 
         // apache-maven (the integration-test Maven distribution) is versioned by ${maven.version}, which PME can't
         // resolve, so it is deliberately omitted from the output.
-        assertTrue(cliOutput.contains("Found 83"));
+        assertTrue(cliOutput.contains("Found 84"));
         assertTrue(
                 cliOutput.matches(
                         "(?s).*"
@@ -345,6 +345,7 @@ public class CliTest {
                                 + "com.squareup:javapoet:1.[.\\d+]+\\s+                                            jar                                     compile             \n"
                                 + "commons-codec:commons-codec:1.[.\\d+]+\\s+                                      jar                                     compile             \n"
                                 + "commons-io:commons-io:[.\\d+]+\\s+                                              jar                                     compile             \n"
+                                + "commons-logging:commons-logging:1.[.\\d+]+\\s+                                  jar                                     compile             \n"
                                 + "info.picocli:picocli:4.[.\\d+]+\\s+                                             jar                                     compile             \n"
                                 + "javax.inject:javax.inject:1                                                     jar                                     compile             \n"
                                 + "junit:junit:4[.\\d+]+\\s+                                                       jar                                     test                \n"
