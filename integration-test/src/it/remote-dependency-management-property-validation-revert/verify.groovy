@@ -31,7 +31,7 @@ assert dependency.version.text().contains("version.junit")
 def failed = false
 
 pom.properties.each {
-    if ( it.text().contains ("4.1") )
+    if ( it.text() == "4.1" )
     {
         failed = true
     }

@@ -38,7 +38,7 @@
     <commons.httpclient.minor>1</commons.httpclient.minor>
 
     <junit.artifact>junit</junit.artifact>
-    <junit>3.6</junit>
+    <junit>4.13.2</junit>
 
     <jetty>\${jetty.major}.4.12.${jetty.qualifier}</jetty>
   </properties>

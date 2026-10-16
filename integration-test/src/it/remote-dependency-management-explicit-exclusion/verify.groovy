@@ -28,8 +28,8 @@ assert commonsDependency.version.text() == "2.5"
 
 def junitDependency = pom.dependencyManagement.dependencies.dependency.find { it.artifactId.text() == "junit" }
 assert junitDependency != null
-assert junitDependency.version.text() == "3.8.2"
+assert junitDependency.version.text() == "4.13.2"
 
 def childDependency = pomChild.dependencyManagement.dependencies.dependency.find { it.artifactId.text() == "junit" }
 assert childDependency != null
-assert childDependency.version.text() == "3.8.2"
+assert childDependency.version.text() == "4.13.2"

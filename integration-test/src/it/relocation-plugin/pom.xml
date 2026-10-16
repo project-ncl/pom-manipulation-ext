@@ -29,7 +29,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <junitProp>3.8.2</junitProp>
+    <junitProp>4.13.2</junitProp>
     <shade>maven-shad-plugin</shade>
   </properties>
 

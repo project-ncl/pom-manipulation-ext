@@ -29,7 +29,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.junit>3.8.2</version.junit>
+    <version.junit>4.13.2</version.junit>
   </properties>
 
   <build>
@@ -59,7 +59,7 @@
                   <artifactItem>
                     <groupId>junit</groupId>
                     <artifactId>junit</artifactId>
-                    <version>3.8.2</version>
+                    <version>4.13.2</version>
                     <type>jar</type>
                     <overWrite>false</overWrite>
                     <outputDirectory>${project.build.directory}</outputDirectory>
@@ -97,7 +97,7 @@
           <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.2</version>
+            <version>4.13.2</version>
           </dependency>
         </dependencies>
       </plugin>
@@ -128,7 +128,7 @@
                     <artifactItem>
                       <groupId>junit</groupId>
                       <artifactId>junit</artifactId>
-                      <version>3.8.2</version>
+                      <version>4.13.2</version>
                       <type>jar</type>
                       <overWrite>false</overWrite>
                       <outputDirectory>${project.build.directory}</outputDirectory>

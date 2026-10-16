@@ -23,6 +23,6 @@ def pom = new XmlSlurper().parse( pomFile )
 // Verify the junit version dependency hasn't changed.
 def dependency = pom.dependencies.dependency.find { it.artifactId.text() == "junit" }
 assert dependency != null
-assert dependency.version.text() == "3.8.2"
+assert dependency.version.text() == "4.13.2"
 
 // With a502aca no exception is thrown if there aren't any dependencies.
