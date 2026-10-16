@@ -33,7 +33,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.junit>3.8.2</version.junit>
+    <version.junit>4.13.2</version.junit>
     <version.slf4j>1.0.0</version.slf4j>
   </properties>
 

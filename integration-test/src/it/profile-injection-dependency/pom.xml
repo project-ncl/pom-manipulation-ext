@@ -51,7 +51,7 @@
           <id>extra-properties</id>
 
           <properties>
-              <version.junit>3.8.2</version.junit>
+              <version.junit>4.13.2</version.junit>
           </properties>
       </profile>
   </profiles>

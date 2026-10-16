@@ -35,4 +35,4 @@ assert junitDependency.size() == 0
 profile = pomChild.profiles.children().find { it.id.text() == 'one' }
 def childDependency = profile.dependencyManagement.dependencies.dependency.find { it.artifactId.text() == "junit" }
 assert childDependency != null
-assert childDependency.version.text() == "3.8.2"
+assert childDependency.version.text() == "4.13.2"

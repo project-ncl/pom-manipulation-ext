@@ -362,6 +362,7 @@
                 <buildDirectory>${project.build.directory}</buildDirectory>
                 <maven.home>${it.maven.home}</maven.home>
                 <localRepositoryPath>${localRepositoryUrlCli}</localRepositoryPath>
+                <mavenVersion>${mavenVersion}</mavenVersion>
               </systemPropertyVariables>
             </configuration>
           </plugin>

@@ -23,7 +23,7 @@ def pom = new XmlSlurper().parse( pomFile )
 // Junit
 def passed = false
 pom.properties.each {
-    if ( it.text().contains ("3.8.2") )
+    if ( it.text().contains ("4.13.2") )
     {
         passed = true
     }

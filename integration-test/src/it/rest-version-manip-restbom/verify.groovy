@@ -34,7 +34,7 @@ assert dependency.version.text() == "1.1-Final-redhat-1"
 
 dependency = pom.dependencyManagement.dependencies.dependency.find { it.artifactId.text() == "junit" }
 assert dependency != null
-assert dependency.version.text() == "3.8.2-redhat-1"
+assert dependency.version.text() == "4.13.2-redhat-1"
 
 def passed = false
 pom.properties.each {

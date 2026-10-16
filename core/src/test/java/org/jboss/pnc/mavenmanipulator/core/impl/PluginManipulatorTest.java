@@ -51,7 +51,7 @@ public class PluginManipulatorTest {
      * {@link PluginManipulator#applyOverrides} used to call {@code plugin.getVersion().equals(...)}
      * unconditionally, causing an NPE.
      *
-     * @see <a href="https://github.com/release-engineering/pom-manipulation-ext/issues">PME issue</a>
+     * @see <a href="https://github.com/project-ncl/pom-manipulation-ext/issues">PME issue</a>
      */
     @Test
     public void pluginWithoutGroupIdAndVersionDoesNotThrowNPE() throws ManipulationException {

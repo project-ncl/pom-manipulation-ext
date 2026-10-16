@@ -88,6 +88,17 @@ public class ITestUtils {
             }
             add("groovy-manipulator-first-http");
             add("pom-extension");
+            // Maven 3.10+ enforces stricter POM uniqueness rules that reject these pre-existing
+            // duplicate-declaration fixtures (duplicate dependencies/plugins differing only by
+            // scope or classifier). Skip them rather than altering the fixture semantics.
+            String mavenVer = System.getProperty("mavenVersion", "");
+            if (mavenVer.startsWith("3.10") || mavenVer.startsWith("4.")) {
+                add("depmgmt-strict-mode-exact-classifier");
+                add("relocation-group");
+                add("relocation-multiple");
+                add("remote-dependency-management-embedded-props-strict");
+                add("remote-plugin-management-dependency");
+            }
         }
     };
 
