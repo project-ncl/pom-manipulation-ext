@@ -184,6 +184,11 @@
       <artifactId>jdom2</artifactId>
     </dependency>
 
+    <!-- Maven < 3.5 does not ship jcl-over-slf4j, so bundle (shade) commons-logging for the HTTP client. -->
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy</artifactId>
