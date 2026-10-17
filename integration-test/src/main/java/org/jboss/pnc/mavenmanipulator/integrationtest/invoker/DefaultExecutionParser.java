@@ -79,6 +79,10 @@ public class DefaultExecutionParser
         }
         // Run POST_HANDLER
         for (Execution execution : executions.values()) {
+            if (execution.getMvnCommand() == null) {
+                // No invoker.goals specified (e.g. file only holds selector conditions or invoker.buildResult).
+                execution.setMvnCommand("install");
+            }
             ExecutionParser.POST_HANDLER.handle(execution, null);
         }
 
