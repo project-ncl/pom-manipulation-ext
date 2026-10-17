@@ -37,7 +37,7 @@
     <commons.lang>2.5.0</commons.lang>
     <commons.httpclient.minor>1</commons.httpclient.minor>
 
-    <junit>3.8.2</junit>
+    <junit>4.13.2</junit>
 
     <jetty>${jetty.major}.4.12.${jetty.qualifier}</jetty>
   </properties>

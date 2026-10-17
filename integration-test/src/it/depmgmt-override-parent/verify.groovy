@@ -22,7 +22,7 @@ def pom = new XmlSlurper().parse( pomFile )
 
 def junitDependency = pom.dependencyManagement.dependencies.dependency.find { it.artifactId.text() == "junit" }
 assert junitDependency != null
-assert junitDependency.version.text() == "3.8.2"
+assert junitDependency.version.text() == "4.13.2"
 
 def ossDependency = pom.dependencyManagement.dependencies.dependency.find { it.artifactId.text() == "oss-parent" }
 assert ossDependency != null

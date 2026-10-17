@@ -15,15 +15,18 @@
  */
 package test;
 
-// Test we can compile against JUnit 3.
-
-import junit.swingui.TestRunner;
+import org.junit.Test;
 
 public class HelloWorldwithJUnit
 {
     public static void main (String [] args)
     {
         System.out.println("hello");
-        new TestRunner();
+    }
+
+    @Test
+    public void test()
+    {
+        // Just a dummy method to verify that we can compile against JUnit 4
     }
 }

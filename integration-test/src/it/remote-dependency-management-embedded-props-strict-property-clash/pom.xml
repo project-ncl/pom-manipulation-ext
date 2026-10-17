@@ -34,7 +34,7 @@
     <jetty.qualifier>v20180830</jetty.qualifier>
 
     <commons>3.1</commons>
-    <junit>3.8.2</junit>
+    <junit>4.13.2</junit>
 
     <jetty>${jetty.major}.4.12.${jetty.qualifier}</jetty>
   </properties>

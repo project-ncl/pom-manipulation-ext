@@ -77,16 +77,16 @@
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-codegen</artifactId>
+        <version>3.4.2</version>
         <type>jar</type>
         <classifier>tck</classifier>
-        <version>3.4.2</version>
       </dependency>
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-codegen</artifactId>
+        <version>3.4.2</version>
         <type>jar</type>
         <classifier>tck</classifier>
-        <version>3.4.2</version>
         <scope>test</scope>
       </dependency>
     </dependencies>

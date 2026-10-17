@@ -24,7 +24,7 @@ assert pom.version.text().equals( '1.0.0.temporary-redhat-1' )
 
 def dependency = pom.dependencies.dependency.find { it.artifactId.text() == "junit" }
 assert dependency != null
-assert dependency.version.text() == "3.8.2"
+assert dependency.version.text() == "4.13.2"
 
 dependency = pom.dependencies.dependency.find { it.artifactId.text() == "commons-lang" }
 assert dependency != null

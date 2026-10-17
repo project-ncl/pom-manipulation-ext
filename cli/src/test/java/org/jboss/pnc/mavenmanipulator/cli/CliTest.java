@@ -325,6 +325,8 @@ public class CliTest {
                 .replaceAll("org.jboss.pnc.maven-manipulator:pom-manipulation-.*\\n", "");
         System.out.println(cliOutput);
 
+        // apache-maven (the integration-test Maven distribution) is versioned by ${maven.version}, which PME can't
+        // resolve, so it is deliberately omitted from the output.
         assertTrue(cliOutput.contains("Found 84"));
         assertTrue(
                 cliOutput.matches(
@@ -343,13 +345,13 @@ public class CliTest {
                                 + "com.squareup:javapoet:1.[.\\d+]+\\s+                                            jar                                     compile             \n"
                                 + "commons-codec:commons-codec:1.[.\\d+]+\\s+                                      jar                                     compile             \n"
                                 + "commons-io:commons-io:[.\\d+]+\\s+                                              jar                                     compile             \n"
+                                + "commons-logging:commons-logging:1.[.\\d+]+\\s+                                  jar                                     compile             \n"
                                 + "info.picocli:picocli:4.[.\\d+]+\\s+                                             jar                                     compile             \n"
                                 + "javax.inject:javax.inject:1                                                     jar                                     compile             \n"
                                 + "junit:junit:4[.\\d+]+\\s+                                                       jar                                     test                \n"
                                 + "org.apache.commons:commons-lang3:3.[.\\d+]+\\s+                                 jar                                     compile             \n"
                                 + "org.apache.httpcomponents:httpclient:4.[.\\d+]+\\s+                             jar                                     compile             \n"
                                 + "org.apache.ivy:ivy:[.\\d+]+\\s+                                                 jar                                     compile             \n"
-                                + "org.apache.maven:apache-maven:3.[.\\d+]+\\s+                                    zip                 bin                 test                \n"
                                 + "org.apache.maven:maven-artifact:3.[.\\d+]+\\s+                                  jar                                     provided            \n"
                                 + "org.apache.maven:maven-compat:3.[.\\d+]+\\s+                                    jar                                     provided            \n"
                                 + "org.apache.maven:maven-core:3.[.\\d+]+\\s+                                      jar                                     provided            \n"
