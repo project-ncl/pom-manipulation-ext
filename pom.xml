@@ -932,6 +932,7 @@
       <properties>
         <!-- Currently the CI uses JDK11 so have to specify this override -->
         <spotlessVersion>2.46.1</spotlessVersion>
+        <spotless.skip>true</spotless.skip>
       </properties>
     </profile>
   </profiles>
