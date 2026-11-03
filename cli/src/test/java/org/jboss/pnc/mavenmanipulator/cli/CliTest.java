@@ -327,7 +327,7 @@ public class CliTest {
 
         // apache-maven (the integration-test Maven distribution) is versioned by ${maven.version}, which PME can't
         // resolve, so it is deliberately omitted from the output.
-        assertTrue(cliOutput.contains("Found 84"));
+        assertTrue(cliOutput.contains("Found 86"));
         assertTrue(
                 cliOutput.matches(
                         "(?s).*"
@@ -337,6 +337,7 @@ public class CliTest {
                                 + "com.fasterxml.jackson:jackson-bom:2.[.\\d+]+\\s+                                pom                                     import              \n"
                                 + "com.github.olivergondza:maven-jdk-tools-wrapper:0.1                             jar                                     compile             \n"
                                 + "com.github.stefanbirkner:system-rules:1.[.\\d+]+\\s+                            jar                                     test                \n"
+                                + "com.google.guava:guava:33.[.\\d+]+-jre\\s+                                    jar                                     compile             \n"
                                 + "com.jayway.jsonpath:json-path:2.[.\\d+]+\\s+                                    jar                                     compile             \n"
                                 + "com.konghq:unirest-java:3.[.\\d+]+\\s+                                          jar                                     compile             \n"
                                 + "com.konghq:unirest-objectmapper-jackson:3.[.\\d+]+\\s+                          jar                                     compile             \n"
@@ -395,6 +396,7 @@ public class CliTest {
                                 + "org.jboss.da:reports-model:[.\\d+]+\\s+                                         jar                                     compile             \n"
                                 + "org.jboss.pnc.otel:opentelemetry-ext-cli-java:2.[.\\d+]+\\s+                    jar                                     compile             \n"
                                 + "org.jdom:jdom2:2.[.\\d+]+\\s+                                                   jar                                     compile             \n"
+                                + "org.ow2.asm:asm:9.[.\\d+]+\\s+                                                   jar                                     compile             \n"
                                 + "org.projectlombok:lombok:1.[.\\d+]+\\s+                                         jar                                     provided            \n"
                                 + "org.projectlombok:lombok-maven-plugin:1.[.\\d+]+\\s+                            maven-plugin                                                \n"
                                 + "org.slf4j:slf4j-api:2.[.\\d+]+\\s+                                              jar                                     compile             \n"

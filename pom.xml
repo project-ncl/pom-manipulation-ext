@@ -90,7 +90,15 @@
     <maven.min.version>3.3.9</maven.min.version>
     <jdk.min.version>11</jdk.min.version>
 
+    <!--
+      NOTE: maven-core 3.10.0 transitively brings in guava 33.7.1-jre and asm 9.10.1, which have known CVEs.
+      Both are overridden in dependencyManagement below (see guavaVersion / asmVersion). When this version is
+      updated, check whether the new maven-core already ships fixed versions and, if so, remove the overrides.
+    -->
     <mavenVersion>3.10.0</mavenVersion>
+    <!-- Overrides for transitive dependencies of maven-core (CVE fixes); see note above mavenVersion -->
+    <guavaVersion>33.7.2-jre</guavaVersion>
+    <asmVersion>9.11.1</asmVersion>
     <atlasVersion>1.2.3</atlasVersion>
     <daVersion>3.0.8</daVersion>
     <galleyVersion>1.23</galleyVersion>
@@ -243,6 +251,26 @@
         <artifactId>aether-api</artifactId>
         <version>1.1.0</version>
         <scope>provided</scope>
+      </dependency>
+
+      <!--
+        Transitive dependency of maven-core (see mavenVersion). Overridden to pick up CVE fixes
+        (33.7.1-jre -> 33.7.2-jre). Remove once maven-core ships a fixed version.
+      -->
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guavaVersion}</version>
+      </dependency>
+      <!--
+        Transitive dependency of maven-core (see mavenVersion). Overridden to pick up CVE fixes
+        (9.10.1 -> 9.11.1; 9.11 has a regression fixed in 9.11.1). Remove once maven-core ships a fixed version.
+        Also shaded into the ext jar (see ext/pom.xml).
+      -->
+      <dependency>
+        <groupId>org.ow2.asm</groupId>
+        <artifactId>asm</artifactId>
+        <version>${asmVersion}</version>
       </dependency>
 
       <dependency>
