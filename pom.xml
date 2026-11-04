@@ -100,7 +100,7 @@
     <guavaVersion>33.7.2-jre</guavaVersion>
     <asmVersion>9.11.1</asmVersion>
     <atlasVersion>1.2.3</atlasVersion>
-    <daVersion>3.0.8</daVersion>
+    <daVersion>4.0.0</daVersion>
     <galleyVersion>1.23</galleyVersion>
     <sisuVersion>0.9.0.M4</sisuVersion>
 
