@@ -121,7 +121,7 @@
     <argLine/>
     <surefireSecurityManager/>
 
-    <spotlessVersion>3.10.4</spotlessVersion>
+    <spotlessVersion>3.11.0</spotlessVersion>
     <invokerVersion>3.10.1</invokerVersion>
 
     <signTag>false</signTag>
