@@ -116,7 +116,7 @@
     <shadePluginVersion>3.5.1</shadePluginVersion>
     <mavenReleaseVersion>3.3.1</mavenReleaseVersion>
 
-    <version.animal-sniffer>1.28</version.animal-sniffer>
+    <version.animal-sniffer>1.29.1</version.animal-sniffer>
 
     <jacksonVersion>2.23.0</jacksonVersion>
     <argLine/>
