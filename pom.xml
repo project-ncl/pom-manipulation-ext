@@ -937,9 +937,16 @@
       </build>
     </profile>
     <profile>
-      <id>early-maven</id>
+      <id>pre-maven-390</id>
       <properties>
-        <!-- Downgrade from parent to ensure it works with all maven versions -->
+        <!-- Downgrade from parent to ensure it works with earlier maven versions -->
+        <version.animal-sniffer>1.28</version.animal-sniffer>
+      </properties>
+    </profile>
+    <profile>
+      <id>pre-maven-360</id>
+      <properties>
+        <!-- Downgrade from parent to ensure it works with earlier maven versions -->
         <version.animal-sniffer>1.23</version.animal-sniffer>
         <version.assembly.plugin>3.6.0</version.assembly.plugin>
         <version.buildnumber.plugin>3.0.0</version.buildnumber.plugin>
