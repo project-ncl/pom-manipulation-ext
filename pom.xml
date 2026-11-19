@@ -95,7 +95,7 @@
       Both are overridden in dependencyManagement below (see guavaVersion / asmVersion). When this version is
       updated, check whether the new maven-core already ships fixed versions and, if so, remove the overrides.
     -->
-    <mavenVersion>3.10.0</mavenVersion>
+    <mavenVersion>3.10.1</mavenVersion>
     <!-- Overrides for transitive dependencies of maven-core (CVE fixes); see note above mavenVersion -->
     <guavaVersion>33.8.0-jre</guavaVersion>
     <asmVersion>9.11.1</asmVersion>
