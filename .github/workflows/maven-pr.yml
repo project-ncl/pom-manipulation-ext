@@ -63,7 +63,7 @@ jobs:
             upload_artifacts: true
           - maven-version: 3.10.0
             java-version: '17'
-    uses: project-ncl/shared-github-actions/.github/workflows/maven-ci.yml@e7102dd3bf74f91aaccae7a3539241c03a652d1a # v0.0.27
+    uses: project-ncl/shared-github-actions/.github/workflows/maven-ci.yml@af62bc3c8181df77581ddf64859f9bba9129fcad # v0.0.28
     with:
       build_command: mvn -B -V clean install -Prun-its ${{ matrix.profile }}
       java_version: ${{ matrix.java-version }}
