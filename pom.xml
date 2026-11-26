@@ -99,7 +99,7 @@
     <!-- Overrides for transitive dependencies of maven-core (CVE fixes); see note above mavenVersion -->
     <guavaVersion>33.8.0-jre</guavaVersion>
     <asmVersion>9.11.1</asmVersion>
-    <atlasVersion>1.2.3</atlasVersion>
+    <atlasVersion>1.2.4</atlasVersion>
     <daVersion>4.0.0</daVersion>
     <galleyVersion>1.24</galleyVersion>
     <sisuVersion>0.9.0.M4</sisuVersion>
