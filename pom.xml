@@ -101,7 +101,7 @@
     <asmVersion>9.11.1</asmVersion>
     <atlasVersion>1.2.3</atlasVersion>
     <daVersion>4.0.0</daVersion>
-    <galleyVersion>1.23</galleyVersion>
+    <galleyVersion>1.24</galleyVersion>
     <sisuVersion>0.9.0.M4</sisuVersion>
 
     <groovyVersion>3.0.25</groovyVersion>
